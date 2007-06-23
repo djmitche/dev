@@ -1,0 +1,48 @@
+#! /bin/bash
+
+usage() {
+  echo "Load a task into the work-in-progress (WIP) directory"
+  echo ""
+  echo "dev load [-h] {task}"
+  echo "  {task} the task to load"
+  echo ""
+  echo "  -h: this message"
+  exit 1
+}
+
+while getopts "h" OPT
+do
+  case $OPT in
+    h) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# make sure we have a task to load
+[ $# = 0 ] && usage
+
+# get the full path of the task
+task="$1"
+sanity_check_task "$task"
+task_path=`task_path "$task"`
+
+[ -e $task_path -a -d $task_path ] || die "'$task_path' does not exist"
+
+# unload first if necessary
+if wip_is_loaded
+then
+  if [ `loaded_task` = "$task" ]
+  then
+    die "$task is already loaded"
+  else
+    die "WIP already has task '"`loaded_task`"' loaded; unload it (with 'dev unload') first."
+  fi
+fi
+
+# link in the task
+$MKDIR $DEV_WIP_DIR $DEV_STATUS_DIR
+$LN -s $task_path $DEV_STATUS_DIR/task
+echo "$task" > $DEV_STATUS_DIR/taskname
+
+# and ask it to set itself up
+call_taskrc task_load || $RM -rf $DEV_WIP_DIR $DEV_STATUS_DIR

@@ -1,0 +1,35 @@
+#! /bin/bash
+
+usage() {
+  echo "Edit the taskrc for a given task"
+  echo ""
+  echo "dev edit [-h] {task}"
+  echo "  {task} - the task to edit"
+  echo ""
+  echo "  -h: this message"
+  exit 1
+}
+
+while getopts "h" OPT
+do
+  case OPT in
+    h) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# make sure we have the right number of args
+[ $# -ne 1 ] && usage
+
+[ "$EDITOR" != "" ] || die "\$EDITOR is not defined"
+
+# get the arguments settled
+TASK=$1
+sanity_check_task "$TASK"
+task_exists "$TASK" || die "Task $TASK does not exist"
+
+# make sure that task's not loaded
+[ "`loaded_task`" = "$TASK" ] && die "Task $TASK is currently loaded"
+
+# finally, edit it
+$EDITOR "`task_path $TASK`/taskrc"

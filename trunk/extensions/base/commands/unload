@@ -1,0 +1,47 @@
+#! /bin/bash
+
+usage() {
+  echo "Unload the task currently in the wip directory"
+  echo ""
+  echo "dev unload [-h] [-f]"
+  echo "  -h: this message"
+  echo "  -f: skip warning about removing working directory"
+  echo "  -F: unload regardless of any outstanding modified files, etc."
+  exit 1
+}
+
+# parse arguments
+force=false
+really_force=false
+while getopts "hfF" OPT
+do
+  case $OPT in
+    h) usage ;;
+    f) force=true ;;
+    F) force=true really_force=true ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# unload only if necessary
+set -x
+if wip_is_loaded
+then
+  if ! call_taskrc task_unload
+  then
+    if ${really_force}
+    then
+      echo "UNLOADING ANYWAY"
+    else
+      exit 1
+    fi
+  fi
+
+  if ! $force
+  then
+    warning_countdown 'Removing existing working directory'
+  fi
+  $RM -rf $DEV_WIP_DIR
+else
+  echo "No task loaded"
+fi
