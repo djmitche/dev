@@ -1,0 +1,45 @@
+#! /bin/bash
+
+usage() {
+  echo "Create a new, blank task"
+  echo ""
+  echo "dev new [-h] {task}"
+  echo "  {task} the name of the task to create"
+  echo ""
+  echo "  -h: this message"
+  exit 1
+}
+
+while getopts "h" OPT
+do
+  case $OPT in
+    h) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# make sure we have a task to load
+[ $# = 1 ] || die "No task specified"
+
+# get the full path of the task
+task="$1"
+sanity_check_task "$task" || die "Task names cannot contain '/'"
+task_exists "$task" && die "'$task' already exists"
+
+# everything looks good; let's set it up
+task_dir=$DEV_TASKS_DIR/$1
+$MKDIR $task_dir
+
+$CAT > $task_dir/taskrc <<EOF
+task_load() {
+  :
+}
+
+task_unload() {
+  :
+}
+
+task_status() {
+  :
+}
+EOF

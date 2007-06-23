@@ -1,0 +1,187 @@
+# Makefile.in is a heavily modified version of quilt's file
+# of the same name.
+PACKAGE :=	@PACKAGE_NAME@
+VERSION :=	@PACKAGE_VERSION@
+RELEASE :=	@PACKAGE_RELEASE@
+PACKAGE_BUGREPORT := @PACKAGE_BUGREPORT@
+
+prefix :=	@prefix@
+exec_prefix :=	@exec_prefix@
+bindir :=	@bindir@
+libdir :=	@libdir@
+datadir :=	@datadir@
+docdir :=	@docdir@
+mandir :=	$(datadir)/man
+localedir :=	$(datadir)/locale
+etcdir :=	$(subst /usr/etc,/etc,$(prefix)/etc)
+
+INSTALL :=	@INSTALL@
+CP :=		@CP@
+MV :=		@MV@
+RM :=		@RM@
+SED :=		@SED@
+LN :=		@LN@
+TAR :=		@TAR@
+DATE :=		@DATE@
+BASH :=		@BASH@
+GREP :=		@GREP@
+FIND :=		@FIND@
+MKTEMP :=	@MKTEMP@
+
+EXTENSIONS := @EXTENSIONS@
+
+default: all
+
+#-----------------------------------------------------------------------
+DIRT +=		$(shell $(FIND) . -name '*~')
+DIRT +=		$(shell $(FIND) . -name '.\#*')
+DIRT +=		$(patsubst %.in,%,$(wildcard compat/*.in))
+DIRT +=		bin/dev
+
+BIN += bin/dev
+LIB += lib/dev/functions.sh
+LIB += lib/dev/defaults.sh
+LIB += lib/dev/paths.sh
+LIB += lib/dev/task_functions.sh
+COMMANDS += $(wildcard commands/*)
+
+ISODATE :=	$(shell $(DATE) +%Y-%m-%d)
+
+#-----------------------------------------------------------------------
+
+all : configure compat $(BIN) $(LIB) $(COMMANDS)
+
+dist : clean $(PACKAGE)-$(VERSION).tar.gz
+
+snapshot : $(PACKAGE)-$(ISODATE).tar.bz2
+
+$(PACKAGE)-$(VERSION).tar.gz : configure
+	$(RM) -f $(PACKAGE)-$(VERSION) $@
+	$(LN) -s . $(PACKAGE)-$(VERSION)
+	$(TAR) chf - $(+:%=$(PACKAGE)-$(VERSION)/%) | gzip -9 > $@
+	$(RM) -f $(PACKAGE)-$(VERSION)
+	@echo "File $@ created."
+
+$(PACKAGE)-$(ISODATE).tar.bz2 : configure
+	$(RM) -f $(PACKAGE)-$(ISODATE) $@
+	$(LN) -s . $(PACKAGE)-$(ISODATE)
+	$(TAR) chf - $(+:%=$(PACKAGE)-$(ISODATE)/%) | bzip2 -9 > $@
+	$(RM) -f $(PACKAGE)-$(ISODATE)
+	@echo "File $@ created."
+
+bin/dev : bin/dev.in
+	$(SED) -e "s#@''libdir@#@libdir@#g" < bin/dev.in > $@
+
+lib/dev/defaults.sh: lib/dev/defaults.sh.in extensions/*/defaults.sh
+	cp lib/dev/defaults.sh.in $@
+	for ext in $(EXTENSIONS); do \
+		file=extensions/$$ext/defaults.sh; \
+		[ -f $$file ] && cat $$file >> $@; \
+	done; true
+
+lib/dev/task_functions.sh: lib/dev/task_functions.sh.in 
+	cp lib/dev/task_functions.sh.in $@
+	for ext in $(EXTENSIONS); do \
+		file=extensions/$$ext/task_functions.sh; \
+		[ -f $$file ] && cat $$file >> $@; \
+	done; true
+
+configure : configure.ac
+	autoconf
+	@echo "Please run ./configure"
+	@false
+
+Makefile : Makefile.in configure
+	@echo "Please run ./configure"
+	@false
+
+compat_leftover := $(filter-out $(COMPAT),$(shell $(FIND) compat -maxdepth 1 -type f -perm +111))
+
+.PHONY :: compat
+compat :: $(COMPAT)
+	$(if $(compat_leftover),$(RM) -f $(compat_leftover))
+
+# VIRTUAL_SYMLINKS creates a shell script that operates similar to
+# a symbolic link.  It is used to workaround the way make treats
+# symlinks as targets.
+#   Usage: $(call VIRTUAL_SYMLINK, source, target)
+define VIRTUAL_SYMLINK
+	@echo "Generating $(strip $(1)) wrapper" >&2;
+	@printf "#!%s\nexec %s "'"$$$$@"'"\n" $(BASH) $(strip $(1)) > $(2);
+endef
+
+# Generate rules to create compat/<binary> for each binary in $(COMPAT_SYMLINKS)
+define COMPAT_SYMLINK_local_install
+compat/$(strip $(1)) : Makefile
+	$(call VIRTUAL_SYMLINK, \
+		$($(shell echo $(1) | $(AWK) '{print toupper($$1)}')), \
+		compat/$(strip $(1)))
+	@chmod +x compat/$(strip $(1));
+
+endef
+
+$(eval $(foreach symlink,$(COMPAT_SYMLINKS),$(call COMPAT_SYMLINK_local_install, $(symlink))))
+
+install-bin :: $(BIN)
+	$(INSTALL) -d $(BUILD_ROOT)$(bindir)
+	$(INSTALL) -m 755 $(BIN) $(BUILD_ROOT)$(bindir)/
+
+install-lib :: $(LIB)
+	$(INSTALL) -d $(BUILD_ROOT)$(libdir)/dev
+	$(INSTALL) -m 755 $(LIB) $(BUILD_ROOT)$(libdir)/dev
+
+install-commands ::
+	$(INSTALL) -d $(BUILD_ROOT)$(libdir)/dev/commands
+	for ext in $(EXTENSIONS); do \
+	  cmds_dir=extensions/$$ext/commands; \
+		[ -d $$cmds_dir ] && $(INSTALL) -m 755 $$cmds_dir/* $(BUILD_ROOT)$(libdir)/dev/commands; \
+	done; true
+
+install-compat: install-compat1 $(COMPAT_SYMLINKS:%=install-compat-symlink-%)
+$(COMPAT_SYMLINKS:%=install-compat-symlink-%) :: install-compat1
+
+install-compat1:
+	$(RM) -rf $(BUILD_ROOT)$(datadir)/$(PACKAGE)/compat
+ifneq ($(COMPAT_PROGRAMS)$(COMPAT_SYMLINKS),)
+	$(INSTALL) -d $(BUILD_ROOT)$(datadir)/$(PACKAGE)/compat
+ifneq ($(COMPAT_PROGRAMS),)
+	$(INSTALL) -m 755 $(COMPAT_PROGRAMS:%=compat/%)			\
+		   $(BUILD_ROOT)$(datadir)/$(PACKAGE)/compat
+endif
+endif
+
+# Generate rules to install symlinks for each binary in $(COMPAT_SYMLINKS)
+define COMPAT_SYMLINK_install
+install-compat-symlink-$(strip $(1)) ::
+	$(LN) -sf $($(shell echo $(1) | $(AWK) '{print toupper($$1)}'))	\
+	       $(BUILD_ROOT)$(datadir)/$(PACKAGE)/compat/$(strip $(1))
+endef
+
+$(foreach symlink,$(COMPAT_SYMLINKS),$(eval $(call COMPAT_SYMLINK_install, $(symlink))))
+
+install: install-bin install-lib install-commands install-compat
+
+uninstall ::
+	$(RM) -rf $(BIN:%=$(BUILD_ROOT)$(bindir)/%)			\
+	       $(BUILD_ROOT)$(libdir)/$(PACKAGE)
+
+clean :
+	$(RM) -f $(DIRT)
+
+distclean : clean
+	$(RM) -f config.log config.status Makefile
+	$(RM) -rf autom4te.cache/
+
+.PHONY :: all install uninstall clean distclean
+
+# Clear the suffix list
+.SUFFIXES:
+.SUFFIXES: .c .o .in
+# Bad gmake, never *ever* try to get a file out of source control by yourself.
+%: %,v
+%: RCS/%,v
+%: RCS/%
+%: s.%
+%: SCCS/s.%
+
+FORCE:

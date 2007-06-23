@@ -1,0 +1,29 @@
+#! /bin/bash
+
+usage() {
+  echo "Load a task into the work-in-progress (WIP) directory"
+  echo ""
+  echo "dev status [-h]"
+  echo ""
+  echo "  -h: this message"
+  exit 1
+}
+
+while getopts "h" OPT
+do
+  case $OPT in
+    h) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# make sure we have a task to load
+[ $# = 0 ] || usage
+
+if wip_is_loaded
+then
+  echo "Current task: '"`loaded_task`"'"
+  call_taskrc task_status
+else
+  echo "No task loaded"
+fi
