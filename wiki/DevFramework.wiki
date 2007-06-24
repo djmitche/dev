@@ -8,6 +8,7 @@ The file {{{.devrc}}} serves two purposes:  It marks the top-level directory for
 
 The configuration file can set the following variables:
   * {{{DEV_SUBCOMMANDS_PATH}}}: a colon-separated list of directories containing Dev subcommands.  The default value is {{{$DEV_PROJECT_DIR/dev/subcommands}}}.
+  * {{{DEV_TASKS_DIR}}}: the directory in which tasks are stored.  The default value is {{{$DEV_PROJECT_DIR/dev/tasks}}}.
 
 Any other variables set in {{{.devrc}}} will be available to subcommands, and can provide configuration for them.  For example, many extensions are configured with variables set in {{{.devrc}}}.
 
