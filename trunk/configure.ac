@@ -14,7 +14,7 @@ if test "$interpval" != yes ; then
 	AC_MSG_WARN([no
 
 bash/perl scripts may not be invoked correctly due to problems with your
-systems implementation of #! being either broken or non-existant.
+system's implementation of #! being either broken or non-existant.
 ])
 fi
 
@@ -22,9 +22,6 @@ fi
 # local compatible versions
 unset BASH  # bash sets this itself!
 DEV_COMPAT_PROG_PATH(BASH, bash)
-DEV_COMPAT_PROG_PATH(CP, cp)
-DEV_COMPAT_PROG_PATH(MV, mv)
-DEV_COMPAT_PROG_PATH(RM, rm)
 DEV_COMPAT_PROG_PATH(CAT, cat)
 DEV_COMPAT_PROG_PATH(GREP, grep)
 DEV_COMPAT_PROG_PATH(COLUMN, column)
@@ -35,7 +32,6 @@ DEV_COMPAT_PROG_PATH(FIND, find)
 DEV_COMPAT_PROG_PATH(DATE, date)
 DEV_COMPAT_PROG_PATH(SORT, sort)
 DEV_COMPAT_PROG_PATH(SED, sed)
-DEV_COMPAT_PROG_PATH(LN, ln)
 DEV_COMPAT_PROG_PATH(MKDIR, mkdir)
 DEV_COMPAT_PROG_PATH(DIRNAME, dirname)
 DEV_COMPAT_PROG_PATH(BASENAME, basename)

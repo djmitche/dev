@@ -1,4 +1,4 @@
-#! /bin/bash
+#! @BASH@
 
 # prefix-related directories and other stuff from configuration
 prefix=@prefix@
@@ -6,14 +6,51 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 export DEV_VERSION=@PACKAGE_VERSION@
 
-# get all of our paths
-source $libdir/dev/paths.sh
+# Search up from the current directory to find a directory containing
+# '.devrc'.  This is the project directory.
+#
+# Side-effects:
+#  - set $DEV_PROJECT_DIR (exported) to the project directory
+# Output:
+#  - exit status '1' on error
+set_project_dir() {
+    set_project_dir_() {
+        last_dir=`pwd`
+        while true; do
+            if test -e .devrc ; then
+                break
+            fi
+            cd ..
+            this_dir=`pwd`
+            if test x"$last_dir" = x"$this_dir"; then
+                break
+            fi
+            last_dir="$this_dir"
+        done
+        if ! test -e .devrc; then
+            echo "Could not find a dev project (a directory containing .devrc)!" >&2
+            return 1
+        fi
+        pwd
+    }
 
-# a few utility commands
+    export DEV_PROJECT_DIR=`set_project_dir_`
+}
 
-dev_commands() {
-  for dir in `echo $DEV_COMMAND_DIRS | tr : ' '`
+# Enumerate the available subcommands
+#
+# input:
+#  $DEV_SUBCOMMANDS_PATH
+# output:
+#  newline-separated list of commands on stdout
+enumerate_subcommands() {
+  echo 'help' # (internal command)
+
+  local old_IFS="$IFS"
+  IFS=':'
+  for dir in $DEV_SUBCOMMANDS_PATH:$libdir/dev/commands
   do
+    test -z "$dir" && continue
     for cmd in $dir/*
     do
       if [ -f $cmd -a -x $cmd ]
@@ -22,71 +59,78 @@ dev_commands() {
       fi
     done
   done
+  IFS="$old_IFS"
 }
 
-find_command() {
-  command=$1
-  for dir in `echo $DEV_COMMAND_DIRS | tr : ' '`
+# Given a bare subcommand name, find the full path to its implementation.
+#
+# input:
+#  $1: subcommand name
+# output:
+#  full path to subcommand on stdout, or empty string if not found
+find_subcommand() {
+  local subcommand=$1
+  local old_IFS="$IFS"
+  IFS=':'
+  for dir in $DEV_SUBCOMMANDS_PATH:$libdir/dev/subcommands
   do
-    if [ -f $dir/$command -a -x $dir/$command ]
+    if [ -f $dir/$subcommand -a -x $dir/$subcommand ]
     then
-      echo $dir/$command
-      exit
+      echo $dir/$subcommand
+      break
     fi
   done
+  IFS="$old_IFS"
 }
 
+# Print usage message and exit with status 1
 usage() {
   $CAT <<EOF
-Usage: $0 [-h] [-v] command <command args>
-This script consults environment variable DEV_PROJECT, which should
-be a path to the project you're currently working on.
+USAGE:
+  $0 [-h] [-v] subcommand <subcommand args>
 
   -h: this message
   -v: show version
 
-Available commands are:
+Available subcommands are:
 EOF
-  # lifted from quilt
-  dev_commands | $SORT | $COLUMN | $COLUMN -t | $SED -e $'s/^/\t/'
+  # this strategy was lifted from quilt
+  enumerate_subcommands | $SORT -u | $COLUMN | $COLUMN -t | $SED -e $'s/^/\t/'
   exit 1
 }
 
+####
 # get down to work
 
-# check that DEV_PROJECT is defined first of all
-if [ "x$DEV_PROJECT" = "x" ]
-then
-  echo 'DEV_PROJECT is not defined!'
-  exit
-fi
+# get paths to all of the utility functions
+source $libdir/dev/paths.sh
 
-# load the settings for the current project
-for rc in $libdir/dev/defaults.sh $etcdir/devrc $HOME/.devrc $DEV_PROJECT/.devrc
-do
-  [ -f $rc ] && source $rc
-done
+# get DEV_PROJECT_DIR
+set_project_dir || exit 1
 
-# parse any args
-while getopts "hv" flag
+# set up defaults and source configuration
+export DEV_SUBCOMMANDS_PATH="${DEV_PROJECT_DIR}/dev/subcommands"
+export DEV_TASKS_PATH="${DEV_PROJECT_DIR}/dev/tasks"
+source "$DEV_PROJECT_DIR/.devrc" || exit 1
+
+# parse any options to 'dev' itself
+while [ ! -z "$1" ]
 do
-  case "$flag" in
-    :|\?|h) usage; exit;;
-    v) echo $0 'version' $DEV_VERSION; exit;;
+  case "$1" in
+    -h|help) usage;;
+    -v) echo "$0: version $DEV_VERSION"; exit 1;;
+    -*) echo "$0: Unknown option '$1'"; exit 1;;
+    *) break;;
   esac
 done
 
-# now pull any of that stuff off the command line
-shift $(($OPTIND-1))
-OPTIND=1
-
-# if no command given, give usage
+# if no subcommand was given, give usage message
 [ $# = 0 ] && usage
 
-# figure out the path of the command
-command="$1"
+# figure out the path of the subcommand
+subcommand="$1"
 shift
-cmd_path="`find_command $command`"
+cmd_path="`find_subcommand $subcommand`"
 [ "$cmd_path" = "" ] && usage 
 
 # source any utiity function libraries
@@ -95,5 +139,7 @@ do
   [ -f $fns ] && source $fns
 done
 
-# finally, execute the command
+# finally, execute the subcommand
 . $cmd_path
+
+# vim:ft=sh
