@@ -8,6 +8,9 @@ A project will usually have the following associated with it:
   * some scripts for compiling, running, testing, and so on
   * shell and text editor configuration specific to the project
 
+== Project Directory ==
+Dev assumes that you have a single parent directory for each project, containing various subdirectories.  One of those subdirectories is the __wip__, or __work-in-progress__ directory, where the action of developing takes place. 
+
 = Extensions =
 
 By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
