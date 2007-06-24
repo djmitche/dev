@@ -8,10 +8,9 @@ The configuration for each task is stored in a directory under {{{$DEV_TASKS_DIR
 {{{taskrc}}} specifies the extensions required by the task, supplies any additional Dev configuration beyond that from the project, and defines functions to drive creation, examination, and destruction of a TaskDirectory.  The file may be sourced at any time, so it should not make any changes when it is merely sourced.
 
 == Requirements ==
-Required modules are specified with the {{{require}}} function:
+Required modules are specified with the {{{require}}} function, which takes one or more extensions to load:
 {{{
-require svn
-require quilt
+require quilt svn
 }}}
 
 == Configuration Variables ==
