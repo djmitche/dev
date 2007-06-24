@@ -9,7 +9,10 @@ A project will usually have the following associated with it:
   * shell and text editor configuration specific to the project
 
 == Project Directory ==
-Dev assumes that you have a single parent directory for each project, containing various subdirectories.  One of those subdirectories is the __wip__, or __work-in-progress__ directory, where the action of developing takes place. 
+Dev assumes that you have a single parent directory for each project, containing various subdirectories.  The default settings assume that a subdirectory named {{{dev}}} is available for Dev-related files, but this can be overridden if necessary by configuration in {{{.devrc}}}.  See ProjectDirectory for more details.
+
+== Task Directory ==
+Each active task is also represented by a directory, in this case a subdirectory of the project directory.  The task directory contains any and all source code needed for development, as well as any temporary or working directories for compilation or test runs.  See TaskDirectory for more details.
 
 = Extensions =
 
