@@ -1,8 +1,10 @@
 # Process this file with autoconf to produce a configure script.
 # (Skeleton of this file lifted from quilt by Dustin)
-AC_INIT([dev],[0.1],[dustin@cs.uchicago.edu])
+AC_INIT([dev], [0.1], [dustin@cs.uchicago.edu])
 AC_CONFIG_AUX_DIR(config)
+AC_CONFIG_SRCDIR(configure.ac)
 AC_REVISION ($Revision: 1.00 $)
+AM_INIT_AUTOMAKE
 
 PACKAGE_RELEASE=1
 AC_SUBST(PACKAGE_RELEASE)
@@ -79,15 +81,17 @@ if $ENABLE_CVS; then EXTENSIONS="$EXTENSIONS cvs"; fi
 if $ENABLE_SVN; then EXTENSIONS="$EXTENSIONS svn"; fi
 if $ENABLE_QUILT; then EXTENSIONS="$EXTENSIONS quilt"; fi
 
-AC_MSG_NOTICE([Building with extensions: $EXTENSIONS])
 AC_SUBST(EXTENSIONS)
 
 # final output
 
-AC_CONFIG_FILES(Makefile bin/dev lib/dev/paths.sh)
+AC_CONFIG_FILES(
+        Makefile core/Makefile lib/Makefile \
+\
+        core/dev lib/config.sh)
 AC_OUTPUT
 
 # Print results
 AC_MSG_RESULT([$PACKAGE_NAME version $PACKAGE_VERSION configured.])
-AC_MSG_RESULT([Using '$prefix' for installation prefix.])
-AC_MSG_RESULT([Report bugs to $PACKAGE_BUGREPORT])
+AC_MSG_RESULT([    Installation Prefix: '$prefix'])
+AC_MSG_RESULT([             Extensions: '$EXTENSIONS'])
