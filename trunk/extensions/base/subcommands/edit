@@ -24,12 +24,9 @@ shift $((OPTIND - 1))
 [ "$EDITOR" != "" ] || die "\$EDITOR is not defined"
 
 # get the arguments settled
-TASK=$1
-sanity_check_task "$TASK"
-task_exists "$TASK" || die "Task $TASK does not exist"
-
-# make sure that task's not loaded
-[ "`loaded_task`" = "$TASK" ] && die "Task $TASK is currently loaded"
+task=$1
+sanity_check_task "$task"
+task_exists "$task" || die "Task '$task' does not exist"
 
 # finally, edit it
-$EDITOR "`task_path $TASK`/taskrc"
+$EDITOR "`task_to_config_path $task`/taskrc"

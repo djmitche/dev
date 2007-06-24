@@ -23,14 +23,16 @@ shift $((OPTIND - 1))
 
 # get the full path of the task
 task="$1"
-sanity_check_task "$task" || die "Task names cannot contain '/'"
-task_exists "$task" && die "'$task' already exists"
+sanity_check_task "$task" || die "Invalid task name '$task'"
+task_exists "$task" && die "Task '$task' already exists"
 
 # everything looks good; let's set it up
-task_dir=$DEV_TASKS_DIR/$1
-$MKDIR $task_dir
+task_dir="$DEV_TASKS_DIR/$1"
+$MKDIR "$task_dir"
 
-$CAT > $task_dir/taskrc <<EOF
+cat > "$task_dir/taskrc" <<EOF
+#require EXT1 EXT2
+
 task_load() {
   :
 }

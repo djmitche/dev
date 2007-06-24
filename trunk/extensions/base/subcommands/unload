@@ -24,24 +24,20 @@ done
 shift $((OPTIND - 1))
 
 # unload only if necessary
-set -x
-if wip_is_loaded
-then
-  if ! call_taskrc task_unload
-  then
-    if ${really_force}
-    then
-      echo "UNLOADING ANYWAY"
-    else
-      exit 1
-    fi
-  fi
-
-  if ! $force
-  then
-    warning_countdown 'Removing existing working directory'
-  fi
-  $RM -rf $DEV_WIP_DIR
-else
-  echo "No task loaded"
+if test -z "$DEV_TASK_DIR"; then
+  die "No task loaded"
 fi
+if task_unload; then
+  if $really_force; then
+    echo "UNLOADING ANYWAY"
+  else
+    exit 1
+  fi
+fi
+
+if ! $force; then
+  warning_countdown 'Removing existing working directory'
+fi
+rm -rf "$DEV_TASK_DIR" || exit 1
+
+exit 0

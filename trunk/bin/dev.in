@@ -6,204 +6,29 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 export DEV_VERSION=@PACKAGE_VERSION@
 
-# Search up from the current directory to find a directory containing
-# '.devrc'.  This is the project directory.
-#
-# Side-effects:
-#  - set $DEV_PROJECT_DIR (exported) to the project directory
-# Output:
-#  - exit status '1' on error
-set_project_dir() {
-    set_project_dir_() {
-        local last_dir=`pwd`
-        while true; do
-            if test -e .devrc ; then
-                break
-            fi
-            cd ..
-            local this_dir=`pwd`
-            if test x"$last_dir" = x"$this_dir"; then
-                break
-            fi
-            last_dir="$this_dir"
-        done
-        if ! test -e .devrc; then
-            echo "Could not find a dev project (a directory containing .devrc)!" >&2
-            return 1
-        fi
-        pwd
-    }
+# source our utiity function libraries
+source $libdir/dev/dev_functions.sh
 
-    export DEV_PROJECT_DIR=`set_project_dir_`
-}
-
-# Search for a task directory according to the algorithm given in the wiki.
-#
-# Input:
-#  - $DEV_TASK_DIR (optional)
-#  - $DEV_TASK_DIR_ID (optional)
-#  - $DEV_PROJECT_DIR
-# Side-effects:
-#  - set $DEV_TASK_DIR (exported) to the task directory, or to an empty
-#    string if not found
-set_task_dir() {
-    export DEV_TASK_DIR
-
-    # return immediately if we've been given the task dir
-    if test x"$DEV_TASK_DIR" != x; then
-        return
-    fi
-
-    # if we have DEV_TASK_DIR_ID, then search with that
-    if test x"$DEV_TASK_DIR_ID" != x; then
-        search_task_dir() {
-            local last_dir=`pwd`
-            while true; do
-                if test -e "$DEV_TASK_DIR_ID"; then
-                    pwd
-                    break
-                fi
-                cd ..
-                this_dir=`pwd`
-                if test x"$last_dir" = x"$this_dir"; then
-                    break
-                fi
-                if test x"$this_dir" = x"$DEV_PROJECT_DIR"; then
-                    break
-                fi
-                last_dir="$this_dir"
-            done
-        }
-        export DEV_TASK_DIR=`search_task_dir`
-    else
-
-    # otherwise, look for a subdirectory of the project directory
-        search_task_dir() {
-            local last_dir=`pwd`
-            while true; do
-                cd ..
-                this_dir=`pwd`
-                if test x"$this_dir" = x"$DEV_PROJECT_DIR"; then
-                    echo "$last_dir"
-                    break
-                fi
-                last_dir="$this_dir"
-            done
-        }
-        export DEV_TASK_DIR=`search_task_dir`
-    fi
-}
-
-# Search up from the current directory to find a directory containing
-# '.devrc'.  This is the project directory.
-#
-# Side-effects:
-#  - set $DEV_PROJECT_DIR (exported) to the project directory
-# Output:
-#  - exit status '1' on error
-set_project_dir() {
-    search_project_dir() {
-        last_dir=`pwd`
-        while true; do
-            if test -e .devrc ; then
-                break
-            fi
-            cd ..
-            this_dir=`pwd`
-            if test x"$last_dir" = x"$this_dir"; then
-                break
-            fi
-            last_dir="$this_dir"
-        done
-        if ! test -e .devrc; then
-            echo "Could not find a dev project (a directory containing .devrc)!" >&2
-            return 1
-        fi
-        pwd
-    }
-
-    export DEV_PROJECT_DIR=`search_project_dir`
-}
-
-# Enumerate the available subcommands
-#
-# input:
-#  $DEV_SUBCOMMANDS_PATH
-# output:
-#  newline-separated list of commands on stdout
-enumerate_subcommands() {
-  echo 'help' # (internal command)
-
-  local old_IFS="$IFS"
-  IFS=':'
-  for dir in $DEV_SUBCOMMANDS_PATH:$libdir/dev/commands
-  do
-    test -z "$dir" && continue
-    for cmd in $dir/*
-    do
-      if test -f $cmd -a -x $cmd
-      then
-        echo ${cmd##$dir/}
-      fi
-    done
-  done
-  IFS="$old_IFS"
-}
-
-# Given a bare subcommand name, find the full path to its implementation.
-#
-# input:
-#  $1: subcommand name
-# output:
-#  full path to subcommand on stdout, or empty string if not found
-find_subcommand() {
-  local subcommand=$1
-  local old_IFS="$IFS"
-  IFS=':'
-  for dir in $DEV_SUBCOMMANDS_PATH:$libdir/dev/subcommands
-  do
-    if test -f $dir/$subcommand -a -x $dir/$subcommand
-    then
-      echo $dir/$subcommand
-      break
-    fi
-  done
-  IFS="$old_IFS"
-}
-
-# Print usage message and exit with status 1
-usage() {
-  $CAT <<EOF
-USAGE:
-  $0 [-h] [-v] subcommand <subcommand args>
-
-  -h: this message
-  -v: show version
-
-Available subcommands are:
-EOF
-  # this strategy was lifted from quilt
-  enumerate_subcommands | $SORT -u | $COLUMN | $COLUMN -t | $SED -e $'s/^/\t/'
-  exit 1
-}
-
-####
-# get down to work
-
-# get paths to all of the utility functions
+# get all of the paths discovered by configure
 source $libdir/dev/paths.sh
+
+# get the defaults for all of the configuration variables
+source $libdir/dev/defaults.sh
+
+# XXX hack until build system is rebuilt
+source $libdir/dev/task_functions.sh
 
 # get DEV_PROJECT_DIR
 set_project_dir || exit 1
-set -x
-set_task_dir
-set +x
-exit
 
-# set up defaults and source configuration
-export DEV_SUBCOMMANDS_PATH="${DEV_PROJECT_DIR}/dev/subcommands"
-export DEV_TASKS_PATH="${DEV_PROJECT_DIR}/dev/tasks"
+# source the project configuration
 source "$DEV_PROJECT_DIR/.devrc" || exit 1
+
+# get DEV_TASK_DIR
+set_task_dir || exit 1
+
+# source the task configuration, if possible
+source_task_configuration || exit 1
 
 # parse any options to 'dev' itself
 while test ! -z "$1"
@@ -225,11 +50,8 @@ shift
 cmd_path="`find_subcommand $subcommand`"
 test "$cmd_path" = "" && usage 
 
-# source any utiity function libraries
-for fns in $libdir/dev/functions.sh $DEV_PROJECT/lib/dev/functions.sh
-do
-  test -f $fns && source $fns
-done
+# source subcommands' utility functions
+source $libdir/dev/subcommand_functions.sh
 
 # finally, execute the subcommand
 . $cmd_path

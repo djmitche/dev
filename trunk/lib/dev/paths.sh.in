@@ -1,5 +1,4 @@
 # Paths derived from the autoconf process
-export CAT=@CAT@
 export GREP=@GREP@
 export COLUMN=@COLUMN@
 export GETOPT=@GETOPT@

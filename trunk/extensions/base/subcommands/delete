@@ -23,13 +23,10 @@ shift $((OPTIND - 1))
 
 # get the full path of the task
 task="$1"
-sanity_check_task $task
-task_path=`task_path "$task"`
+sanity_check_task "$task"
+task_exists "$task" || die "Task '$task' does not exist"
 
-[ -e $task_path -a -d $task_path ] || die "'$task' does not exist"
-
-# don't delete the loaded task!
-wip_is_loaded && [ `loaded_task` = "$task" ] && die "$task is currently loaded -- cannot delete"
+task_path=`task_to_config_path "$task"`
 
 warning_countdown "deleting '$task_path'"
-$RM -rf $task_path
+rm -rf $task_path

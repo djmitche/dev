@@ -6,21 +6,29 @@ usage() {
   echo "dev tasks [-h]"
   echo ""
   echo "  -h: this message"
+  echo "  -1: list tasks in a single column"
   exit 1
 }
 
-while getopts "h" OPT
+SINGLE_COLUMN=false
+while getopts "h1" OPT
 do
   case $OPT in
     h) usage ;;
+    1) SINGLE_COLUMN=true ;;
   esac
 done
 shift $((OPTIND - 1))
 
-# echo the available tasks in a nice columnar format
-( for pathname in $DEV_TASKS_DIR/*
+enumerate_tasks() {
+for pathname in $DEV_TASKS_DIR/*
   do
-    filename=`$BASENAME $pathname`
-    echo $filename
+    [ -e "$pathname" ] && $BASENAME $pathname
   done
-) | $SORT | $COLUMN | $COLUMN -t | $SED -e $'s/^/\t/'
+}
+
+if $SINGLE_COLUMN; then
+    enumerate_tasks
+else
+    enumerate_tasks | $SORT | $COLUMN | $COLUMN -t | $SED -e $'s/^/\t/'
+fi

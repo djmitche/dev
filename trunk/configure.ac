@@ -22,7 +22,6 @@ fi
 # local compatible versions
 unset BASH  # bash sets this itself!
 DEV_COMPAT_PROG_PATH(BASH, bash)
-DEV_COMPAT_PROG_PATH(CAT, cat)
 DEV_COMPAT_PROG_PATH(GREP, grep)
 DEV_COMPAT_PROG_PATH(COLUMN, column)
 DEV_COMPAT_PROG_PATH(GETOPT, getopt)
