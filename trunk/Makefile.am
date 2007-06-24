@@ -1,2 +1,2 @@
-SUBDIRS = core lib
+SUBDIRS = core
 

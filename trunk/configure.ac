@@ -86,9 +86,9 @@ AC_SUBST(EXTENSIONS)
 # final output
 
 AC_CONFIG_FILES(
-        Makefile core/Makefile lib/Makefile \
+        Makefile core/Makefile \
 \
-        core/dev lib/config.sh)
+        core/dev core/config.sh)
 AC_OUTPUT
 
 # Print results
