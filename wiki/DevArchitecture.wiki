@@ -1,0 +1,16 @@
+#summary General architecture of Dev
+
+= Projects and Tasks =
+
+Dev operates on two levels: project and task.  A project corresponds to a particular application or product under development, while a task represents some smaller unit of work on a project.  For example, say you are working on a patch to SWIG to add support for Erlang.  Then SWIG is the project, and the erlang patch is the task.  You may be working concurrently on other aspects of SWIG, and may also be working on other projects.
+
+A project will usually have the following associated with it:
+  * some scripts for compiling, running, testing, and so on
+  * shell and text editor configuration specific to the project
+
+= Extensions =
+
+By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
+ * new 'dev' subcommands
+ * new code-management functions
+ * new environment variables
