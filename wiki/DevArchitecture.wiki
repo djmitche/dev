@@ -21,5 +21,6 @@ Each active task is also represented by a directory, in this case a subdirectory
 
 By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
  * new 'dev' subcommands
- * new code-management functions
- * new environment variables
+ * new code-management functions (for use in TaskConfiguration)
+ * new utility functions (for use in subcommands)
+ * new configuration variables
