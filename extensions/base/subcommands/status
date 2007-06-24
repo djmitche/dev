@@ -20,10 +20,8 @@ shift $((OPTIND - 1))
 # make sure we have a task to load
 [ $# = 0 ] || usage
 
-if wip_is_loaded
-then
-  echo "Current task: '"`loaded_task`"'"
-  call_taskrc task_status
-else
-  echo "No task loaded"
+if test -z "$DEV_TASK_DIR"; then
+  die "No task loaded"
 fi
+
+task_status

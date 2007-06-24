@@ -21,6 +21,8 @@ shift $((OPTIND - 1))
 # make sure we have a task to load
 [ $# = 0 ] && usage
 
+die TODO
+
 # get the full path of the task
 task="$1"
 sanity_check_task "$task"

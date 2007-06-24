@@ -35,6 +35,8 @@ DIRT +=		$(patsubst %.in,%,$(wildcard compat/*.in))
 DIRT +=		bin/dev
 
 BIN += bin/dev
+LIB += lib/dev/dev_functions.sh
+LIB += lib/dev/subcommand_functions.sh
 LIB += lib/dev/functions.sh
 LIB += lib/dev/defaults.sh
 LIB += lib/dev/paths.sh
@@ -64,18 +66,15 @@ $(PACKAGE)-$(ISODATE).tar.bz2 : configure
 	$(RM) -f $(PACKAGE)-$(ISODATE)
 	@echo "File $@ created."
 
-bin/dev : bin/dev.in
-	$(SED) -e "s#@''libdir@#@libdir@#g" < bin/dev.in > $@
-
-lib/dev/defaults.sh: lib/dev/defaults.sh.in extensions/*/defaults.sh
-	cp lib/dev/defaults.sh.in $@
+lib/dev/defaults.sh: extensions/*/defaults.sh
+	cp lib/dev/defaults.sh.src $@
 	for ext in $(EXTENSIONS); do \
 		file=extensions/$$ext/defaults.sh; \
 		[ -f $$file ] && cat $$file >> $@; \
 	done; true
 
-lib/dev/task_functions.sh: lib/dev/task_functions.sh.in 
-	cp lib/dev/task_functions.sh.in $@
+lib/dev/task_functions.sh:
+	:> $@
 	for ext in $(EXTENSIONS); do \
 		file=extensions/$$ext/task_functions.sh; \
 		[ -f $$file ] && cat $$file >> $@; \
