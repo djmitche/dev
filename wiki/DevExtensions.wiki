@@ -1,4 +1,5 @@
 #summary General description of extensions, and links to specific extensions.
+#labels Featured
 = Overview =
 Extensions provide actual functionality within the DevFramework.  The BaseExtension provides subcommands to manipulate projects and tasks, while other extensions provide additional functionality related to specific applications or services.
 
