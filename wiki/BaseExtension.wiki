@@ -1,0 +1,13 @@
+﻿The __base__ extension implements the basic functionality of managing projects and tasks.
+
+= Commands =
+This extension implements the following commands:
+  * clone  
+  * delete  
+  * edit  
+  * load  
+  * new  
+  * status  
+  * tasks  
+  * unload
+See the online help for each function for details.

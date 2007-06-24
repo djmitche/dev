@@ -1,4 +1,4 @@
-#summary General architecture of Dev
+﻿#summary General architecture of Dev
 #labels Featured
 
 = Projects and Tasks =
@@ -12,8 +12,10 @@ A project will usually have the following associated with it:
 == Project Directory ==
 Dev assumes that you have a single parent directory for each project, containing various subdirectories.  The default settings assume that a subdirectory named {{{dev}}} is available for Dev-related files, but this can be overridden if necessary by configuration in {{{.devrc}}}.  See ProjectDirectory for more details.
 
-== Task Directory ==
-Each active task is also represented by a directory, in this case a subdirectory of the project directory.  The task directory contains any and all source code needed for development, as well as any temporary or working directories for compilation or test runs.  See TaskDirectory for more details.
+== Tasks ==
+A task is described by a configuration file, and may have other associated configuration information.  This information is used to manipulate the task directory for the task.   See TaskConfiguration for more details.
+
+Each active task is also represented by a directory, in this case a subdirectory of the project directory.  The task directory contains any and all source code needed for development, as well as any temporary or working directories for compilation or test runs.  Note that it is possible to have more than one task directory for a given task.  See TaskDirectory for more details.
 
 = Extensions =
 
