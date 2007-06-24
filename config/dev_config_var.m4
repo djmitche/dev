@@ -5,9 +5,11 @@ dnl
 dnl DESCRIPTION
 dnl
 dnl     Add VARNAME to the list of variables that will be defined in 
-dnl     ${datarootdir}/dev/framework/config.sh
+dnl     ${datarootdir}/dev/framework/config.sh. This implies that the
+dnl     variable is AC_SUBST'd, too.
 AC_DEFUN([DEV_CONFIG_VAR], [
     AC_REQUIRE([DEV_CONFIG_VAR_OUTPUT])
+    AC_SUBST($1)
     DEV_CONFIG_VARS="$DEV_CONFIG_VARS $1"
 ])
 

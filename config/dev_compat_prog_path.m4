@@ -67,6 +67,5 @@ AC_DEFUN([DEV_COMPAT_PROG_PATH],[
       INTERNAL_$1=1
     ])
   fi
-  AC_SUBST($1)
   DEV_CONFIG_VAR($1)
 ])
