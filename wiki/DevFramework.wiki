@@ -1,0 +1,17 @@
+#summary Description of the Dev framework, apart from extensions
+
+= 'dev' command =
+The central interface to Dev is through the 'dev' command and its subcommands.  The following subsections describe the environment that 'dev' sets up for its subcommands.
+
+== .devrc ==
+The file {{{.devrc}}} serves two purposes:  It marks the top-level directory for a project, and contains the Dev configuration for that project.  It is __sourced__ as a shell script, so it should follow shell-programming conventions for quoting, etc.
+
+The configuration file can set the following variables:
+  * {{{DEV_SUBCOMMANDS_PATH}}}: a colon-separated list of directories containing Dev subcommands.  The default value is {{{$DEV_PROJECT_DIR/dev_subcmds}}}.
+
+Any other variables set in {{{.devrc}}} will be available to subcommands, and can provide configuration for them.  For example, many extensions are configured with variables set in {{{.devrc}}}.
+
+== Variables ==
+The 'dev' command sets the following variables. All of these variables are exported, and thus available to any other programs started from a subcommand.
+  * {{{DEV_PROJECT_DIR}}}: the top-level directory of the current project, discovered by searching outward from the current directory for a directory containing {{{.devrc}}}.
+  * 
