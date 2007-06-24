@@ -1,7 +1,4 @@
 # Paths derived from the autoconf process
-export CP=@CP@
-export MV=@MV@
-export RM=@RM@
 export CAT=@CAT@
 export GREP=@GREP@
 export COLUMN=@COLUMN@
@@ -12,7 +9,6 @@ export FIND=@FIND@
 export DATE=@DATE@
 export SORT=@SORT@
 export SED=@SED@
-export LN=@LN@
 export MKDIR=@MKDIR@
 export CVS=@CVS@
 export SVN=@SVN@

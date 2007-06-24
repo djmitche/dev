@@ -16,11 +16,7 @@ localedir :=	$(datadir)/locale
 etcdir :=	$(subst /usr/etc,/etc,$(prefix)/etc)
 
 INSTALL :=	@INSTALL@
-CP :=		@CP@
-MV :=		@MV@
-RM :=		@RM@
 SED :=		@SED@
-LN :=		@LN@
 TAR :=		@TAR@
 DATE :=		@DATE@
 BASH :=		@BASH@
@@ -43,13 +39,12 @@ LIB += lib/dev/functions.sh
 LIB += lib/dev/defaults.sh
 LIB += lib/dev/paths.sh
 LIB += lib/dev/task_functions.sh
-COMMANDS += $(wildcard commands/*)
 
 ISODATE :=	$(shell $(DATE) +%Y-%m-%d)
 
 #-----------------------------------------------------------------------
 
-all : configure compat $(BIN) $(LIB) $(COMMANDS)
+all : configure compat $(BIN) $(LIB)
 
 dist : clean $(PACKAGE)-$(VERSION).tar.gz
 
@@ -131,10 +126,10 @@ install-lib :: $(LIB)
 	$(INSTALL) -m 755 $(LIB) $(BUILD_ROOT)$(libdir)/dev
 
 install-commands ::
-	$(INSTALL) -d $(BUILD_ROOT)$(libdir)/dev/commands
+	$(INSTALL) -d $(BUILD_ROOT)$(libdir)/dev/subcommands
 	for ext in $(EXTENSIONS); do \
-	  cmds_dir=extensions/$$ext/commands; \
-		[ -d $$cmds_dir ] && $(INSTALL) -m 755 $$cmds_dir/* $(BUILD_ROOT)$(libdir)/dev/commands; \
+	  cmds_dir=extensions/$$ext/subcommands; \
+		[ -d $$cmds_dir ] && $(INSTALL) -m 755 $$cmds_dir/* $(BUILD_ROOT)$(libdir)/dev/subcommands; \
 	done; true
 
 install-compat: install-compat1 $(COMPAT_SYMLINKS:%=install-compat-symlink-%)
