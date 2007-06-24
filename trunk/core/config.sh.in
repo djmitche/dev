@@ -1,17 +1,1 @@
-# Paths derived from the autoconf process
-export GREP=@GREP@
-export COLUMN=@COLUMN@
-export GETOPT=@GETOPT@
-export MKTEMP=@MKTEMP@
-export TAR=@TAR@
-export FIND=@FIND@
-export DATE=@DATE@
-export SORT=@SORT@
-export SED=@SED@
-export MKDIR=@MKDIR@
-export CVS=@CVS@
-export SVN=@SVN@
-export DIRNAME=@DIRNAME@
-export BASENAME=@BASENAME@
-export QUILT=@QUILT@
-export WC=@WC@
+# this file is overwritten; see config/dev_config_var.m4

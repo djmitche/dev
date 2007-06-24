@@ -82,13 +82,14 @@ if $ENABLE_SVN; then EXTENSIONS="$EXTENSIONS svn"; fi
 if $ENABLE_QUILT; then EXTENSIONS="$EXTENSIONS quilt"; fi
 
 AC_SUBST(EXTENSIONS)
+DEV_CONFIG_VAR(EXTENSIONS)
 
 # final output
 
-AC_CONFIG_FILES(
+AC_CONFIG_FILES([
         Makefile core/Makefile \
-\
-        core/dev core/config.sh)
+        core/dev
+])
 AC_OUTPUT
 
 # Print results

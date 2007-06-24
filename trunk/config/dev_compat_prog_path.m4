@@ -1,8 +1,15 @@
-dnl (lifted from quilt by Dustin)
-dnl Allow configure to specify a specific binary
-dnl 1: Environment variable
-dnl 2: binary name
-dnl 3: optional list of alternatives
+dnl SYNOPSIS
+dnl
+dnl     DEV_COMPAT_PROG_PATH(VARIABLE, PROG, ALTERNATES)
+dnl     (lifted from quilt and modified by Dustin)
+dnl
+dnl OVERVIEW
+dnl
+dnl     Allow configure to specify a specific binary
+dnl
+dnl     The result is placed in $VARIABLE, which is AC_SUBST'd and
+dnl     DEV_CONFIG_VAR'd.
+dnl
 AC_DEFUN([DEV_COMPAT_PROG_PATH],[
   m4_define([internal_$2_cmd],[esyscmd(ls compat/$2.in 2>/dev/null)])
 
@@ -61,4 +68,5 @@ AC_DEFUN([DEV_COMPAT_PROG_PATH],[
     ])
   fi
   AC_SUBST($1)
+  DEV_CONFIG_VAR($1)
 ])
