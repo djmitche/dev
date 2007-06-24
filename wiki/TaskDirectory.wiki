@@ -1,28 +1,26 @@
-#summary Description of the task directory
+﻿#summary Description of the task directory
 
 The task directory is the top-level directory containing all of the files related to the current task.
 
-It is available to subcommands in {{{$DEV_TASK_DIR}}}.  If no task can be found (perhaps because one is not loaded), then this variable is set to the empty string.
+Its location is available to subcommands in {{{$DEV_TASK_DIR}}}.  If no task can be found (perhaps because one is not loaded), then this variable is set to the empty string.
 
 = Finding the Task Directory =
-Dev finds the task directory through the following process:
-  * If {{{$DEV_TASK_DIR}}} is already set, Dev uses it as-is.
-  * If {{{$DEV_TASK_DIR_ID}}} is set, then Dev searches outward from the current directory until it finds a file or directory matching that name.  Directory separators are allowed in this variable.  Examples: 
-{{{
-DEV_TASK_DIR_ID="ChangeLog"
-DEV_TASK_DIR_ID="src/configure.ac"
-}}}
-  * If {{{$DEV_TASK_DIR_ID}}} is not set, then Dev searches outward from the current directory until it reaches an immediate subdirectory of the ProjectDirectory.
+Dev finds the task directory by searching outward from the current directory until it reaches a directory containing a file named {{{.task}}}.
 
 = Contents of the Task Directory =
-The contents of the task directory are up to the user.  Two layouts are common: an immediate checkout of the source:
+A task directory must contain {{{.task}}}, which gives the name of the task associated with this task directory.
+
+Beyond this, the contents of the task directory are up to the user.  Two layouts are common.  The first is an immediate checkout of the source:
 {{{
+$DEV_TASK_DIR/.task
 $DEV_TASK_DIR/Makefile
 $DEV_TASK_DIR/main.c
 ...
 }}}
-or a checkout into a subdirectory:
+
+The second layout contains the source in a subdirectory:
 {{{
+$DEV_TASK_DIR/.task
 $DEV_TASK_DIR/src/Makefile
 $DEV_TASK_DIR/src/main.c
 $DEV_TASK_DIR/test/test-results.txt
@@ -30,4 +28,4 @@ $DEV_TASK_DIR/prefix/bin/myprog
 $DEV_TASK_DIR/prefix/lib/myprog.a
 ...
 }}}
-The latter layout is most useful when coupled with project-specific subcommands that need extra task-specific directories to do their work.
+This layout is most useful when coupled with project-specific subcommands that need extra task-specific directories to do their work.

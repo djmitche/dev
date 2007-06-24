@@ -1,11 +1,11 @@
 ﻿A task must minimally specify the steps required to create, examine, and destroy a TaskDirectory.
 
-Note that this configuration is not processed by the DevFramework, but by the BaseExtension.
+Note that this configuration is processed by the DevFramework, but managed by the BaseExtension.
 
 = Configuration Format =
 The configuration for each task is stored in a directory under {{{$DEV_TASKS_DIR}}} named after the task, e.g., {{{$DEV_TASKS_DIR/erlang-patch}}}.  That directory minimally contains {{{taskrc}}}, which is a shell script used as the main configuration file.
 
-{{{taskrc}}} specifies the extensions required by the task, supplies any configuration for those extensions, and defines functions to drive creation, examination, and destruction of a TaskDirectory.  The file may be sourced at any time, so it should not make any changes when it is merely sourced.
+{{{taskrc}}} specifies the extensions required by the task, supplies any additional Dev configuration beyond that from the project, and defines functions to drive creation, examination, and destruction of a TaskDirectory.  The file may be sourced at any time, so it should not make any changes when it is merely sourced.
 
 == Requirements ==
 Required modules are specified with the {{{require}}} function:
@@ -18,6 +18,7 @@ require quilt
 Configuration can be supplied in the form of variables.  Such variables can also be defined in the ProjectDirectory's {{{.devrc}}} if they are global to the project:
 {{{
 QUILT_PATCH_DIR="$DEV_PROJECT_DIR/patches"
+DEV_SUBCOMMANDS_PATH="$DEV_SUBCOMMANDS_PATH:$DEV_TASK_DIR/subcommands"
 }}}
 
 == Driver Functions ==
@@ -43,3 +44,6 @@ task_unload() {
 	svn_unload $DEV_TASK_DIR/src || return 1
 }
 }}}
+
+= Finding the Task Configuration =
+Given a TaskDirectory, Dev determines the name of the associated task by reading {{{.task}}} in the root of the TaskDirectory.  This file contains a single word, the name of the task.

@@ -1,5 +1,7 @@
 ﻿The __base__ extension implements the basic functionality of managing projects and tasks.
 
+This extension blurs the abstraction between extensions and the DevFramework a little bit, since it manages the internals of tasks.
+
 = Commands =
 This extension implements the following commands:
   * clone  
