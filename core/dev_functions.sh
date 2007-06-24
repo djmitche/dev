@@ -113,6 +113,24 @@ EOF
   exit 1
 }
 
+# Source the current project's configuration
+#
+# Input:
+#  - $DEV_PROJECT_DIR
+# Side-effects:
+#  - project-specific configuration is loaded
+#  - error message to stderr on error
+# Output:
+#  - return status of 1 if the sourcing failed
+source_project_configuration() {
+    if test -z "$DEV_PROJECT_DIR"; then 
+        echo "No project defined!" >&2
+        return 1
+    fi
+
+    source "$DEV_PROJECT_DIR/.devrc" || return 1
+}
+
 # Source the current task, if $DEV_TASK_DIR is defined.
 #
 # Input:

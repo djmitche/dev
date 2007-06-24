@@ -3,34 +3,30 @@
 # prefix-related directories and other stuff from configuration
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-libdir=@libdir@
+coredatadir=@datarootdir@/dev/core
 export DEV_VERSION=@PACKAGE_VERSION@
 
+## Initialization
+
 # source our utiity function libraries
-source $libdir/dev/dev_functions.sh
+source $coredatadir/dev_functions.sh
 
-# get all of the paths discovered by configure
-source $libdir/dev/paths.sh
+# get information derived from configure
+source $coredatadir/config.sh
 
-# get the defaults for all of the configuration variables
-source $libdir/dev/defaults.sh
+# get the defaults for the core and all modules
+source $coredatadir/defaults.sh
 
-# XXX hack until build system is rebuilt
-source $libdir/dev/task_functions.sh
+## Project, task setup
 
-# get DEV_PROJECT_DIR
 set_project_dir || exit 1
-
-# source the project configuration
-source "$DEV_PROJECT_DIR/.devrc" || exit 1
-
-# get DEV_TASK_DIR
 set_task_dir || exit 1
 
-# source the task configuration, if possible
+source_project_configuration || exit 1
 source_task_configuration || exit 1
 
-# parse any options to 'dev' itself
+## Options parsing
+
 while test ! -z "$1"
 do
   case "$1" in
@@ -44,6 +40,8 @@ done
 # if no subcommand was given, give usage message
 test $# = 0 && usage
 
+## Launching subcommand
+
 # figure out the path of the subcommand
 subcommand="$1"
 shift
@@ -51,7 +49,7 @@ cmd_path="`find_subcommand $subcommand`"
 test "$cmd_path" = "" && usage 
 
 # source subcommands' utility functions
-source $libdir/dev/subcommand_functions.sh
+source $coredatadir/subcommand_functions.sh
 
 # finally, execute the subcommand
 . $cmd_path
