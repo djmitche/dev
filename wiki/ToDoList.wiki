@@ -1,0 +1,25 @@
+#summary Development Notes
+
+{{{
+ - 'dev setup' command (interactive)
+ - calculate DEV_PROJECT automatically for current dir
+ - integrate with / subsume into / support 
+   - git/stgit
+   - bazaar/bzr
+
+Configure
+---------
+ - check for BASH, not sh, etc.  But don't require GNU bash.
+
+New Stuff
+---------
+ dev chlog
+ dev mkpatch 
+
+Bugs
+----
+ - make clean doesn't work?
+ - general cleanup 
+   - where does source_task get called? 
+   - when do functions get sourced?
+}}}
