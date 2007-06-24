@@ -1,13 +1,17 @@
 ﻿#summary Development Notes
 
-= General =
-  * 'dev setup' command (interactive)
+= Immediate =
+  * rewrite 'svn' module, etc. to be compliant with docs
+  * implicit 'require' of base extension
+  * 'require' moral equivalent in subcommands
 
 = Configure =
   * use automake; completely rewrite build process around extensions
+    * defaults should get sourced, not cat'd together
   * check for BASH, not sh, etc.  But don't require GNU bash.
 
 = New Stuff =
+  * 'dev setup' command (interactive)
   * dev chlog
   * dev mkpatch 
   * integrate with / subsume into / support 
