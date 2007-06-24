@@ -1,4 +1,5 @@
 #summary General architecture of Dev
+#labels Featured
 
 = Projects and Tasks =
 
