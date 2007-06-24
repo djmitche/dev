@@ -3,19 +3,19 @@
 # prefix-related directories and other stuff from configuration
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-coredatadir=@datarootdir@/dev/core
+frameworkdatadir=@datarootdir@/dev/framework
 export DEV_VERSION=@PACKAGE_VERSION@
 
 ## Initialization
 
 # source our utiity function libraries
-source $coredatadir/dev_functions.sh
+source $frameworkdatadir/dev_functions.sh
 
 # get information derived from configure
-source $coredatadir/config.sh
+source $frameworkdatadir/config.sh
 
-# get the defaults for the core and all modules
-source $coredatadir/defaults.sh
+# get the defaults for the framework and all modules
+source $frameworkdatadir/defaults.sh
 
 ## Project, task setup
 
@@ -49,7 +49,7 @@ cmd_path="`find_subcommand $subcommand`"
 test "$cmd_path" = "" && usage 
 
 # source subcommands' utility functions
-source $coredatadir/subcommand_functions.sh
+source $frameworkdatadir/subcommand_functions.sh
 
 # finally, execute the subcommand
 . $cmd_path
