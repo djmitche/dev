@@ -1,0 +1,15 @@
+#summary Description of the project directory
+
+The project directory is the top-level directory containing everything relating to a project.
+
+= Finding the Project Directory =
+Dev finds the project directory by searching outward from the current directory until it finds a directory containing {{{.devrc}}}.  The project directory is available to subcommands in {{{$DEV_PROJECT_DIR}}}.
+
+= Contents of the Project Directory =
+Besides containing {{{.devrc}}}, the layout of a project directory is up to the user.  Any active tasks must be subdirectories of the project directory, so it does not directly contain any source code.  Common subdirectories of the project directory are:
+  * {{{dev/}}}: Dev-related files
+  * {{{bin/}}}: project-specific binaries
+  * {{{svn/}}}: a full checkout of the project, useful for performing merges, etc.
+  * {{{patches/}}}: patches for the project
+  * {{{download/}}}: downloads associated with the project
+  * {{{tasks/}}}: collection of active tasks
