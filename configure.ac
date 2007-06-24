@@ -87,8 +87,8 @@ DEV_CONFIG_VAR(EXTENSIONS)
 # final output
 
 AC_CONFIG_FILES([
-        Makefile core/Makefile \
-        core/dev
+        Makefile framework/Makefile \
+        framework/dev
 ])
 AC_OUTPUT
 

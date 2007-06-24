@@ -1,2 +1,2 @@
-SUBDIRS = core
+SUBDIRS = framework
 
