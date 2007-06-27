@@ -3,7 +3,7 @@
 require base
 
 usage() {
-  echo "Load a task into the work-in-progress (WIP) directory"
+  echo "Display the status of the current task."
   echo ""
   echo "dev status [-h]"
   echo ""

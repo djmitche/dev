@@ -3,10 +3,11 @@
 require base
 
 usage() {
-  echo "Load a task into the work-in-progress (WIP) directory"
+  echo "Load a task"
   echo ""
-  echo "dev load [-h] {task}"
+  echo "dev load [-h] {task} {where}"
   echo "  {task} the task to load"
+  echo "  {where} the new task directory (must not exist)"
   echo ""
   echo "  -h: this message"
   exit 1
@@ -20,33 +21,30 @@ do
 done
 shift $((OPTIND - 1))
 
-# make sure we have a task to load
-[ $# = 0 ] && usage
+# make sure we have all of the relevant parameters
+test $# -lt 2 && usage
 
-die TODO
+# check that this path is not inside a task already
+# TODO
 
-# get the full path of the task
+# get parameters
 task="$1"
 sanity_check_task "$task"
-task_path=`task_path "$task"`
 
-[ -e $task_path -a -d $task_path ] || die "'$task_path' does not exist"
-
-# unload first if necessary
-if wip_is_loaded
-then
-  if [ `loaded_task` = "$task" ]
-  then
-    die "$task is already loaded"
-  else
-    die "WIP already has task '"`loaded_task`"' loaded; unload it (with 'dev unload') first."
-  fi
+task_path="$2"
+if test -e "$task_path"; then
+    die "'$task_path' already exists"
 fi
 
 # link in the task
-$MKDIR $DEV_WIP_DIR $DEV_STATUS_DIR
-$LN -s $task_path $DEV_STATUS_DIR/task
-echo "$task" > $DEV_STATUS_DIR/taskname
+$MKDIR -p "$task_path" || exit 1
+echo "$task" > "$task_path/.task" || exit 1
+
+# source the new taskrc
+# XXX this breaks some abstraction barriers -- is that OK?
+cd "$task_path"
+set_task_dir || exit 1
+source_task_configuration || die "Could not source configuration for '$task'"
 
 # and ask it to set itself up
-call_taskrc task_load || $RM -rf $DEV_WIP_DIR $DEV_STATUS_DIR
+task_load || $RM -rf $task_path

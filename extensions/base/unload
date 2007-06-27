@@ -29,7 +29,9 @@ shift $((OPTIND - 1))
 if test -z "$DEV_TASK_DIR"; then
   die "No task loaded"
 fi
-if task_unload; then
+
+cd "$DEV_TASK_DIR"
+if ! task_unload; then
   if $really_force; then
     echo "UNLOADING ANYWAY"
   else
@@ -40,6 +42,11 @@ fi
 if ! $force; then
   warning_countdown 'Removing existing working directory'
 fi
+
+cd ..
 rm -rf "$DEV_TASK_DIR" || exit 1
+
+echo "Your current directory is gone.  Please"
+echo "cd" `pwd`
 
 exit 0
