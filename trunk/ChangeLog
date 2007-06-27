@@ -1,2 +1,4 @@
 2007-06-27  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* fix 'load' and 'unload' to work on arbitrary directories
+	* framework/dev.in: source defaults *after* project and task have
+	  been discovered

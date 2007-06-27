@@ -15,13 +15,14 @@ source $frameworklibdir/require.sh
 # get information derived from configure
 source $frameworklibdir/config.sh
 
-# get the defaults for the framework and all modules
-source $frameworklibdir/defaults.sh
-
 ## Project, task setup
 
 set_project_dir || exit 1
 set_task_dir || exit 1
+
+# get the defaults for the framework and all modules
+# (do this now, after the project and task dirs are set up)
+source $frameworklibdir/defaults.sh
 
 source_project_configuration || exit 1
 source_task_configuration || exit 1
