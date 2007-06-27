@@ -1,16 +1,19 @@
 dnl SYNOPSIS
 dnl
-dnl     DEV_COMPAT_PROG_PATH(VARIABLE, PROG, ALTERNATES)
+dnl     DEV_COMPAT_PROG_PATH(VARIABLE, PROG, [ALTERNATES], [EXTRA_PATHS])
 dnl     (lifted from quilt and modified by Dustin)
 dnl
 dnl OVERVIEW
 dnl
-dnl     Allow configure to specify a specific binary
+dnl     Allow configure to specify a specific binary.  ALTERNATES are
+dnl     alternate programs that will fit the bill.  EXTRA_PATHS is
+dnl     a colon-separated list of additional directories to search.
 dnl
 dnl     The result is placed in $VARIABLE, which is AC_SUBST'd and
 dnl     DEV_CONFIG_VAR'd.
 dnl
 AC_DEFUN([DEV_COMPAT_PROG_PATH],[
+  AC_REQUIRE([DEV_COMPAT_PROG_INIT])
   m4_define([internal_$2_cmd],[esyscmd(ls compat/$2.in 2>/dev/null)])
 
   AC_ARG_WITH($2, AC_HELP_STRING(
@@ -18,54 +21,44 @@ AC_DEFUN([DEV_COMPAT_PROG_PATH],[
                  m4_if(internal_$2_cmd,[],[],[ (use --without-$2
                           to use an internal mechanism)])),
   [
-    if test x"$withval" = xnone; then
-      AC_MSG_ERROR([Invalid configure argument.  use --without-$2])
-    fi
-    AC_MSG_CHECKING(for $2)
-    if test x"$withval" != xno; then
-      $1="$withval"
-      if test -e "$$1"; then
-	if test ! -f "$$1" -a ! -h "$$1" || test ! -x "$$1"; then
-	  AC_MSG_ERROR([$$1 is not an executable file])
-	fi
-      fi
-      AC_MSG_RESULT([$$1])
-      if test ! -e "$$1"; then
-        AC_MSG_WARN([$$1 does not exist])
-      fi
-      COMPAT_SYMLINKS="$COMPAT_SYMLINKS $2"
-    fi
+    : # $withval already set
   ],[
-    m4_if([$3],[],[
-      AC_PATH_PROG($1,$2,,$PATH:$4)
-    ],[
-      AC_PATH_PROGS($1,$3,,$PATH:$4)
-      if test `expr "$$1" : '.*/\([[^/]]*\)$'` != "$2"; then
-	COMPAT_SYMLINKS="$COMPAT_SYMLINKS $2"
-      fi
-    ])
-    m4_if([$4],[],[],[
-      if test -n "$$1"; then
-	as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-        for dir in "$4"; do
-          if test "`dirname $$1`" = "$dir"; then
-            COMPAT_SYMLINKS="$COMPAT_SYMLINKS $2"
-	    break
-	  fi
-        done
-	IFS="$as_save_IFS"
-      fi
-    ])
+    withval="yes"
   ])
-  if test -z "$$1"; then
-    m4_if(internal_$2_cmd,[],[
-      AC_MSG_ERROR([Please specify the location of $2 with the option '--with-$2'])
-    ],[
-      AC_MSG_WARN([Using internal $2 mechanism.  Use option '--with-$2' to override])
-      COMPAT_PROGRAMS="$COMPAT_PROGRAMS $2"
-      $1=$2
-      INTERNAL_$1=1
-    ])
-  fi
+
+  case "$withval" in
+    no)
+      m4_if(internal_$2_cmd,[],[], [
+        $1="@INTERNAL@"
+      ])
+      ;;
+    yes)
+      AC_PATH_PROGS($1,$2 $3,,$PATH:$4)
+      m4_if(internal_$2_cmd,[],[], [
+        if test -z "$$1"; then
+          $1="@INTERNAL@"
+        fi
+      ])
+      ;;
+    *)
+      AC_MSG_CHECKING(for $2)
+      $1="$withval"
+      AC_MSG_RESULT([given: $withval])
+      ;;
+  esac
+
+  m4_if(internal_$2_cmd,[],[], [
+    if test x"$$1" = x"@INTERNAL@"; then
+      COMPAT_PROGRAMS="$2 $COMPAT_PROGRAMS"
+      $1="$libexecdir/dev/compat/$2"
+      AC_CONFIG_FILES([compat/$2])
+      AC_MSG_WARN([  (will use internal implementation of $2)])
+    fi
+  ])
+
   DEV_CONFIG_VAR($1)
+])
+
+AC_DEFUN([DEV_COMPAT_PROG_INIT],[
+  AC_SUBST(COMPAT_PROGRAMS)
 ])

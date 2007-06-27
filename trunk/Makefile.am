@@ -1,2 +1,1 @@
-SUBDIRS = framework
-
+SUBDIRS = framework compat

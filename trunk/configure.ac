@@ -26,9 +26,7 @@ unset BASH  # bash sets this itself!
 DEV_COMPAT_PROG_PATH(BASH, bash)
 DEV_COMPAT_PROG_PATH(GREP, grep)
 DEV_COMPAT_PROG_PATH(COLUMN, column)
-DEV_COMPAT_PROG_PATH(GETOPT, getopt)
 DEV_COMPAT_PROG_PATH(MKTEMP, mktemp)
-DEV_COMPAT_PROG_PATH(TAR, tar)
 DEV_COMPAT_PROG_PATH(FIND, find)
 DEV_COMPAT_PROG_PATH(DATE, date)
 DEV_COMPAT_PROG_PATH(SORT, sort)
@@ -54,10 +52,6 @@ then
   DEV_COMPAT_PROG_PATH(QUILT, quilt)
 fi
 
-# substiatute necessary compat flags
-
-AC_SUBST(COMPAT_SYMLINKS)
-AC_SUBST(COMPAT_PROGRAMS)
 
 # extensions
 
@@ -85,13 +79,15 @@ DEV_CONFIG_VAR(EXTENSIONS)
 
 # final output
 
-AC_CONFIG_FILES([
-        Makefile framework/Makefile \
-        framework/dev
-])
+AC_CONFIG_FILES([Makefile framework/Makefile compat/Makefile])
+AC_CONFIG_FILES([framework/dev])
+
 AC_OUTPUT
 
 # Print results
 AC_MSG_RESULT([$PACKAGE_NAME version $PACKAGE_VERSION configured.])
-AC_MSG_RESULT([    Installation Prefix: '$prefix'])
-AC_MSG_RESULT([             Extensions: '$EXTENSIONS'])
+AC_MSG_RESULT([      Installation Prefix: $prefix])
+AC_MSG_RESULT([               Extensions: $EXTENSIONS])
+if test -n "$COMPAT_PROGRAMS"; then
+  AC_MSG_RESULT([   Compatibility Programs: $COMPAT_PROGRAMS])
+fi
