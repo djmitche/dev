@@ -1,9 +1,8 @@
 # Process this file with autoconf to produce a configure script.
 # (Skeleton of this file lifted from quilt by Dustin)
-AC_INIT([dev], [0.1], [dustin@cs.uchicago.edu])
+AC_INIT([dev], [0.2-dev], [dustin@cs.uchicago.edu])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_SRCDIR(configure.ac)
-AC_REVISION ($Revision: 1.00 $)
 AM_INIT_AUTOMAKE
 
 PACKAGE_RELEASE=1
