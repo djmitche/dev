@@ -1,4 +1,8 @@
 2007-06-26    <dustin@cs.uchicago.edu>
+	* configure.in config/dev_compat_prog.m4: AC_SUBST variables that
+	  are DEV_CONFIG_VAR'd
+
+2007-06-26    <dustin@cs.uchicago.edu>
 	* compat/Makefile.am configure.ac config/dev_compat_prog_path.m4
 	  config/dev_config_var.m4 Makefile.am framework/Makefile.am: fix
 	  configuration/installation of compat programs
