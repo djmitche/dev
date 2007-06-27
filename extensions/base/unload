@@ -1,5 +1,7 @@
 #! /bin/bash
 
+require base
+
 usage() {
   echo "Unload the task currently in the wip directory"
   echo ""

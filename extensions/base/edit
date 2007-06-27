@@ -1,5 +1,7 @@
 #! /bin/bash
 
+require base
+
 usage() {
   echo "Edit the taskrc for a given task"
   echo ""

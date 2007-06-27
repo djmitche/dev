@@ -80,7 +80,7 @@ AC_SUBST(EXTENSIONS)
 
 # final output
 
-AC_CONFIG_FILES([Makefile framework/Makefile compat/Makefile])
+AC_CONFIG_FILES([Makefile framework/Makefile compat/Makefile extensions/Makefile extensions/base/Makefile extensions/cvs/Makefile extensions/svn/Makefile extensions/quilt/Makefile])
 AC_CONFIG_FILES([framework/dev])
 
 AC_OUTPUT

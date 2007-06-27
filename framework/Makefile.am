@@ -1,7 +1,7 @@
 bin_SCRIPTS = dev
 
-frameworkdatadir = $(datadir)/dev/framework
-dist_frameworkdata_SCRIPTS = dev_functions.sh subcommand_functions.sh defaults.sh
-nodist_frameworkdata_SCRIPTS = config.sh
+frameworklibdir = $(libexecdir)/dev/framework
+dist_frameworklib_SCRIPTS = dev_functions.sh subcommand_functions.sh require.sh defaults.sh
+nodist_frameworklib_SCRIPTS = config.sh
 
 DISTCLEANFILES = config.sh

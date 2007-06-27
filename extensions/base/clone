@@ -1,5 +1,7 @@
 #! /bin/bash
 
+require base
+
 usage() {
   echo "Clone an existing task"
   echo ""
