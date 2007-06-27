@@ -1,6 +1,7 @@
 ﻿#summary Development Notes
 
 = Immediate =
+  * support installing defaults, lib functions, and sourcing them
   * rewrite 'svn' module, etc. to be compliant with docs
   * implicit 'require' of base extension
   * 'require' moral equivalent in subcommands
@@ -11,6 +12,7 @@
   * check for BASH, not sh, etc.  But don't require GNU bash.
 
 = New Stuff =
+  * 'dev var DEV_PROJECT_DIR', etc.
   * 'dev setup' command (interactive)
   * dev chlog
   * dev mkpatch 
