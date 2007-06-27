@@ -1,10 +1,9 @@
 ﻿#summary Development Notes
 
 = Immediate =
-  * support installing defaults, lib functions, and sourcing them
+  * taskrc functions should be defined by subcommands, not globally
   * rewrite 'svn' module, etc. to be compliant with docs
-  * implicit 'require' of base extension
-  * 'require' moral equivalent in subcommands
+  * implicit 'require' of base extension (?)
 
 = Configure =
   * use automake; completely rewrite build process around extensions
