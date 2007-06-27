@@ -7,8 +7,11 @@ Extensions provide actual functionality within the DevFramework.  The BaseExtens
 An extension is represented in the source tree by a subdirectory of {{{extensions}}} named after the extension itself.  That subdirectory can optionally contain:
   * {{{defaults.sh}}}: default values for configuration variables
   * {{{functions.sh}}}: functions for use in TaskConfiguration or in subcommands
-  * {{{subcommands/}}}: directory containing new subcommands
+  * subcommands: new subcommands
   * {{{lib/}}}: arbitrary library files
+
+= Building =
+work in progress..
 
 = Loading =
 The components of extensions are loaded at different times.  {{{defaults.sh}}} is loaded before {{{.devrc}}} is loaded.  {{{functions.sh}}} is loaded when the extension is {{{require}}}d, whether from a subcommand, a {{{.taskrc}}}, or another extension.
