@@ -1,5 +1,7 @@
 #! /bin/bash
 
+require base
+
 usage() {
   echo "Load a task into the work-in-progress (WIP) directory"
   echo ""

@@ -3,19 +3,20 @@
 # prefix-related directories and other stuff from configuration
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-frameworkdatadir=@datarootdir@/dev/framework
+frameworklibdir=@libexecdir@/dev/framework
 export DEV_VERSION=@PACKAGE_VERSION@
 
 ## Initialization
 
 # source our utiity function libraries
-source $frameworkdatadir/dev_functions.sh
+source $frameworklibdir/dev_functions.sh
+source $frameworklibdir/require.sh
 
 # get information derived from configure
-source $frameworkdatadir/config.sh
+source $frameworklibdir/config.sh
 
 # get the defaults for the framework and all modules
-source $frameworkdatadir/defaults.sh
+source $frameworklibdir/defaults.sh
 
 ## Project, task setup
 
@@ -49,7 +50,7 @@ cmd_path="`find_subcommand $subcommand`"
 test "$cmd_path" = "" && usage 
 
 # source subcommands' utility functions
-source $frameworkdatadir/subcommand_functions.sh
+source $frameworklibdir/subcommand_functions.sh
 
 # finally, execute the subcommand
 . $cmd_path

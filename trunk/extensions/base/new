@@ -1,5 +1,7 @@
 #! /bin/bash
 
+require base
+
 usage() {
   echo "Create a new, blank task"
   echo ""

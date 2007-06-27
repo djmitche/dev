@@ -3,7 +3,7 @@
 # set up quilt, using the 'series' file in the task directory
 # use_quilt 
 use_quilt() {
-  ( cd $DEV_WIP_DIR
+  ( cd $DEV_TASK_DIR
     # quilt looks for 'patches' directory and for '.pc/series'
     # TODO this is a cheap way out:
     [ -e patches ] && die "Project already has a patches/ directory"
@@ -22,7 +22,7 @@ use_quilt() {
 # if a patch does not unapply
 # unload_quilt
 unload_quilt() {
-  ( cd $DEV_WIP_DIR
+  ( cd $DEV_TASK_DIR
     $QUILT pop -a
   )
   # quilt pop returns '2' if there are no patches to pop
@@ -31,7 +31,7 @@ unload_quilt() {
 }
 
 quilt_status() {
-  ( cd $DEV_WIP_DIR
+  ( cd $DEV_TASK_DIR
     $QUILT applied && echo ' -- working here -- ' && quilt unapplied
   )
 }

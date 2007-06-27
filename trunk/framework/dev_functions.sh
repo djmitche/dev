@@ -62,7 +62,7 @@ enumerate_subcommands() {
 
   local old_IFS="$IFS"
   IFS=':'
-  for dir in $DEV_SUBCOMMANDS_PATH:$libdir/dev/subcommands
+  for dir in $DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands
   do
     test -z "$dir" && continue
     for cmd in $dir/*
@@ -86,7 +86,7 @@ find_subcommand() {
   local subcommand=$1
   local old_IFS="$IFS"
   IFS=':'
-  for dir in $DEV_SUBCOMMANDS_PATH:$libdir/dev/subcommands
+  for dir in $DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands
   do
     if test -f $dir/$subcommand -a -x $dir/$subcommand
     then
@@ -158,10 +158,6 @@ source_task_configuration() {
         echo "No configuration for task '$TASK'!" >&2
         return 1
     fi
-
-    require() {
-        : # no-op for the moment
-    }
 
     if ! source "$TASK_CONFIG_DIR/taskrc"; then
         echo "error reading '$TASK_CONFIG_DIR/taskrc'" >&2
