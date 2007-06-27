@@ -16,6 +16,9 @@
   * dev chlog
   * dev mkpatch 
   * dev edit defaults to $DEV_TASK
+  * autoproject module
+    * dev configure
+    * dev make [install]
   * integrate with / subsume into / support 
     * git/stgit
     * bazaar/bzr
