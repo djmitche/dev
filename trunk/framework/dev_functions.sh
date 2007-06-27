@@ -147,20 +147,20 @@ source_project_configuration() {
 source_task_configuration() {
     if test -z "$DEV_TASK_DIR"; then return; fi
 
-    export TASK=`<"$DEV_TASK_DIR/.task"`
-    if test -z "$TASK"; then
+    export DEV_TASK=`<"$DEV_TASK_DIR/.task"`
+    if test -z "$DEV_TASK"; then
         echo ".task is empty!" >&2
         return 1
     fi
 
-    export TASK_CONFIG_DIR="$DEV_TASKS_DIR/$TASK"
-    if ! test -d "$TASK_CONFIG_DIR" || ! test -f "$TASK_CONFIG_DIR/taskrc"; then
-        echo "No configuration for task '$TASK'!" >&2
+    export DEV_TASK_CONFIG_DIR="$DEV_TASKS_DIR/$DEV_TASK"
+    if ! test -d "$DEV_TASK_CONFIG_DIR" || ! test -f "$DEV_TASK_CONFIG_DIR/taskrc"; then
+        echo "No configuration for task '$DEV_TASK'!" >&2
         return 1
     fi
 
-    if ! source "$TASK_CONFIG_DIR/taskrc"; then
-        echo "error reading '$TASK_CONFIG_DIR/taskrc'" >&2
+    if ! source "$DEV_TASK_CONFIG_DIR/taskrc"; then
+        echo "error reading '$DEV_TASK_CONFIG_DIR/taskrc'" >&2
         return 1
     fi
 }
