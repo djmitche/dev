@@ -14,6 +14,7 @@ unload_svn() {
   fi
 
   # otherwise just let it get blasted away
+  true
 }
 
 # svn_status [DIRECTORY]
