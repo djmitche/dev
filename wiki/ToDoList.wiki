@@ -15,6 +15,7 @@
   * 'dev setup' command (interactive)
   * dev chlog
   * dev mkpatch 
+  * dev edit defaults to $DEV_TASK
   * integrate with / subsume into / support 
     * git/stgit
     * bazaar/bzr
