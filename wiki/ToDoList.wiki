@@ -20,7 +20,5 @@
     * bazaar/bzr
 
 = Bugs =
-  * make clean doesn't work?
-  * general cleanup 
-    * where does source_task get called? 
-    * when do functions get sourced?
+  * rampant use of [
+  * rampant use of 'getopts'
