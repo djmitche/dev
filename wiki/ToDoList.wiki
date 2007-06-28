@@ -26,3 +26,4 @@
 = Bugs =
   * rampant use of [
   * rampant use of 'getopts'
+  * AC_PROG_LN_S, always "cd" to destination directory
