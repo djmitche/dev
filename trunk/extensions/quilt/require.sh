@@ -5,13 +5,16 @@
 use_quilt() {
   ( cd $DEV_TASK_DIR
     # quilt looks for 'patches' directory and for '.pc/series'
-    # TODO this is a cheap way out:
-    [ -e patches ] && die "Project already has a patches/ directory"
-    $LN -s $DEV_PATCH_DIR patches
 
+    test -e patches && die "Task already has a patches/ directory"
+    ln -s $DEV_PATCH_DIR patches
+
+    test -e .pc && die "Task already has a .pc/ directory"
     $MKDIR .pc
-    [ -e .dev/task/series ] || $TOUCH .dev/task/series
-    $LN -s ../.dev/task/series .pc/series
+
+    SERIES_FILE="${DEV_TASK_CONFIG_DIR}/series"
+    test -e "$SERIES_FILE" || touch "$SERIES_FILE"
+    ( cd .pc; ln -s "$SERIES_FILE" series ) || exit 1
 
     # 'upgrade' is the easiest way to create a new, 'empty' quilt setup
     $QUILT upgrade 2>&1 > /dev/null
@@ -26,12 +29,16 @@ unload_quilt() {
     $QUILT pop -a
   )
   # quilt pop returns '2' if there are no patches to pop
-  [ $? = "1" ] && die "Could not remove all patches"
+  test $? -eq 1 && die "Could not remove all patches"
+
   true # signal success
 }
 
 quilt_status() {
   ( cd $DEV_TASK_DIR
-    $QUILT applied && echo ' -- working here -- ' && quilt unapplied
+    echo "Applied patches:"
+    $QUILT applied | $SED -e "s/^/  /"
+    echo "Unapplied patches:"
+    $QUILT unapplied | $SED -e "s/^/  /"
   )
 }

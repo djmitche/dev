@@ -1,4 +1,6 @@
 2007-06-27  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/cvs/require.sh extensions/quilt/require.sh: misc
+	  bugfixes
 	* extensions/base/var extensions/base/Makefile.am: new
 	  subcommand to show interesting variables
 	* framework/dev_functions.sh: use $DEV_TASK vs. $TASK 
