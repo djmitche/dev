@@ -1,3 +1,6 @@
+2007-07-02  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/quilt/require.sh: support users setting QUILT_PATCHES
+
 2007-06-27  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/cvs/require.sh extensions/quilt/require.sh: misc
 	  bugfixes
