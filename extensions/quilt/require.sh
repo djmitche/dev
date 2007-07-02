@@ -1,13 +1,15 @@
 ## functions for interfacing with quilt
 
+export QUILT_PATCHES
+
 # set up quilt, using the 'series' file in the task directory
 # use_quilt 
 use_quilt() {
   ( cd $DEV_TASK_DIR
     # quilt looks for 'patches' directory and for '.pc/series'
 
-    test -e patches && die "Task already has a patches/ directory"
-    ln -s $DEV_PATCH_DIR patches
+    test -e "$QUILT_PATCHES" && die "Task already has a patches/ directory"
+    ln -s "$DEV_PATCH_DIR" "$QUILT_PATCHES"
 
     test -e .pc && die "Task already has a .pc/ directory"
     $MKDIR .pc
