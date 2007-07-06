@@ -61,8 +61,9 @@ enumerate_subcommands() {
   echo 'help' # (internal command)
 
   local old_IFS="$IFS"
+  local amended_path="$DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands"
   IFS=':'
-  for dir in $DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands
+  for dir in $amended_path
   do
     test -z "$dir" && continue
     for cmd in $dir/*
@@ -85,8 +86,9 @@ enumerate_subcommands() {
 find_subcommand() {
   local subcommand=$1
   local old_IFS="$IFS"
+  local amended_path="$DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands"
   IFS=':'
-  for dir in $DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands
+  for dir in $amended_path
   do
     if test -f $dir/$subcommand -a -x $dir/$subcommand
     then

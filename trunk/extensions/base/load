@@ -47,4 +47,4 @@ set_task_dir || exit 1
 source_task_configuration || die "Could not source configuration for '$task'"
 
 # and ask it to set itself up
-task_load || $RM -rf $task_path
+task_load || rm -rf $task_path
