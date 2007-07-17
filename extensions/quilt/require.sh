@@ -8,8 +8,8 @@ use_quilt() {
   ( cd $DEV_TASK_DIR
     # quilt looks for 'patches' directory and for '.pc/series'
 
-    test -e "$QUILT_PATCHES" && die "Task already has a patches/ directory"
-    ln -s "$DEV_PATCH_DIR" "$QUILT_PATCHES"
+    test -e "${QUILT_PATCHES-patches}" && die "Task already has a patches/ directory"
+    ln -s "$DEV_PATCH_DIR" "${QUILT_PATCHES-patches}"
 
     test -e .pc && die "Task already has a .pc/ directory"
     $MKDIR .pc
