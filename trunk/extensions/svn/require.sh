@@ -24,7 +24,8 @@ svn_checkout() {
     fi
     trap - INT QUIT
 
-    cp -Rf "$cache_dir" "$dir" || die "Could not copy checkout from cache"
+    # use 'tar' to copy .. it's better behaved than 'cp'
+    ( cd "$cache_dir" && tar -cf - . ) | ( cd "$dir" && tar -xf - )
   fi
 }
 
