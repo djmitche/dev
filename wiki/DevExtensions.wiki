@@ -6,7 +6,7 @@ Extensions provide actual functionality within the DevFramework.  The BaseExtens
 = Structure =
 An extension is represented in the source tree by a subdirectory of {{{extensions}}} named after the extension itself.  That subdirectory can optionally contain:
   * {{{defaults.sh}}}: default values for configuration variables
-  * {{{functions.sh}}}: functions for use in TaskConfiguration or in subcommands
+  * {{{require.sh}}}: functions for use in TaskConfiguration or in subcommands
   * subcommands: new subcommands
   * {{{lib/}}}: arbitrary library files
 
