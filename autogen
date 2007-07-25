@@ -1,3 +1,5 @@
+#! /bin/sh
+
 aclocal -I config || exit 1
 automake --add-missing || exit 1
 autoconf || exit 1
