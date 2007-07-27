@@ -1,3 +1,7 @@
+2007-07-27  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/base/new configure.ac: use mkdir -p to create the
+	  tasks directory
+
 2007-07-25  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* autogen: make it a real shell script
 

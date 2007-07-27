@@ -34,6 +34,8 @@ DEV_COMPAT_PROG_PATH(MKDIR, mkdir)
 DEV_COMPAT_PROG_PATH(DIRNAME, dirname)
 DEV_COMPAT_PROG_PATH(BASENAME, basename)
 DEV_COMPAT_PROG_PATH(WC, wc)
+AC_PROG_MKDIR_P
+DEV_CONFIG_VAR(MKDIR_P)
 
 # extension-specific configuration
 if test ! "x$enable_cvs" = "xno"

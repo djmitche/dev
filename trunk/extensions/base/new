@@ -30,7 +30,7 @@ task_exists "$task" && die "Task '$task' already exists"
 
 # everything looks good; let's set it up
 task_dir="$DEV_TASKS_DIR/$1"
-$MKDIR "$task_dir"
+$MKDIR_P "$task_dir"
 
 cat > "$task_dir/taskrc" <<EOF
 #require EXT1 EXT2
