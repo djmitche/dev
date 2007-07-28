@@ -21,7 +21,7 @@ done
 shift $((OPTIND - 1))
 
 # make sure we have a task to load
-[ $# = 0 ] && usage
+test $# = 0 && usage
 
 # get the full path of the task
 task="$1"

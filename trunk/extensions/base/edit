@@ -21,9 +21,9 @@ done
 shift $((OPTIND - 1))
 
 # make sure we have the right number of args
-[ $# -ne 1 ] && usage
+test $# -ne 1 && usage
 
-[ "$EDITOR" != "" ] || die "\$EDITOR is not defined"
+test "$EDITOR" != "" || die "\$EDITOR is not defined"
 
 # get the arguments settled
 task=$1

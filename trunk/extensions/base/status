@@ -20,7 +20,7 @@ done
 shift $((OPTIND - 1))
 
 # make sure we have a task to load
-[ $# = 0 ] || usage
+test $# = 0 || usage
 
 if test -z "$DEV_TASK_DIR"; then
   die "No task loaded"
