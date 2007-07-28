@@ -55,9 +55,6 @@ quilt_status() {
       cd "$destdir"
     fi
 
-    echo "Applied patches:"
-    $QUILT applied | $SED -e "s/^/  /"
-    echo "Unapplied patches:"
-    $QUILT unapplied | $SED -e "s/^/  /"
+    $QUILT series -v
   )
 }
