@@ -1,0 +1,14 @@
+#summary Ideas for a new layout configuration
+
+= Thoughts =
+  * most tasks just have a single dir (usually cwd), or at most a VC line + quilt
+  * is it really necessary to support `dev unload`?
+
+= Ideas =
+== `layout` file ==
+{{{
+src svn <URL>
+src quilt
+wiki svn <URL>
+}}}
+where order is reversed for unloading.
