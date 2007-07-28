@@ -22,7 +22,7 @@ done
 shift $((OPTIND - 1))
 
 # make sure we have the right number of args
-[ $# -lt 2 ] && usage
+test $# -lt 2 && usage
 
 # get the arguments settled
 EXISTING=$1

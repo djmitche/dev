@@ -32,7 +32,7 @@ svn_checkout() {
 # unload_svn [DIRECTORY]
 svn_unload() {
   dir="${DEV_TASK_DIR}/${1}"
-  if [ `$SVN status "${dir}" | $WC -l` -ne "0" ]
+  if test `$SVN status "${dir}" | $WC -l` -ne "0"
   then
     echo "Uncommitted changes in '${dir}'; commit them or use 'svn revert'."
     return 1
