@@ -68,7 +68,7 @@ enumerate_subcommands() {
     test -z "$dir" && continue
     for cmd in $dir/*
     do
-      if test -f $cmd -a -x $cmd
+      if test -f $cmd
       then
         echo ${cmd##$dir/}
       fi
@@ -90,7 +90,7 @@ find_subcommand() {
   IFS=':'
   for dir in $amended_path
   do
-    if test -f $dir/$subcommand -a -x $dir/$subcommand
+    if test -f $dir/$subcommand
     then
       echo $dir/$subcommand
       break
