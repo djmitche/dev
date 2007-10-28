@@ -4,6 +4,7 @@
 	* extensions/base/Makefile.am extensions/base/unload: remove unused 
 	  'unload'
 	* configure.in: move extensions-specific checks
+	* INSTALL config/missing config/install-sh: automake upgrade
 
 2007-07-27  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/base/new configure.ac: use mkdir -p to create the
