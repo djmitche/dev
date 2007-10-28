@@ -30,12 +30,14 @@ DEV_COMPAT_PROG_PATH(FIND, find)
 DEV_COMPAT_PROG_PATH(DATE, date)
 DEV_COMPAT_PROG_PATH(SORT, sort)
 DEV_COMPAT_PROG_PATH(SED, sed)
-DEV_COMPAT_PROG_PATH(MKDIR, mkdir)
+DEV_COMPAT_PROG_PATH(MKDIR, mkdir, [], [], [
+   if ! $MKDIR -p conftest-dir/subdir >/dev/null 2>&1; then
+       AC_MSG_ERROR([Your 'mkdir' does not support the '-p' option])
+   fi
+])
 DEV_COMPAT_PROG_PATH(DIRNAME, dirname)
 DEV_COMPAT_PROG_PATH(BASENAME, basename)
 DEV_COMPAT_PROG_PATH(WC, wc)
-AC_PROG_MKDIR_P
-DEV_CONFIG_VAR(MKDIR_P)
 
 # extension-specific configuration
 if test ! "x$enable_cvs" = "xno"

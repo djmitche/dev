@@ -1,6 +1,6 @@
 dnl SYNOPSIS
 dnl
-dnl     DEV_COMPAT_PROG_PATH(VARIABLE, PROG, [ALTERNATES], [EXTRA_PATHS])
+dnl     DEV_COMPAT_PROG_PATH(VARIABLE, PROG, [ALTERNATES], [EXTRA_PATHS], [TESTS])
 dnl     (lifted from quilt and modified by Dustin)
 dnl
 dnl OVERVIEW
@@ -8,6 +8,10 @@ dnl
 dnl     Allow configure to specify a specific binary.  ALTERNATES are
 dnl     alternate programs that will fit the bill.  EXTRA_PATHS is
 dnl     a colon-separated list of additional directories to search.
+dnl
+dnl     If TESTS is set, it is run after VARIABLE has been set, and can
+dnl     set VARIABLE to @INTERNAL@ or call AC_MSG_ERROR if the found binary
+dnl     proves unsuitable.
 dnl
 dnl     The result is placed in $VARIABLE, which is AC_SUBST'd and
 dnl     DEV_CONFIG_VAR'd.
@@ -28,7 +32,9 @@ AC_DEFUN([DEV_COMPAT_PROG_PATH],[
 
   case "$withval" in
     no)
-      m4_if(internal_$2_cmd,[],[], [
+      m4_if(internal_$2_cmd,[],[
+        AC_MSG_ERROR([No internal implementation of $2 available])
+      ], [
         $1="@INTERNAL@"
       ])
       ;;
@@ -46,6 +52,12 @@ AC_DEFUN([DEV_COMPAT_PROG_PATH],[
       AC_MSG_RESULT([given: $withval])
       ;;
   esac
+
+  m4_if($5, [], [], [
+    if test -n "$$1" && test x"$$1" != x"@INTERNAL@"; then
+      $5
+    fi
+  ])
 
   m4_if(internal_$2_cmd,[],[], [
     if test x"$$1" = x"@INTERNAL@"; then
