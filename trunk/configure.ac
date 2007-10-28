@@ -39,39 +39,32 @@ DEV_COMPAT_PROG_PATH(DIRNAME, dirname)
 DEV_COMPAT_PROG_PATH(BASENAME, basename)
 DEV_COMPAT_PROG_PATH(WC, wc)
 
-# extension-specific configuration
-if test ! "x$enable_cvs" = "xno"
-then
-  DEV_COMPAT_PROG_PATH(CVS, cvs)
-fi
-
-if test ! "x$enable_svn" = "xno"
-then
-  DEV_COMPAT_PROG_PATH(SVN, svn)
-fi
-
-if test ! "x$enable_quilt" = "xno"
-then
-  DEV_COMPAT_PROG_PATH(QUILT, quilt)
-fi
-
-
 # extensions
 
 ENABLE_CVS=true
 AC_ARG_ENABLE(cvs, AC_HELP_STRING(
     [--disable-cvs], [Disable CVS extension (default enabled)]),
     [if test "x$enableval" = "xno"; then ENABLE_CVS=false; fi])
+if $ENABLE_CVS; then
+  DEV_COMPAT_PROG_PATH(CVS, cvs)
+fi
 
 ENABLE_SVN=true
 AC_ARG_ENABLE(svn, AC_HELP_STRING(
     [--disable-svn], [Disable SVN extension (default enabled)]),
     [if test "x$enableval" = "xno"; then ENABLE_SVN=false; fi])
+if $ENABLE_SVN; then
+  DEV_COMPAT_PROG_PATH(SVN, svn)
+fi
 
 ENABLE_QUILT=true
 AC_ARG_ENABLE(quilt, AC_HELP_STRING(
     [--disable-cvs], [Disable Quilt extension (default enabled)]),
     [if test "x$enableval" = "xno"; then ENABLE_QUILT=false; fi])
+if $ENABLE_QUILT; then
+  DEV_COMPAT_PROG_PATH(QUILT, quilt)
+fi
+
 
 EXTENSIONS="base"
 if $ENABLE_CVS; then EXTENSIONS="$EXTENSIONS cvs"; fi
