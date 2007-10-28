@@ -1,6 +1,9 @@
 2007-10-28  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/base/new configure.ac config/dev_compat_prog_path.m4:
 	  Check that 'mkdir' supports -p, and use it instead of $MKDIR_P
+	* extensions/base/Makefile.am extensions/base/unload: remove unused 
+	  'unload'
+	* configure.in: move extensions-specific checks
 
 2007-07-27  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/base/new configure.ac: use mkdir -p to create the
