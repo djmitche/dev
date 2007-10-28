@@ -1,0 +1,59 @@
+#! @BASH@
+
+# prefix-related directories and other stuff from configuration
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+frameworklibdir=@libexecdir@/dev/framework
+export DEV_VERSION=@PACKAGE_VERSION@
+
+## Initialization
+
+# source our utiity function libraries
+source $frameworklibdir/dev_functions.sh
+source $frameworklibdir/require.sh
+
+# get information derived from configure
+source $frameworklibdir/config.sh
+
+## Project, task setup
+
+set_project_dir || exit 1
+set_task_dir || exit 1
+
+# get the defaults for the framework and all modules
+# (do this now, after the project and task dirs are set up)
+source $frameworklibdir/defaults.sh
+
+source_project_configuration || exit 1
+source_task_configuration || exit 1
+
+## Options parsing
+
+while test ! -z "$1"
+do
+  case "$1" in
+    -h|help) usage;;
+    -v) echo "$0: version $DEV_VERSION"; exit 1;;
+    -*) echo "$0: Unknown option '$1'"; exit 1;;
+    *) break;;
+  esac
+done
+
+# if no subcommand was given, give usage message
+test $# = 0 && usage
+
+## Launching subcommand
+
+# figure out the path of the subcommand
+subcommand="$1"
+shift
+cmd_path="`find_subcommand $subcommand`"
+test "$cmd_path" = "" && usage 
+
+# source subcommands' utility functions
+source $frameworklibdir/subcommand_functions.sh
+
+# finally, execute the subcommand
+. $cmd_path
+
+# vim:ft=sh

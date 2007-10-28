@@ -1,0 +1,49 @@
+#! /bin/bash
+
+require base
+
+usage() {
+  echo "Create a new, blank task"
+  echo ""
+  echo "dev new [-h] {task}"
+  echo "  {task} the name of the task to create"
+  echo ""
+  echo "  -h: this message"
+  exit 1
+}
+
+while getopts "h" OPT
+do
+  case $OPT in
+    h) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# make sure we have a task to load
+test $# = 1 || die "No task specified"
+
+# get the full path of the task
+task="$1"
+sanity_check_task "$task" || die "Invalid task name '$task'"
+task_exists "$task" && die "Task '$task' already exists"
+
+# everything looks good; let's set it up
+task_dir="$DEV_TASKS_DIR/$1"
+$MKDIR -p "$task_dir"
+
+cat > "$task_dir/taskrc" <<EOF
+#require EXT1 EXT2
+
+task_load() {
+  :
+}
+
+task_unload() {
+  :
+}
+
+task_status() {
+  :
+}
+EOF

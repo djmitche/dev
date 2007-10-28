@@ -1,0 +1,50 @@
+#! /bin/bash
+
+require base
+
+usage() {
+  echo "Load a task"
+  echo ""
+  echo "dev load [-h] {task} {where}"
+  echo "  {task} the task to load"
+  echo "  {where} the new task directory (must not exist)"
+  echo ""
+  echo "  -h: this message"
+  exit 1
+}
+
+while getopts "h" OPT
+do
+  case $OPT in
+    h) usage ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+# make sure we have all of the relevant parameters
+test $# -lt 2 && usage
+
+# check that this path is not inside a task already
+# TODO
+
+# get parameters
+task="$1"
+sanity_check_task "$task"
+
+task_path="$2"
+if test -e "$task_path"; then
+    die "'$task_path' already exists"
+fi
+
+# link in the task
+$MKDIR -p "$task_path" || exit 1
+echo "$task" > "$task_path/.task" || exit 1
+
+# source the new taskrc
+# XXX this breaks some abstraction barriers -- is that OK?
+cd "$task_path"
+set_task_dir || exit 1
+source_task_configuration || die "Could not source configuration for '$task'"
+
+# and ask it to set itself up
+task_load || rm -rf $task_path
