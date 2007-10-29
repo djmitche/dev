@@ -1,4 +1,7 @@
 2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/base/subcommands/edit: default to the current task
+
+2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/svn/configure.m4 extensions/Makefile.am
 	  extensions/base/configure.m4 extensions/base/Makefile.am
 	  extensions/cvs/configure.m4 extensions/quilt/configure.m4
