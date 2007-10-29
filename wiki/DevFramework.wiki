@@ -9,13 +9,15 @@ The file {{{.devrc}}} serves two purposes:  It marks the ProjectDirectory, and c
 
 The configuration file can set the following variables:
   * {{{$DEV_SUBCOMMANDS_PATH}}}: a colon-separated list of directories containing Dev subcommands.  The default value is {{{$DEV_PROJECT_DIR/dev/subcommands}}}.
-  * {{{$DEV_TASKS_DIR}}}: the directory in which task configuration is stored.  The default value is {{{$DEV_PROJECT_DIR/dev/tasks}}}.
+  * {{{$DEV_TASKS_DIR}}}: the directory in which TaskConfiguration files are stored.  The default value is {{{$DEV_PROJECT_DIR/dev/tasks}}}.
 
 Any other variables set in {{{.devrc}}} will be available to subcommands, and can provide configuration for them.  For example, many extensions are configured with variables set in {{{.devrc}}}.
+
+== TaskConfiguration ==
+If 'dev' is invoked from inside a TaskDirectory, that task's configuration file is sourced, and any variables found there are available to subcommands.  Thus, subcommands can be configured both on a per-project and per-task basis.
 
 == Variables ==
 The 'dev' command sets the following variables before starting a subcommand. All of these variables are exported, and thus available to any other programs started from a subcommand.
   * {{{$DEV_PROJECT_DIR}}}: the current ProjectDirectory
   * {{{$DEV_TASK_DIR}}}: the current TaskDirectory, or an empty string if none was found
   * {{{$DEV_TASK}}}: the name of the current task
-  * {{{$DEV_TASK_CONFIG_DIR}}}: the TaskConfiguration directory for the current task
