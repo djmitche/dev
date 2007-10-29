@@ -19,4 +19,4 @@ SOURCES="
 "
 }}}
 
-The actual invocation of loaders is handled by the {{{load}}} subcommand of the {{{BaseExtension}}}.
+The actual invocation of loaders is handled by the {{{load}}} subcommand of the BaseExtension.
