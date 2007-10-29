@@ -70,9 +70,14 @@ EXTENSIONS="base"
 if $ENABLE_CVS; then EXTENSIONS="$EXTENSIONS cvs"; fi
 if $ENABLE_SVN; then EXTENSIONS="$EXTENSIONS svn"; fi
 if $ENABLE_QUILT; then EXTENSIONS="$EXTENSIONS quilt"; fi
-
 DEV_CONFIG_VAR(EXTENSIONS)
 AC_SUBST(EXTENSIONS)
+
+# special directories
+DEV_DEFINE_DIR(frameworklibdir, "${libexecdir}/dev/framework")
+DEV_DEFINE_DIR(subcommandsdir, "${libexecdir}/dev/subcommands")
+DEV_DEFINE_DIR(loaderdir, "${libexecdir}/dev/loader")
+DEV_DEFINE_DIR(extbasedir, "${libexecdir}/dev/extensions")
 
 # final output
 

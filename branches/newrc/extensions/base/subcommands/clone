@@ -33,7 +33,4 @@ NEW=$2
 sanity_check_task "$NEW"
 task_exists "$NEW" && die "Task $NEW already exists"
 
-cp -r $DEV_TASKS_DIR/$EXISTING $DEV_TASKS_DIR/$NEW
-
-# helpfully remove any version-tracking stuff that might be in there
-rm -rf $DEV_TASKS_DIR/$NEW/{.svn,CVS}
+cp -r $DEV_TASKS_DIR/$EXISTING.dev $DEV_TASKS_DIR/$NEW.dev

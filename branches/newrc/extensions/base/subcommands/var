@@ -27,7 +27,7 @@ show_var() {
 }
 
 interesting_variables="DEV_PROJECT_DIR"
-interesting_variables="$interesting_variables DEV_TASK DEV_TASK_DIR DEV_TASK_CONFIG_DIR"
+interesting_variables="$interesting_variables DEV_TASK DEV_TASK_DIR"
 interesting_variables="$interesting_variables DEV_TASKS_DIR DEV_SUBCOMMANDS_PATH"
 
 if test $# -eq 0; then

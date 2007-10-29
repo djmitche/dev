@@ -23,12 +23,9 @@ shift $((OPTIND - 1))
 # make sure we have a task to load
 test $# = 0 && usage
 
-# get the full path of the task
 task="$1"
 sanity_check_task "$task"
 task_exists "$task" || die "Task '$task' does not exist"
 
-task_path=`task_to_config_path "$task"`
-
 warning_countdown "deleting '$task_path'"
-rm -rf $task_path
+rm -rf "$DEV_TASKS_DIR/$task.dev"

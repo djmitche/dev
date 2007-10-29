@@ -1,9 +1,6 @@
 #! @BASH@
 
-# prefix-related directories and other stuff from configuration
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-frameworklibdir=@libexecdir@/dev/framework
+frameworklibdir=@frameworklibdir@
 export DEV_VERSION=@PACKAGE_VERSION@
 
 ## Initialization
