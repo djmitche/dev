@@ -21,12 +21,19 @@ done
 shift $((OPTIND - 1))
 
 # make sure we have the right number of args
-test $# -ne 1 && usage
+test $# -gt 1 && usage
+if test $# -eq 0; then
+    if test -z "$DEV_TASK"; then
+        die "No current task"
+    fi
+    task="$DEV_TASK"
+else
+    task=$1
+fi
 
 test "$EDITOR" != "" || die "\$EDITOR is not defined"
 
 # get the arguments settled
-task=$1
 sanity_check_task "$task"
 task_exists "$task" || die "Task '$task' does not exist"
 
