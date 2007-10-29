@@ -29,8 +29,8 @@ source_task_configuration || exit 1
 while test ! -z "$1"
 do
   case "$1" in
-    -h|help) usage;;
-    -v) echo "$0: version $DEV_VERSION"; exit 1;;
+    -h|help|--help) usage;;
+    -v|--version) echo "$0: version $DEV_VERSION"; exit 1;;
     -*) echo "$0: Unknown option '$1'"; exit 1;;
     *) break;;
   esac
