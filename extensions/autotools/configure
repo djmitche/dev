@@ -1,0 +1,28 @@
+#! /bin/bash
+
+test -z "$DEV_TASK" && die "No task loaded"
+TASKDIR_FILE="$AUTOTOOLS_BUILD_DIR/.taskdir"
+
+echo '== clean up'
+
+# 'make distcheck' does some bad chmod'ness in the build directory..
+if ! rm -rf "$AUTOTOOLS_BUILD_DIR" 2>/dev/null; then
+    chmod -R u+w "$AUTOTOOLS_BUILD_DIR" || exit 1
+    rm -rf "$AUTOTOOLS_BUILD_DIR"  || exit 1
+fi
+$MKDIR -p "$AUTOTOOLS_BUILD_DIR" || exit 1
+
+# tag the build dir with this task dir; 'dev make' checks this.
+echo "$DEV_TASK_DIR" > "$TASKDIR_FILE"
+
+echo "== setup"
+if test -n "$AUTOTOOLS_SETUP"; then
+    $AUTOTOOLS_SETUP || exit 1
+fi
+
+echo '== configure'
+cd "$AUTOTOOLS_BUILD_DIR"
+$DEV_TASK_DIR/${AUTOTOOLS_CONFIGURE_COMMAND}  \
+    --prefix=${AUTOTOOLS_PREFIX_DIR} \
+    ${AUTOTOOLS_CONFIGURE_FLAGS} \
+    "${@}" || exit 1
