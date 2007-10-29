@@ -1,0 +1,22 @@
+Loaders implement various means of getting source code into a task directory.  These means are provided by extensions, so see DevExtensions for information on the specific loaders that are available.
+
+== Invocation ==
+Loaders are invoked through a special syntax in the {{{SOURCES}}} variable in a TaskConfiguration.
+
+== Implementation ==
+Loaders are implemented as shell scripts, stored in {{{$(loaderdir)}}}, which define a single function, {{{load_FOO}}} where {{{FOO}}} is the name of the loader.  For example, a hypothetical wikipedia loader would look like the following, stored in {{{$(loaderdir)/wikipedia}}}:
+{{{
+load_wikipedia() {
+  article="$1"
+  destination="${2-.}
+  # load the article into $destination ...
+}
+}}}
+and would be invoked as
+{{{
+SOURCES="
+  wikipedia Bean_Hollow_State_Beach
+"
+}}}
+
+The actual invocation of loaders is handled by the {{{load}}} subcommand of the {{{BaseExtension}}}.
