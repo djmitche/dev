@@ -1,0 +1,1 @@
+DEV_SETUP_EXTENSION(autotools, ENABLE_AUTOTOOLS, enabled)

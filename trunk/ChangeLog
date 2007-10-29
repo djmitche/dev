@@ -1,3 +1,11 @@
+2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/svn/configure.m4 extensions/Makefile.am
+	  extensions/base/configure.m4 extensions/base/Makefile.am
+	  extensions/cvs/configure.m4 extensions/quilt/configure.m4
+	  autogen configure.ac config/dev_setup_extension.m4: new more
+	  automatic method of including extension configuration
+	* extensions/autotools: new extension
+
 2007-10-28  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	- switch to a new, variable-based, task definition format, 
 	  including the new notion of "loader" scripts

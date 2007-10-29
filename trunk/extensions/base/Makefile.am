@@ -13,7 +13,6 @@ subcommands_SCRIPTS = \
 	subcommands/load \
 	subcommands/new \
 	subcommands/tasks \
-	subcommands/var \
-	subcommands/upgrade
+	subcommands/var
 
 extlib_SCRIPTS = require.sh defaults.sh

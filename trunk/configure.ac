@@ -40,38 +40,15 @@ DEV_COMPAT_PROG_PATH(BASENAME, basename)
 DEV_COMPAT_PROG_PATH(WC, wc)
 
 # extensions
+EXTENSIONS=""
+DIST_EXTENSIONS=""
 
-ENABLE_CVS=true
-AC_ARG_ENABLE(cvs, AC_HELP_STRING(
-    [--disable-cvs], [Disable CVS extension (default enabled)]),
-    [if test "x$enableval" = "xno"; then ENABLE_CVS=false; fi])
-if $ENABLE_CVS; then
-  DEV_COMPAT_PROG_PATH(CVS, cvs)
-fi
+# autogen sets this up to include all extensions/*/configure.m4 files.
+m4_include(extensions/configure.m4)
 
-ENABLE_SVN=true
-AC_ARG_ENABLE(svn, AC_HELP_STRING(
-    [--disable-svn], [Disable SVN extension (default enabled)]),
-    [if test "x$enableval" = "xno"; then ENABLE_SVN=false; fi])
-if $ENABLE_SVN; then
-  DEV_COMPAT_PROG_PATH(SVN, svn)
-fi
-
-ENABLE_QUILT=true
-AC_ARG_ENABLE(quilt, AC_HELP_STRING(
-    [--disable-cvs], [Disable Quilt extension (default enabled)]),
-    [if test "x$enableval" = "xno"; then ENABLE_QUILT=false; fi])
-if $ENABLE_QUILT; then
-  DEV_COMPAT_PROG_PATH(QUILT, quilt)
-fi
-
-
-EXTENSIONS="base"
-if $ENABLE_CVS; then EXTENSIONS="$EXTENSIONS cvs"; fi
-if $ENABLE_SVN; then EXTENSIONS="$EXTENSIONS svn"; fi
-if $ENABLE_QUILT; then EXTENSIONS="$EXTENSIONS quilt"; fi
 DEV_CONFIG_VAR(EXTENSIONS)
 AC_SUBST(EXTENSIONS)
+AC_SUBST(DIST_EXTENSIONS)
 
 # special directories
 DEV_DEFINE_DIR(frameworklibdir, "${libexecdir}/dev/framework")
@@ -81,8 +58,13 @@ DEV_DEFINE_DIR(extbasedir, "${libexecdir}/dev/extensions")
 
 # final output
 
-AC_CONFIG_FILES([Makefile framework/Makefile compat/Makefile extensions/Makefile extensions/base/Makefile extensions/cvs/Makefile extensions/svn/Makefile extensions/quilt/Makefile])
-AC_CONFIG_FILES([framework/dev])
+AC_CONFIG_FILES([
+    Makefile
+    framework/dev
+    framework/Makefile
+    compat/Makefile
+    extensions/Makefile
+])
 
 AC_OUTPUT
 
