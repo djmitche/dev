@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 # (Skeleton of this file lifted from quilt by Dustin)
-AC_INIT([dev], [0.2-dev], [dustin@cs.uchicago.edu])
+AC_INIT([dev], [0.3], [dustin@cs.uchicago.edu])
 AC_CONFIG_AUX_DIR(config)
 AC_CONFIG_SRCDIR(configure.ac)
 AM_INIT_AUTOMAKE
@@ -52,7 +52,7 @@ AC_SUBST(DIST_EXTENSIONS)
 
 # special directories
 DEV_DEFINE_DIR(frameworklibdir, "${libexecdir}/dev/framework")
-DEV_DEFINE_DIR(subcommandsdir, "${libexecdir}/dev/subcommands")
+DEV_DEFINE_DIR(subcommanddir, "${libexecdir}/dev/subcommands")
 DEV_DEFINE_DIR(loaderdir, "${libexecdir}/dev/loader")
 DEV_DEFINE_DIR(extbasedir, "${libexecdir}/dev/extensions")
 
