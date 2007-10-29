@@ -36,15 +36,29 @@ if test -e "$task_path"; then
     die "'$task_path' already exists"
 fi
 
+# clean up if anything goes wrong
+trap "rm -rf \"$task_path\"" EXIT INT QUIT
+
 # link in the task
 $MKDIR -p "$task_path" || exit 1
 echo "$task" > "$task_path/.task" || exit 1
 
 # source the new taskrc
-# XXX this breaks some abstraction barriers -- is that OK?
 cd "$task_path"
 set_task_dir || exit 1
 source_task_configuration || die "Could not source configuration for '$task'"
 
-# and ask it to set itself up
-task_load || rm -rf $task_path
+# define a default load_sources implementation
+base_load_sources() {
+    echo "$SOURCES" | while read LOADER ARGS; do
+        test -z "$LOADER" && continue # allow blank lines
+        test -f "$loaderdir/$LOADER" || die "No such loader $LOADER"
+        . "$loaderdir/$LOADER"
+        load_$LOADER $ARGS || die "Failure in load_$LOADER"
+    done
+}
+
+# call load_sources
+load_sources
+
+trap - EXIT INT QUIT

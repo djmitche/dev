@@ -1,0 +1,38 @@
+# Load a subversion working copy, optionally at a specific subdirectory.
+#
+# SYNTAX:
+#
+# SOURCES=".. svn http://path/to/repo .."
+# SOURCES=".. svn http://path/to/repo sub/dir .."
+#
+# TODO: use --at for subdir
+load_svn() {
+  local url="${1}"
+  local dir="${2-.}"
+
+  dir=`join_paths $DEV_TASK_DIR $dir`
+
+  if test -z "${SVN_CACHE_DIR}"; then
+    $SVN co "$url" "${DEV_TASK_DIR}/$dir" || die "Could not check out $url"
+  else
+    local url_safe=`echo $url|tr -c '[:alnum:]' '-'`
+    local cache_dir="`join_paths ${DEV_PROJECT_DIR} ${SVN_CACHE_DIR}`/$url_safe"
+
+    local restore_traps=`trap`
+    trap "rm -rf \"$cache_dir\"; die \"Interrupted\"" INT QUIT
+
+    if test -d "$cache_dir"; then
+      # try updating it; if we see an error, blow it away and try a new checkout
+      svn up "$cache_dir" || rm -rf "$cache_dir"
+    fi
+
+    if test ! -d "$cache_dir"; then
+      $SVN co "$url" "$cache_dir" || die "Could not check out $url"
+    fi
+
+    $restore_traps
+
+    # use 'tar' to copy .. it's better behaved than 'cp'
+    ( cd "$cache_dir" && tar -cf - . ) | ( cd "$dir" && tar -xf - )
+  fi
+}

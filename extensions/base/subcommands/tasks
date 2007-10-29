@@ -23,9 +23,8 @@ done
 shift $((OPTIND - 1))
 
 enumerate_tasks() {
-for pathname in $DEV_TASKS_DIR/*
-  do
-    test -e "$pathname" && $BASENAME $pathname
+  for pathname in $DEV_TASKS_DIR/*.dev; do
+    test -e "$pathname" && $BASENAME $pathname | sed -e 's/\.dev$//'
   done
 }
 

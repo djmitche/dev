@@ -145,9 +145,11 @@ source_project_configuration() {
 # Output:
 #  - return status of 1 if the sourcing failed
 #  - sets $DEV_TASK (exported) if a task is defined
-#  - sets $DEV_TASK_CONFIG_DIR (exported) if a task is defined
 source_task_configuration() {
-    if test -z "$DEV_TASK_DIR"; then return; fi
+    local config_file
+    if test -z "$DEV_TASK_DIR"; then
+        return;
+    fi
 
     export DEV_TASK=`<"$DEV_TASK_DIR/.task"`
     if test -z "$DEV_TASK"; then
@@ -155,14 +157,14 @@ source_task_configuration() {
         return 1
     fi
 
-    export DEV_TASK_CONFIG_DIR="$DEV_TASKS_DIR/$DEV_TASK"
-    if ! test -d "$DEV_TASK_CONFIG_DIR" || ! test -f "$DEV_TASK_CONFIG_DIR/taskrc"; then
-        echo "No configuration for task '$DEV_TASK'!" >&2
+    config_file="$DEV_TASKS_DIR/$DEV_TASK.dev"
+    if ! test -f "$config_file"; then
+        echo "No configuration for task '$DEV_TASK'" >&2
         return 1
     fi
 
-    if ! source "$DEV_TASK_CONFIG_DIR/taskrc"; then
-        echo "error reading '$DEV_TASK_CONFIG_DIR/taskrc'" >&2
+    if ! source "$config_file"; then
+        echo "error reading '$config_file'" >&2
         return 1
     fi
 }

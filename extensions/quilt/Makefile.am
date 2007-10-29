@@ -1,4 +1,6 @@
 include $(top_srcdir)/extensions/extension.am
 
 EXTENSION=quilt
-extlib_SCRIPTS = require.sh defaults.sh
+
+loader_SCRIPTS = quilt
+extlib_SCRIPTS = defaults.sh
