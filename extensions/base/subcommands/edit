@@ -31,4 +31,4 @@ sanity_check_task "$task"
 task_exists "$task" || die "Task '$task' does not exist"
 
 # finally, edit it
-$EDITOR "`task_to_config_path $task`/taskrc"
+$EDITOR "$DEV_TASKS_DIR/$task.dev"

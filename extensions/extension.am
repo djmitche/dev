@@ -1,12 +1,9 @@
 # Automake machinery common to all extensions
 
-# subcommands
-subcommandsdir = $(libexecdir)/dev/subcommands
-
 # extension lib files go here
-extlibdir = $(libexecdir)/dev/extensions/$(EXTENSION)
+extlibdir = $(extbasedir)/$(EXTENSION)
 
 # make sure this stuff gets distributed
-EXTRA_DIST = $(extlib_SCRIPTS) $(subcommands_SCRIPTS)
+EXTRA_DIST = $(extlib_SCRIPTS) $(subcommands_SCRIPTS) $(loader_SCRIPTS)
 
 # vim:ft=automake

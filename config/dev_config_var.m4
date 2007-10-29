@@ -13,11 +13,13 @@ AC_DEFUN([DEV_CONFIG_VAR], [
 
 dnl utility function for the above
 AC_DEFUN([DEV_CONFIG_VAR_OUTPUT], [
-    dnl start with all of the installation directories
+    dnl start with all of the installation directories.  Note that prefix
+    dnl and exec_prefix should come first
     m4_define([DEV_CONFIG_VAR_vars], [
-        bindir datadir datarootdir docdir dvidir exec_prefix 
+        prefix exec_prefix
+        bindir datadir datarootdir docdir dvidir
         htmldir includedir infodir libdir libexecdir localedir
-        localstatedir mandir onlyincludedir pdfdir prefix
+        localstatedir mandir onlyincludedir pdfdir
         psdir sbindir sharedstatedir sysconfdir
         ])
     AC_CONFIG_COMMANDS([framework/config.sh], [
