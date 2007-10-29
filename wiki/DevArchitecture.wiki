@@ -13,14 +13,12 @@ A project will usually have the following associated with it:
 Dev assumes that you have a single parent directory for each project, containing various subdirectories.  The default settings assume that a subdirectory named {{{dev}}} is available for Dev-related files, but this can be overridden if necessary by configuration in {{{.devrc}}}.  See ProjectDirectory for more details.
 
 == Tasks ==
-A task is described by a configuration file, and may have other associated configuration information.  This information is used to manipulate the task directory for the task.   See TaskConfiguration for more details.
-
-Each active task is also represented by a directory, in this case a subdirectory of the project directory.  The task directory contains any and all source code needed for development, as well as any temporary or working directories for compilation or test runs.  Note that it is possible to have more than one task directory for a given task.  See TaskDirectory for more details.
+A task is a subdirectory of the project directory, containing source code and any other required supporting files.  A task is described by a configuration file.  Multiple task directories can have the same file.  The term 'task' is overloaded to refer both to the task subdirectories and to the task configuration.  The usage should be clear from context.  See TaskConfiguration and TaskDirectory for more details.
 
 = Extensions =
 
 By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
  * new 'dev' subcommands
- * new code-management functions (for use in TaskConfiguration)
+ * new loaders (for loading source code into a TaskDirectory)
  * new utility functions (for use in subcommands)
  * new configuration variables
