@@ -28,7 +28,7 @@ include $(top_srcdir)/extensions/extension.am
 EXTENSION=your-extension-name-here
 }}}
 
-It can then assign the names of any new subcommands to {{{subcommand_SCRIPTS}}}.  Likewise, new loaders are listed in {{{loader_SCRIPTS}}.
+It can then assign the names of any new subcommands to {{{subcommand_SCRIPTS}}}.  Likewise, new loaders are listed in {{{loader_SCRIPTS}}}.
 
 Any additional scripts or library files can be placed in {{{extlibdir}}} via {{{extlibdir_SCRIPTS}}} or {{{extlibdir_DATA}}}.  These files will be available from shell scripts in {{{$extbasedir/extname}}}.  Two filenames have special meaning.  A file named {{{defaults.sh}}} will be sourced early in the setup process, and can set default values for any configuration variables.  A file named {{{require.sh}}} will be loaded by the {{{require}}} command when the extension's name is specified, and can provide helpful functions, variable definitions, etc.
 
