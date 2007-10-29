@@ -1,4 +1,8 @@
 2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/autotools/Makefile.am extensions/base/Makefile.am
+	  configure.ac: rename subcommandsdir to subcommanddir
+
+2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* framework/dev.in: support --help and --version
 
 2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>

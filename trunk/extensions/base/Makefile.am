@@ -6,7 +6,7 @@ loader_SCRIPTS = \
 	loaders/mkdir \
 	loaders/untar
 
-subcommands_SCRIPTS = \
+subcommand_SCRIPTS = \
 	subcommands/clone \
 	subcommands/delete \
 	subcommands/edit \
