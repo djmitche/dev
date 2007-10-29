@@ -19,6 +19,6 @@ A task is a subdirectory of the project directory, containing source code and an
 
 By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
  * new 'dev' subcommands
- * new loaders (for loading source code into a TaskDirectory)
+ * new [Loaders] (for loading source code into a TaskDirectory)
  * new utility functions (for use in subcommands)
  * new configuration variables
