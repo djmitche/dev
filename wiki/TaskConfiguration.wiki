@@ -1,47 +1,23 @@
-﻿A task must minimally specify the steps required to create, examine, and destroy a TaskDirectory.
+﻿A task configuration is, like all _dev_ configuration files, just a shell script.  For most uses, it will contain only variable assignments, adding to any configuration found in the ProjectDirectory.
 
-Note that this configuration is processed by the DevFramework, but managed by the BaseExtension.
-
-= Configuration Format =
-The configuration for each task is stored in a directory under {{{$DEV_TASKS_DIR}}} named after the task, e.g., {{{$DEV_TASKS_DIR/erlang-patch}}}.  That directory minimally contains {{{taskrc}}}, which is a shell script used as the main configuration file.
-
-{{{taskrc}}} specifies the extensions required by the task, supplies any additional Dev configuration beyond that from the project, and defines functions to drive creation, examination, and destruction of a TaskDirectory.  The file may be sourced at any time, so it should not make any changes when it is merely sourced.
-
-== Requirements ==
-Required modules are specified with the {{{require}}} function, which takes one or more extensions to load:
+== Loading Source ==
+A task must minimally specify how to load the source code it contains.  This is accomplished through the "SOURCES" variable.  This is a multi-line variable, where each line specifies a [Loader] and its arguments.  A simple task might consist of
 {{{
-require quilt svn
+SOURCES="svn https://dev.googlecode.com/svn/trunk/"
 }}}
+while a more complicated task might instead read
+{{{
+SOURCES="svn https://dev.googlecode.com/svn/trunk/
+  mkdir test_results
+  quilt"
+}}}
+in the latter case, the loaders are {{{svn}}}, {{{mkdir}}}, and {{{quilt}}}.
 
 == Configuration Variables ==
-Configuration can be supplied in the form of variables.  Such variables can also be defined in the ProjectDirectory's {{{.devrc}}} if they are global to the project:
+Configuration can be supplied in the form of variables.  Such variables can also be defined in the ProjectDirectory's {{{.devrc}}} if they are global to the project.  For example:
 {{{
 QUILT_PATCH_DIR="$DEV_PROJECT_DIR/patches"
 DEV_SUBCOMMANDS_PATH="$DEV_SUBCOMMANDS_PATH:$DEV_TASK_DIR/subcommands"
-}}}
-
-== Driver Functions ==
-Finally, three functions must be defined:
-  * {{{task_load}}} is executed by {{{dev load}}} to load the task into a TaskDirectory.  The new directory is given in {{{$DEV_TASK_DIR}}}, and is guaranteed __not__ to exist when the function is called.  If the function returns with a nonzero status, {{{$DEV_TASK_DIR}}} will be forcibly removed on the assumption that it is invalid.
-  * {{{task_unload}}} is executed by {{{dev unload}}} to unload a TaskDirectory.  If it completes normally, {{{$DEV_TASK_DIR}}} will be removed forcibly.
-  * {{{task_status}}} is executed by {{{dev status}}}, and should print the status of the TaskDirectory.
-
-= Example =
-Most extensions supply sub-functions to make these functions much easier to write.  For example, a simple SvnExtension-based task might look like this:
-{{{
-require svn
-
-task_load() {
-	svn_load http://dev.googlecode.com/svn/trunk/ $DEV_TASK_DIR/src || return 1
-}
-
-task_status() {
-	svn_status $DEV_TASK_DIR/src
-}
-
-task_unload() {
-	svn_unload $DEV_TASK_DIR/src || return 1
-}
 }}}
 
 = Finding the Task Configuration =
