@@ -28,4 +28,13 @@ $DEV_TASK_DIR/prefix/bin/myprog
 $DEV_TASK_DIR/prefix/lib/myprog.a
 ...
 }}}
-This layout is most useful when coupled with project-specific subcommands that need extra task-specific directories to do their work.
+This layout is most useful when coupled with project-specific subcommands that need extra task-specific directories to do their work.  The TaskConfiguration for such a layout might look like
+{{{
+SOURCES="
+  svn https://myapp.googlecode.com/svn/trunk/ src/
+  mkdir test
+  mkdir prefix
+"
+TEST_DIR="$DEV_TASK_DIR/test"
+PREFIX="$DEV_TASK_DIR/prefix"
+}}}
