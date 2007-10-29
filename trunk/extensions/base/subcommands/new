@@ -5,8 +5,9 @@ require base
 usage() {
   echo "Create a new, blank task"
   echo ""
-  echo "dev new [-h] {task}"
+  echo "dev new [-h] {task} [{sources}]"
   echo "  {task} the name of the task to create"
+  echo "  {souces} value of SOURCES for the task"
   echo ""
   echo "  -h: this message"
   exit 1
@@ -21,29 +22,19 @@ done
 shift $((OPTIND - 1))
 
 # make sure we have a task to load
-test $# = 1 || die "No task specified"
+test $# -ge 1 || die "No task specified"
 
 # get the full path of the task
-task="$1"
+task="$1"; shift
+
 sanity_check_task "$task" || die "Invalid task name '$task'"
 task_exists "$task" && die "Task '$task' already exists"
 
+test -d $DEV_TASKS_DIR || $MKDIR -p "$DEV_TASKS_DIR" || die "Cannot create $DEV_TASKS_DIR"
+
 # everything looks good; let's set it up
-task_dir="$DEV_TASKS_DIR/$1"
-$MKDIR -p "$task_dir"
+task_file="$DEV_TASKS_DIR/$task.dev"
 
-cat > "$task_dir/taskrc" <<EOF
-#require EXT1 EXT2
-
-task_load() {
-  :
-}
-
-task_unload() {
-  :
-}
-
-task_status() {
-  :
-}
+cat > "$task_file" <<EOF
+SOURCES="$@"
 EOF

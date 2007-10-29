@@ -1,4 +1,9 @@
 2007-10-28  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	- switch to a new, variable-based, task definition format, 
+	  including the new notion of "loader" scripts
+	- move files under extensions/base into subdirectories by purpose
+
+2007-10-28  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* framework/dev_functions.sh: don't require that subcommands be
 	  executable
 

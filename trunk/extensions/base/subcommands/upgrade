@@ -1,0 +1,18 @@
+### temporary utility to upgrade old tasks
+
+for taskrc in $DEV_TASKS_DIR/*/taskrc; do
+    echo "Processing $taskrc"
+    SOURCES=`sed -n -e '
+/ *svn_checkout/{
+    s/.*svn_checkout \([^ ]*\) \./svn \1/;p
+}
+/ *use_quilt/{
+    s/.*/quilt/;p
+}'<$taskrc`
+    if test -z "$SOURCES"; then
+        echo '*** NOTHING FOUND'
+    else
+        newtaskname=`dirname $taskrc`.dev
+        echo "SOURCES=\"$SOURCES\"" > "$newtaskname"
+    fi
+done
