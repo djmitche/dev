@@ -13,7 +13,7 @@ load_svn() {
   dir=`join_paths $DEV_TASK_DIR $dir`
 
   if test -z "${SVN_CACHE_DIR}"; then
-    $SVN co "$url" "${DEV_TASK_DIR}/$dir" || die "Could not check out $url"
+    $SVN co "$url" "$dir" || die "Could not check out $url"
   else
     local url_safe=`echo $url|tr -c '[:alnum:]' '-'`
     local cache_dir="`join_paths ${DEV_PROJECT_DIR} ${SVN_CACHE_DIR}`/$url_safe"
@@ -23,7 +23,7 @@ load_svn() {
 
     if test -d "$cache_dir"; then
       # try updating it; if we see an error, blow it away and try a new checkout
-      svn up "$cache_dir" || rm -rf "$cache_dir"
+      $SVN up "$cache_dir" || rm -rf "$cache_dir"
     fi
 
     if test ! -d "$cache_dir"; then

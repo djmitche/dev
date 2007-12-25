@@ -1,3 +1,8 @@
+2007-12-24  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* extensions/svn/svn: fix typo which caused svn checkouts
+	  without a cache directory to contain too many directory
+	  elements
+
 2007-10-29  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/autotools/Makefile.am extensions/base/Makefile.am
 	  configure.ac: rename subcommandsdir to subcommanddir
