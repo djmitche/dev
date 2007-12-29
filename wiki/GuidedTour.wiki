@@ -92,14 +92,70 @@ surprisingly, some of the translation files were changed by the build process.  
 
 Try running {{{dev make check}}}, and note that one of the unit tests is broken.
 
+= Juggling =
+
+Imagine that you've sent your patch (with a fix to the unit tests, of course) to the GNU hello authors, and want to begin work on a new Jabber module that can offer greetings over IM.  If the authors ask you to make further changes, you'll want to still have the working copy around.  But you don't want to being your Jabber work in this working copy -- the patches would get mixed up!
+
+'dev' makes juggling these tasks easy:
+{{{
+$ cd ~/devel/projects/hello
+$ dev load trunk jabber-greeter
+$ cd jabber-greeter
+}}}
+and start hacking away.  If the patch gets accepted, just delete the {{{add_cruelty}}} directory.
+
+= Configuring =
+
+Almost everything in 'dev' is configurable via environment variables.  These variables are described throughout this wiki, ~~and summarized in the VariableIndex~~.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev edit}}}.
+
+== Project-level Configuration ==
+
+Imagine, if you will, that your home directory is NFS-mounted, and you'd like to do your builds in {{{/var/tmp}}}. The AutotoolsExtension wiki page documents a number of variables, among them `$AUTOTOOLS_BUILD_DIR` and `$AUTOTOOLS_PREFIX_DIR`.  The default to `${DEV_PROJECT_DIR}/tmp/{build,prefix}`, as described above.
+
+Since we'll want to build in {{{/var/tmp}}} for all of our tasks, let's add these to the project configuration.
+{{{
+$ cd ~/devel/projects/hello
+$ echo 'AUTOTOOLS_BUILD_DIR=/var/tmp/hello/build' >> .devrc
+$ echo 'AUTOTOOLS_PREFIX_DIR=/var/tmp/hello/prefix' >> .devrc
+$ cd add_cruelty
+$ dev configure && dev make
+}}}
+
+== Task-level configuration ==
+
+Let's further imagine that you are adding an automatic-update feature to GNU hello.  This will, of course, be compile-time selectable via the `--enable-automatic-updates` configure option.  `dev configure` can accept options for configure on its command line:
+{{{
+$ dev configure --enable-automatic-updates
+}}}
+but that's a lot of wasted keystrokes!
+
+Another look at AutotoolsExtension reveals `$AUTOTOOLS_CONFIGURE_FLAGS`.  Let's create a new task, including this variable.
+
+{{{
+$ cd ~/devel/projects/hello
+$ dev clone trunk auto_up
+$ dev edit auto_up
+}}}
+add:
+{{{
+AUTOTOOLS_CONFIGURE_FLAGS="--enable-automatic-updates"
+}}}
+and load it:
+{{{
+$ dev load auto_up au
+$ cd au
+$ dev configure && dev make
+}}}
+
 = Adding a new command =
+
 It's a bit arduous to type the path to the `hello` binary to test the application -- well, as arduous as "Hello, world!" can get.  Let's write a new 'dev' subcommand to run the application for us.  
 
 ~~ TODO: this seems incrementally harder than all the preceding stuff .. is there a way to make it easier? ~~
 
 Head back out to your project directory and look around:
 {{{
-$ cd ..
+$ cd ~/devel/projects/hello
 $ ls
 }}}
 you'll note a directory named `dev`.  This is where `dev` has been keeping its configuration.  Add a new subdirectory, `subcommands`:
@@ -111,7 +167,6 @@ and add a shell script there, named `run`.  Here's the contents:
 #! /bin/bash
 exec "$AUTOTOOLS_PREFIX_DIR/bin/hello" "${@}"
 }}}
-`$AUTOTOOLS_PREFIX_DIR` is the prefix that was passed to `./configure`.  The AutotoolsExtension wiki page documents this and other variables.
 
 Great.  Now head back into your task, and try out your new command:
 {{{
