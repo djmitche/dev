@@ -1,4 +1,4 @@
-#summary A gentle introduction to dev
+﻿#summary A gentle introduction to dev
 #labels Featured
 
 = What Is It? =
@@ -9,9 +9,9 @@ Dev helps you to:
 
 So let's see how it works.
 
-= Installing 'dev' =
+= Installing Dev =
 
-First, install 'dev'.  You can find the latest tarball on the "[http://code.google.com/p/dev/downloads/list Downloads]" tab.  Install should be as simple as
+First, install Dev.  You can find the latest tarball on the "[http://code.google.com/p/dev/downloads/list Downloads]" tab.  Install should be as simple as
 {{{
 $ ./configure
 $ make
@@ -27,7 +27,7 @@ cd ~/devel/projects
 mkdir hello
 cd hello
 }}}
-Now tell 'dev' that this is a project directory:
+Now tell Dev that this is a project directory:
 {{{
 touch .devrc
 }}}
@@ -36,7 +36,7 @@ touch .devrc
 
 ~~ The confusion of "task" and "task configuration" is horrendous.  Fix it. ~~
 
-Now we need to tell 'dev' how to set up a source directory.  We'll create a new task, named 'trunk', corresponding to the latest revision in CVS.
+Now we need to tell Dev how to set up a source directory.  We'll create a new task, named 'trunk', corresponding to the latest revision in CVS.
 {{{
 $ dev new trunk
 $ dev edit trunk
@@ -54,7 +54,7 @@ $ cd add_cruelty
 You've now loaded a task, using the 'trunk' configuration.  Let's take it for a spin before changing anything.
 
 = Build =
-Since this is a GNU project, it naturally uses GNU autotools and make.  'dev' supports those without any additional configuration.
+Since this is a GNU project, it naturally uses GNU autotools and make.  Dev supports those without any additional configuration.
 {{{
 $ dev configure
 }}}
@@ -97,7 +97,7 @@ Try running {{{dev make check}}}, and note that one of the unit tests is broken.
 
 Imagine that you've sent your patch (with a fix to the unit tests, of course) to the GNU hello authors, and want to begin work on a new Jabber module that can offer greetings over IM.  If the authors ask you to make further changes, you'll want to still have the working copy around.  But you don't want to being your Jabber work in this working copy -- the patches would get mixed up!
 
-'dev' makes juggling these tasks easy:
+Dev makes juggling these tasks easy:
 {{{
 $ cd ~/devel/projects/hello
 $ dev load trunk jabber-greeter
@@ -107,7 +107,7 @@ and start hacking away.  If the patch gets accepted, just delete the {{{add_crue
 
 = Configuring =
 
-Almost everything in 'dev' is configurable via environment variables.  These variables are described throughout this wiki, ~~and summarized in the VariableIndex~~.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev edit}}}.
+Almost everything in Dev is configurable via environment variables.  These variables are described throughout this wiki, ~~and summarized in the VariableIndex~~.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev edit}}}.
 
 == Project-level Configuration ==
 
@@ -150,7 +150,7 @@ $ dev configure && dev make
 
 = Adding a new command =
 
-It's a bit arduous to type the path to the `hello` binary to test the application -- well, as arduous as "Hello, world!" can get.  Let's write a new 'dev' subcommand to run the application for us.  
+It's a bit arduous to type the path to the `hello` binary to test the application -- well, as arduous as "Hello, world!" can get.  Let's write a new Dev subcommand to run the application for us.  
 
 ~~ TODO: this seems incrementally harder than all the preceding stuff .. is there a way to make it easier? ~~
 

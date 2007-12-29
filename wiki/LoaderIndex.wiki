@@ -1,0 +1,8 @@
+﻿#summary Alphabetical list of loaders
+#labels Featured
+|| *Command*                            || *Description* ||
+||[CvsExtension            cvs         ]|| Perform a CVS checkout ||
+||[BaseExtension           mkdir       ]|| Make a new, empty directory ||
+||[SvnExtension            svn         ]|| Perform a Subversion checkout ||
+||[BaseExtension           untar       ]|| Untar a tarball ||
+||[QuiltExtension          quilt       ]|| Set up to handle a patch series ||

@@ -1,0 +1,14 @@
+﻿#summary Alphabetical list of variables, with brief descriptions and links
+#labels Featured
+|| *Variable*                                           || *Description* ||
+||[AutotoolsExtension      AUTOTOOLS_BUILD_DIR         ]|| Directory where builds will take place ||
+||[AutotoolsExtension      AUTOTOOLS_CONFIGURE_COMMMAND]|| `configure` command ||
+||[AutotoolsExtension      AUTOTOOLS_CONFIGURE_FLAGS   ]|| Additional options to pass to `configure` ||
+||[AutotoolsExtension      AUTOTOOLS_PREFIX_DIR        ]|| Root installation directory ||
+||[AutotoolsExtension      AUTOTOOLS_SETUP             ]|| Command that creates `configure` (e.g, `autogen`) ||
+||[DevFramework            DEV_PROJECT_DIR             ]|| the current ProjectDirectory (set by Dev) ||
+||[DevFramework            DEV_SUBCOMMANDS_PATH        ]|| colon-separated list of directories containing Dev subcommands ||
+||[DevFramework            DEV_TASK                    ]|| the name of the current task (set by Dev) ||
+||[DevFramework            DEV_TASK_DIR                ]|| the current TaskDirectory (set by Dev) ||
+||[DevFramework            DEV_TASKS_DIR               ]|| directory in which TaskConfiguration files are stored ||
+||[QuiltExtension          QUILT_PATCH_DIR             ]|| directory in which quilt patches are stored ||
