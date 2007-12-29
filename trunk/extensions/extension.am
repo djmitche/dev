@@ -4,6 +4,6 @@
 extlibdir = $(extbasedir)/$(EXTENSION)
 
 # make sure this stuff gets distributed
-EXTRA_DIST = $(extlib_SCRIPTS) $(subcommands_SCRIPTS) $(loader_SCRIPTS)
+EXTRA_DIST = $(extlib_SCRIPTS) $(subcommand_SCRIPTS) $(loader_SCRIPTS)
 
 # vim:ft=automake
