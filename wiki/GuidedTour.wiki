@@ -1,0 +1,123 @@
+#summary A gentle introduction to dev
+
+= What Is It? =
+
+Dev helps you to:
+  * organize your development work, allowing you to juggle multiple tasks.
+  * automate your common development tasks, such as building, running tests, or submitting patches, using succinct commands and a convenient configuration mechanism
+
+So let's see how it works.
+
+= Installing 'dev' =
+
+First, install 'dev'.  You can find the latest tarball on the "[http://code.google.com/p/dev/downloads/list Downloads]" tab.  Install should be as simple as
+{{{
+$ ./configure
+$ make
+# make install
+}}}
+The software is also easy to install in your home directory, if you aren't an admin: just add {{{--prefix=$HOME}}} to the {{{./configure}}} invocation, and make sure that {{{$HOME/bin}}} is in your {{{$PATH}}}.
+
+= Set Up a Project =
+
+In this tour, we'll be working on [http://www.gnu.org/software/hello/ GNU hello], also known as "hello world on steroids".  This will be the _project_.  So start by making a directory for the project.  You can put this wherever you would like.
+{{{
+cd ~/devel/projects
+mkdir hello
+cd hello
+}}}
+Now tell 'dev' that this is a project directory:
+{{{
+touch .devrc
+}}}
+
+= Set Up a Task =
+
+~~ The confusion of "task" and "task configuration" is horrendous.  Fix it. ~~
+
+Now we need to tell 'dev' how to set up a source directory.  We'll create a new task, named 'trunk', corresponding to the latest revision in CVS.
+{{{
+$ dev new trunk
+$ dev edit trunk
+}}}
+`dev edit` will fire up your editor to edit this task configuration.  Make it look like this:
+{{{
+SOURCES="cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello ."
+}}}
+This reads, roughly, as "using CVS, load module `hello` from repository `:pserver:...` in the current directory (`.`)".  Save your changes, and you're ready to load up a task with that configuration:
+{{{
+$ dev load trunk add_cruelty
+ (lots of CVS messages)
+$ cd add_cruelty
+}}}
+You've now loaded a task, using the 'trunk' configuration.  Let's take it for a spin before changing anything.
+
+= Build =
+Since this is a GNU project, it naturally uses GNU autotools and make.  'dev' supports those without any additional configuration.
+{{{
+$ dev configure
+}}}
+This creates a build directory (by default, the `tmp/build` subdirectory of your project), runs `autogen`, and then runs `./configure --prefix=` in the build directory, with the prefix defaulting to the `tmp/prefix` subdirectory of your project.
+
+Next, let's build the application:
+{{{
+$ dev make
+}}}
+This runs `make` in the directory that was just configured.  Note that there's no need t `cd` into that directory or otherwise break your stride.
+
+And finally, let's install it:
+{{{
+$ dev make install
+}}}
+You will see messages about files installed into `tmp/prefix`.  To run the built application:
+{{{
+$ ../tmp/prefix/bin/hello
+Hello, world!
+}}}
+Hmm, that's a bit annoying to type -- we'll fix it in a bit.  
+
+Before we do that, let's make some modifications.  Edit {{{src/hello.c}}} to reflect cruel reality, by changing the output string.  Note that it occurs in two places.  When you're done,
+{{{
+$ dev make install
+  (messages about rebuilding as required)
+$ ../tmp/prefix/bin/hello
+Hello, cruel world!
+}}}
+
+The task is simply a CVS checkout, so you can see what's changed with
+{{{
+$ cvs diff
+}}}
+surprisingly, some of the translation files were changed by the build process.  Technically, this is a bug in GNU hello.  A gold star to the reader who fixes it!
+
+Try running {{{dev make check}}}, and note that one of the unit tests is broken.
+
+= Adding a new command =
+It's a bit arduous to type the path to the `hello` binary to test the application -- well, as arduous as "Hello, world!" can get.  Let's write a new 'dev' subcommand to run the application for us.  
+
+~~ TODO: this seems incrementally harder than all the preceding stuff .. is there a way to make it easier? ~~
+
+Head back out to your project directory and look around:
+{{{
+$ cd ..
+$ ls
+}}}
+you'll note a directory named `dev`.  This is where `dev` has been keeping its configuration.  Add a new subdirectory, `subcommands`:
+{{{
+$ mkdir dev/subcommands
+}}}
+and add a shell script there, named `run`.  Here's the contents:
+{{{
+#! /bin/bash
+exec "$AUTOTOOLS_PREFIX_DIR/bin/hello" "${@}"
+}}}
+`$AUTOTOOLS_PREFIX_DIR` is the prefix that was passed to `./configure`.  The AutotoolsExtension wiki page documents this and other variables.
+
+Great.  Now head back into your task, and try out your new command:
+{{{
+$ cd add_cruelty
+$ dev run
+Hello, cruel world!
+}}}
+
+Neat.
