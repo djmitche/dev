@@ -11,6 +11,10 @@ load_svn() {
   local dir="${2-.}"
 
   dir=`join_paths $DEV_TASK_DIR $dir`
+  local parent=`echo "$dir" | sed 's|/.*/?||'`
+  if test ! -d "$parent"; then
+    $MKDIR -p "$parent"
+  fi
 
   if test -z "${SVN_CACHE_DIR}"; then
     $SVN co "$url" "$dir" || die "Could not check out $url"
@@ -18,19 +22,18 @@ load_svn() {
     local url_safe=`echo $url|tr -c '[:alnum:]' '-'`
     local cache_dir="`join_paths ${DEV_PROJECT_DIR} ${SVN_CACHE_DIR}`/$url_safe"
 
-    local restore_traps=`trap`
-    trap "rm -rf \"$cache_dir\"; die \"Interrupted\"" INT QUIT
+    (   # run in a subshell to trap any errors
+        trap "rm -rf \"$cache_dir\"; die \"Interrupted\"" INT QUIT
 
-    if test -d "$cache_dir"; then
-      # try updating it; if we see an error, blow it away and try a new checkout
-      $SVN up "$cache_dir" || rm -rf "$cache_dir"
-    fi
+        if test -d "$cache_dir"; then
+          # try updating it; if we see an error, blow it away and try a new checkout
+          $SVN up "$cache_dir" || rm -rf "$cache_dir"
+        fi
 
-    if test ! -d "$cache_dir"; then
-      $SVN co "$url" "$cache_dir" || die "Could not check out $url"
-    fi
-
-    $restore_traps
+        if test ! -d "$cache_dir"; then
+          $SVN co "$url" "$cache_dir" || die "Could not check out $url"
+        fi
+    ) || exit 1
 
     # use 'tar' to copy .. it's better behaved than 'cp'
     ( cd "$cache_dir" && tar -cf - . ) | ( cd "$dir" && tar -xf - )

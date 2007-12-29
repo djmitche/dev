@@ -19,7 +19,7 @@ autotools_setup_default() {
 export AUTOTOOLS_SETUP=autotools_setup_default
 
 # ./configure flags
-export AUTOOTLS_CONFIGURE_FLAGS=
+export AUTOTOOLS_CONFIGURE_FLAGS=
 
 # ./configure script (useful if the script is in a subdirectory
 export AUTOTOOLS_CONFIGURE_COMMAND=configure

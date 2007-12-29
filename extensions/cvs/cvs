@@ -9,7 +9,7 @@ load_cvs() {
     module="$2"
     codir="$3"
 
-    test $# -eq 3 || die "cvs loader requires three arguments"
+    test $# -eq 3 || die "cvs loader requires three arguments: REPOSITORY MODULE DIRNAME"
 
     # cvs doesn't handle checking out to '.' properly, so fake it.
     if test "$codir" = "."; then
