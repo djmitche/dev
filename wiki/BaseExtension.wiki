@@ -2,8 +2,8 @@
 
 This extension blurs the abstraction between extensions and the DevFramework a little bit, since it manages the internals of tasks.
 
-= Commands =
-This extension implements the following commands:
+= Subcommands =
+This extension implements the following subcommands:
   * clone  
   * delete  
   * edit  

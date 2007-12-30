@@ -107,7 +107,7 @@ and start hacking away.  If the patch gets accepted, just delete the {{{add_crue
 
 = Configuring =
 
-Almost everything in Dev is configurable via environment variables.  These variables are described throughout this wiki, ~~and summarized in the VariableIndex~~.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev edit}}}.
+Almost everything in Dev is configurable via environment variables.  These variables are described throughout this wiki, and summarized in the VariableIndex.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev edit}}}.
 
 == Project-level Configuration ==
 

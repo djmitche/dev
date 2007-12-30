@@ -1,0 +1,16 @@
+﻿#summary CVS Source Management Extension
+The *cvs* extension provides a loader to handle source checked out of CVS repositories.
+
+= Loader =
+
+The syntax of the loader is
+{{{
+cvs REPOSITORY MODULE DIRECTORY
+}}}
+
+For a simple checkout, add a line to `SOURCES` like
+{{{
+SOURCES=" ...
+	cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello .
+... "
+}}}

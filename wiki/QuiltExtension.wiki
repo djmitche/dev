@@ -1,7 +1,11 @@
-#summary Extension to interact with 'patchwork quilt'
+﻿#summary Extension to interact with 'patchwork quilt'
 [http://savannah.nongnu.org/projects/quilt Patchwork Quilt] is a patch-authoring tool originally written by Andrew Morton, and heavily modified since.
 
 This extension supports preparation of patches to other projects using quilt.
+
+= Status =
+
+This extension is still under development, and is not yet completely functional.
 
 = Setup =
 At the moment, because of the way quilt reads its configuration, the following snippet must be included either in `/etc/quilt.quiltrc` or `$HOME/.quiltrc` in order for quilt to function properly:
@@ -13,3 +17,19 @@ if test -n "$DEV_TASK_CONFIG_DIR" -a -f "$DEV_TASK_CONFIG_DIR/quiltrc"; then
     source "$DEV_TASK_CONFIG_DIR/quiltrc"
 fi
 }}}
+
+= Loader =
+Add a line like
+{{{
+SOURCES=" ...
+quilt
+..."
+}}}
+to set up the base of the task directory for use with quilt.  To set up a subdirectory, use
+{{{
+SOURCES=" ...
+quilt sub/dir
+..."
+}}}
+
+Then use the 'quilt' command as usual.

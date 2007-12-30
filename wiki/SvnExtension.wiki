@@ -1,31 +1,19 @@
-#summary Subversion Source Management Extension
+﻿#summary Subversion Source Management Extension
 
-= Introduction =
+The *svn* extension provides a loader to handle source checked out of Subversion repositories.
 
-The *svn* extension provides functions to handle source checked out of Subversion repositories.
+= Loader =
 
-= Task Functions =
-
-Three task functions are provided:
-
-== svn_checkout ==
+Add a line like
 {{{
-svn_checkout URL [DIRECTORY]
+SOURCES=" ...
+	svn https://dev.googlecode.com/svn/trunk/
+... "
 }}}
-Check out URL into DIRECTORY, a subdirectory of the task directory.  If DIRECTORY is omitted, the checkout is done into the task directory itself -- this is the most common arrangement.
 
-== svn_unload ==
+Or, to load the given URL at a subdirectory of the task directory,
 {{{
-svn_unload [DIRECTORY]
+SOURCES=" ...
+	svn https://dev.googlecode.com/svn/trunk/ sub/directory
+... "
 }}}
-Unload a directory loaded with `svn_checkout`; if DIRECTORY is omitted, it defaults to the task directory itself.
-
-== svn_status ==
-{{{
-svn_status [DIRECTORY]
-}}}
-Display the status of a directory loaded with `svn_checkout`
-
-= Lookaside Cache =
-
-If the project variable SVN_CACHE_DIR is defined in `.devrc`, then the extension will store unmodified working copies under SVN_CACHE_DIR, and use those to speed subsequent checkouts.

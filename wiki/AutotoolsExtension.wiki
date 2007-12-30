@@ -1,0 +1,33 @@
+﻿#summary CVS Source Management Extension
+
+This extension provides subcommands to ease development of autotools-based software ([http://www.gnu.org/software/autoconf/ autoconf] and [http://www.gnu.org/software/automake/ automake]).  The builds utilize autoconf's ability to separate _source_ and _build_ directories.  The task directory serves as the source directory, and a temporary directory is used as the build directory.  The extension also provides a _prefix_, to which `dev make install` will install.
+
+= Subcommands =
+
+== dev configure ==
+
+`dev configure` begins by removing any existing build or prefix directories, to prevent any interference.  Then:
+  * runs `autogen` (or the equivalent script) to run `autoconf`, `automake`, `aclocal`, etc.
+  * creates a new build directory
+  * runs `./configure` from the build directory
+Any additional arguments to `dev configure` are passed along to `./configure`.
+
+== dev make ==
+
+The follow-up subcommand is `dev make`, which invokes `make` in the build directory, passing along any additional arguments.  A common command-line to configure, build, and install an application is
+{{{
+dev configure && dev make install
+}}}
+
+= Variables =
+
+These two variables control the build and prefix directories.  They are subdirectories of `$DEV_PROJECT_DIR/tmp` by default.
+  * `AUTOTOOLS_BUILD_DIR` -- Directory where builds will take place
+  * `AUTOTOOLS_PREFIX_DIR` -- Root installation directory
+
+`AUTOTOOLS_CONFIGURE_FLAGS` are additional arguments that will be passed to the configure script.  Note that the contents of the variable will have word splitting applied, so any spaces will need to be properly quoted, e.g.,
+{{{
+AUTOTOOLS_CONFIGURE_FLAGS='CFLAGS="-g -O2"'
+}}}
+
+`AUTOTOOLS_SETUP` is the command to run to set up the source directory for building.  By default, it tries a few common names, but can be overridden if the application under development is not among them.  Finally, `AUTOTOOLS_CONFIGURE_COMMMAND` is the name of the configure script -- almost always `configure`.

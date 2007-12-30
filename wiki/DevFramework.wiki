@@ -2,7 +2,7 @@
 #labels Featured
 
 = 'dev' command =
-The central interface to Dev is through the 'dev' command and its subcommands.  The following subsections describe the environment that 'dev' sets up for its subcommands.
+The central interface to Dev is through the 'dev' command.  The following subsections describe the environment that 'dev' sets up for its subcommands.
 
 == .devrc ==
 The file {{{.devrc}}} serves two purposes:  It marks the ProjectDirectory, and contains the Dev configuration for that project.  It is __sourced__ as a shell script before the subcommand is started, so it should follow shell-programming conventions for quoting, etc.
