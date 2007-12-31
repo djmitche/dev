@@ -58,6 +58,7 @@ Untar a tarball using GNU tar; all arguments are passed to GNU tar unchanged.
 SOURCES=" ...
   untar -C data -jxf /path/to/testdata.tar.bz2
 ... "
+}}}
 
 = Shell Functions =
 
