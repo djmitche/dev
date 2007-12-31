@@ -38,17 +38,11 @@ set_task_dir() {
 # Search up from the current directory to find a directory containing
 # '.devrc'.  This is the project directory.
 #
-# Side-effects:
-#  - error message to stderr on error
 # Output:
 #  - set $DEV_PROJECT_DIR (exported) to the project directory
 #  - exit status '1' on error
 set_project_dir() {
     export DEV_PROJECT_DIR=`search_up_dir_tree .devrc`
-    if test -z "$DEV_PROJECT_DIR"; then
-        echo "Could not find a dev project (a directory containing .devrc)!" >&2
-        return 1
-    fi
 }
 
 # Enumerate the available subcommands
@@ -125,12 +119,9 @@ EOF
 # Output:
 #  - return status of 1 if the sourcing failed
 source_project_configuration() {
-    if test -z "$DEV_PROJECT_DIR"; then 
-        echo "No project defined!" >&2
-        return 1
+    if test -n "$DEV_PROJECT_DIR"; then 
+        source "$DEV_PROJECT_DIR/.devrc" || return 1
     fi
-
-    source "$DEV_PROJECT_DIR/.devrc" || return 1
 }
 
 # Source the current task, if $DEV_TASK_DIR is defined.
@@ -139,32 +130,75 @@ source_project_configuration() {
 #  - $DEV_TASK_DIR
 # Side-effects:
 #  - extensions are loaded by the 'require' function
-#  - task-specific configuration is loaded
+#  - tasktype configuration is loaded
 #  - task functions are defined
-#  - error message to stderr on error
+#  - error messages go to stderr on error
+#  - .task may be upgraded if necessary
 # Output:
 #  - return status of 1 if the sourcing failed
-#  - sets $DEV_TASK (exported) if a task is defined
+#  - sets $DEV_TASKTYPE (exported) if a task is defined
 source_task_configuration() {
+    local task_file="$DEV_TASK_DIR/.task"
+    local tasktype
     local config_file
     if test -z "$DEV_TASK_DIR"; then
         return;
     fi
 
-    export DEV_TASK=`<"$DEV_TASK_DIR/.task"`
-    if test -z "$DEV_TASK"; then
-        echo ".task is empty!" >&2
+    if test ! -f "$task_file"; then
+        echo "Task file not found!" >&2
         return 1
     fi
 
-    config_file="$DEV_TASKS_DIR/$DEV_TASK.dev"
-    if ! test -f "$config_file"; then
-        echo "No configuration for task '$DEV_TASK'" >&2
+    # upgrade .task from dev-0.4 format to dev-0.5
+    if test `wc -w <"$task_file"` = "1"; then
+        # a single-word file is a tasktype
+        echo "Upgrading '$task_file' from dev-0.4 format"
+        tasktype=`<"$task_file"`
+        echo "tasktype $tasktype" > "$task_file" \
+            || die "Upgrade failed"
+    fi
+
+    # define the 'tasktype' function
+    tasktype() {
+        if test "$#" != "1"; then
+            echo "Invalid 'tasktype' syntax" >&2
+            return 1
+        fi
+        if test -n "$DEV_TASKTYPE"; then
+            echo "Only one 'tasktype' declaration is allowed" >&2
+            return 1
+        fi
+
+        export DEV_TASKTYPE="$1"
+        local tasktype_file="$DEV_TASKTYPES_DIR/$DEV_TASKTYPE.dev"
+        if test ! -f "$tasktype_file"; then
+            echo "No such tasktype '$DEV_TASKTYPE'" >&2
+            return 1
+        fi
+
+        # source it up
+        if . "$tasktype_file"; then
+            : # all good
+        else
+            echo "Tasktype configuration failed" >&2
+            return 1
+        fi
+
+        true
+    }
+
+    # source the configuration
+    DEV_TASKTYPE=''
+    if . "$task_file"; then
+        : # all good
+    else
+        echo "Task configuration failed" >&2
         return 1
     fi
 
-    if ! source "$config_file"; then
-        echo "error reading '$config_file'" >&2
+    test -n "$DEV_TASKTYPE" || {
+        echo "No tasktype defined in '$task_file'" >&2
         return 1
-    fi
+    }
 }

@@ -3,24 +3,15 @@
 require base
 
 usage() {
-  echo "Show Dev variables."
-  echo ""
-  echo "dev edit [-h] [{variable} ..]"
-  echo "  {variable} - the variable to show"
-  echo ""
-  echo "  -h: this message"
-  echo ""
-  echo "If no variables are specified, all interesting variables are shown"
-  exit 1
+    cat <<EOF
+Show Dev variables
+dev var -- display all variables (similar to 'env')
+dev var -h -- this message
+dev var list -- list all variable names
+dev var <varname> -- display the value of <varname>
+EOF
+    exit 1
 }
-
-while getopts "h" OPT
-do
-  case OPT in
-    h) usage ;;
-  esac
-done
-shift $((OPTIND - 1))
 
 show_var() {
     eval "echo $1=\'\$$1\'"
@@ -28,14 +19,25 @@ show_var() {
 
 interesting_variables="DEV_PROJECT_DIR"
 interesting_variables="$interesting_variables DEV_TASK DEV_TASK_DIR"
-interesting_variables="$interesting_variables DEV_TASKS_DIR DEV_SUBCOMMANDS_PATH"
+interesting_variables="$interesting_variables DEV_TASKTYPES_DIR DEV_SUBCOMMANDS_PATH"
 
 if test $# -eq 0; then
     for var in $interesting_variables; do
         show_var $var
     done
-else
-    for var in "$@"; do
-        show_var $var
-    done
+    exit 0
 fi
+
+subsubcommand="$1"
+shift
+case "$subsubcommand" in
+    list)
+        for var in $interesting_variables; do
+            echo $var
+        done
+        ;;
+    -h) usage ;;
+    *)
+        eval "echo \"x\$$subsubcommand\" | sed -e s/^x//"
+        ;;
+esac

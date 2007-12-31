@@ -1,5 +1,5 @@
 # Set up quilt on the designated subdirectory, or the task directory by default.  If
-# DEV_PATCH_DIR is set, points patches/ to that directory.
+# QUILT_PATCH_DIR is set, points patches/ to that directory.
 # 
 # SYNTAX:
 #
@@ -11,9 +11,9 @@ load_quilt() {
 
   cd "$DEV_TASK_DIR/$destdir"
 
-  if test -n "${DEV_PATCH_DIR}"; then
+  if test -n "${QUILT_PATCH_DIR}"; then
       test -e "${QUILT_PATCHES-patches}" && die "Task already has a patches/ directory"
-      ln -s "$DEV_PATCH_DIR" "${QUILT_PATCHES-patches}"
+      ln -s "$QUILT_PATCH_DIR" "${QUILT_PATCHES-patches}"
   fi
 
   # quilt looks for 'patches' directory and for '.pc/series'

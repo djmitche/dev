@@ -1,0 +1,67 @@
+#! /bin/bash
+
+require base
+
+usage() {
+  cat <<EOF
+Query and edit information about projects
+
+dev project -- display the current project directory
+dev project -h -- this message
+dev project new [<projdir>] -- create and configure a new project directory
+      (defaulting to the current directory)
+dev project edit -- edit configuration for the current project directory
+EOF
+  exit 1
+}
+
+# display the current project directory if no arugments were given
+if test -z "$1"; then
+    if test -n "$DEV_PROJECT_DIR"; then
+        echo "$DEV_PROJECT_DIR"
+        exit 0
+    else
+        exit 1
+    fi
+fi
+
+subsubcommand="$1"
+shift
+case "$subsubcommand" in
+    new)
+        newdir="$1"
+        newdir=`join_paths "$DEV_ORIGINAL_PWD" "$newdir"`
+
+        if test ! -e "$newdir"; then
+            $MKDIR -p "$newdir" || die "Could not create '$newdir'"
+        fi
+        cd "$newdir" || die "Could not access '$newdir'"
+
+        # see if there's already a project here..
+        (   DEV_PROJECT_DIR=`search_up_dir_tree .devrc`
+            test -n "$DEV_PROJECT_DIR" && die "Already in a Dev project ($DEV_PROJECT_DIR)"
+            true
+        ) || exit 1
+
+        # Create .devrc
+        cat <<EOF > "$newdir/.devrc"
+# This file identifies the project directory.  You can also add configuration variables here,
+# such as:
+#  DEV_TASKTYPES_DIR=..
+#  DEV_SUBCOMMANDS_PATH="$DEV_SUBCOMMANDS_PATH:.."
+EOF
+        test "$?" != 0 && die "Error creating .devrc"
+
+        # and edit it
+        edit_file "$newdir/.devrc"
+        ;;
+
+    edit)
+        # Make sure there's a current project
+        test -z "$DEV_PROJECT_DIR" && die "No current project; are you in the project directory?"
+
+        edit_file "$DEV_PROJECT_DIR/.devrc"
+        ;;
+    -h) usage ;;
+    *) usage ;;
+esac

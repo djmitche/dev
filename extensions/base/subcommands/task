@@ -1,0 +1,90 @@
+#! /bin/bash
+
+require base
+
+usage() {
+    cat <<EOF
+Query and manipulate task directories
+
+dev task -- display the current task directory
+dev task -h -- this message
+dev task load <ttyp> <tdir> -- load a task of type <ttyp> at <tdir>
+dev task edit -- edit the current task's configuration
+EOF
+    exit 1
+}
+
+# display the current task directory if no arugments were given
+if test -z "$1"; then
+    if test -n "$DEV_TASK_DIR"; then
+        echo "$DEV_TASK_DIR"
+        exit 0
+    else
+        exit 1
+    fi
+fi
+
+subsubcommand="$1"
+shift
+case "$subsubcommand" in
+    load)
+        test "$#" -eq 2 || usage
+        tasktype="$1"
+        taskdir="$2"
+
+        test -e "$taskdir" && die "'$taskdir' already exists"
+        $MKDIR -p "$taskdir" || die "Could not create '$taskdir'"
+        test x"$tasktype" = x"" && die "No new tasktype specified"
+
+        # run in a subshell to kill the new directory on any errors
+        (
+            # see if there's already a task there..
+            cd "$taskdir"
+            existing_taskdir=`search_up_dir_tree .task`
+            test -n "$existing_taskdir" \
+                && die "Already in a Dev task ($existing_taskdir)"
+            
+            # and double-check that the new dir is in the same project
+            cd "$taskdir"
+            existing_project=`search_up_dir_tree .devrc`
+            test "$existing_project" = "$DEV_PROJECT_DIR" \
+                || die "'$taskdir' is in a different project"
+
+            # make up a new task configuration file
+            cd "$task_path"
+            echo "tasktype $tasktype" > ".task"
+
+            # ..and load it
+            set_task_dir || exit 1
+            source_task_configuration || exit 1
+
+            # now load SOURCES
+            echo "$SOURCES" | while read LOADER ARGS; do
+                test -z "$LOADER" && continue # allow blank lines
+                test -f "$loaderdir/$LOADER" || die "No such loader $LOADER"
+
+                # source the loader
+                . "$loaderdir/$LOADER"
+
+                # run the loader function
+                load_$LOADER $ARGS || die "Failure in load_$LOADER"
+            done || exit 1
+
+            # all set!
+            true
+        ) || {
+            # remove the taskdir if any error occurs
+            rm -rf "$taskdir"
+            exit 1
+        }
+        ;;
+
+    edit)
+        test "$#" -eq 0 || usage
+        have_task || die "No current task"
+        edit_file "$DEV_TASK_DIR/.task"
+        ;;
+
+    -h) usage ;;
+    *) usage ;;
+esac
