@@ -3,13 +3,69 @@
 This extension blurs the abstraction between extensions and the DevFramework a little bit, since it manages the internals of tasks.
 
 = Subcommands =
-This extension implements the following subcommands:
-  * clone  
-  * delete  
-  * edit  
-  * load  
-  * new  
-  * status  
-  * tasks  
-  * unload
-See the online help for each function for details.
+
+This extension implements subcommands to query and manipulate the three basic concepts of Dev: projects, tasktypes, and tasks.  Each subcommand has sub-subcommands, such as `new`, `edit`, `delete` or `list`.
+
+== dev project ==
+
+Queries and manipulates projects:
+  * `dev project ` displays the current ProjectDirectory
+  * `dev project new [<projdir>]` create a new ProjectDirectory at the designated directory, or in the current directory if omitted
+  * `dev project edit` edits the current project configuration
+
+== dev tasktype ==
+
+Queries and manipulates tasktypes:
+  * `dev tasktype` displays the current TaskDirectory's TaskType
+  * `dev tasktype new <name>` creates and edits a new TaskType
+  * `dev tasktype clone <oldname> <newname>` clones an existing TaskType and edits the result
+  * `dev tasktype edit [<name>]` edits the given TaskType, or the current TaskType if none is given
+  * `dev tasktype list` lists all [TaskType TaskTypes]
+
+== dev task ==
+
+Queries and manipulates tasks:
+  * `dev task` displays the current TaskDirectory
+  * `dev task load <tasktype> <taskdir>` uses the configuration for TaskType to create and populate a TaskDirectory; this sub-subcommand implements the [Loader].
+  * `dev task edit` edits the current TaskDirectory's configuration
+
+== dev var ==
+
+Queries and manipulates configuration variables:
+  * `dev var` displays a summary of all configuration variables
+  * `dev var list` lists the names of all configuration variables
+  * `dev var VARNAME` displays the value of `$VARNAME`.
+It appears that `dev var VARNAME` is redundant -- why not just use `$VARNAME`?  The answer is that Dev variables are ordinarily only available when the Dev command is running (there is no portable way to "inject" variables into a running shell).  `dev var` provides a means of accessing Dev variables in other contexts.
+
+= Loaders =
+
+This extension provides several simple loaders:
+
+== mkdir ==
+
+This loader simply creates the named directory:
+{{{
+SOURCES=" ...
+  mkdir new/dir
+..."
+}}}
+
+== untar ==
+
+Untar a tarball using GNU tar; all arguments are passed to GNU tar unchanged.
+{{{
+SOURCES=" ...
+  untar -C data -jxf /path/to/testdata.tar.bz2
+... "
+
+= Shell Functions =
+
+Adding
+{{{
+require base
+}}}
+to the top of a subcommand script imports the following helpful shell functions:
+
+  * `sanity_check_tasktype TASKNAME` -- check that `TASKNAME` is reasonable (no funny characters)
+  * `tasktype_exists TASKNAME` -- check that `TASKNAME` already exists
+  * `have_task` -- check that there is a current task

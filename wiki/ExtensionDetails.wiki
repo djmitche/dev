@@ -1,0 +1,36 @@
+﻿#summary Details of the implementation of extensions
+
+= Source Structure =
+An extension is represented in the source tree by a subdirectory of {{{extensions}}} named after the extension itself.  That subdirectory must contain:
+  * {{{configure.m4}}}: configure snippet
+  * {{{Makefile.am}}}: build instructions
+and can optionally contain:
+  * {{{defaults.sh}}}: default values for configuration variables
+  * {{{require.sh}}}: functions for use in subcommands
+  * new subcommands
+  * new loaders
+  * arbitrary library files
+
+= Building =
+== configure.m4 ==
+Each extension contains a snippet of configure.ac.  Usually, this is just a call to {{{DEV_SETUP_EXTENSION}}} followed by any extension-specific program checks.  {{{DEV_SETUP_EXTENSION}}} takes three arguments: the name of the extension, a variable which will be 'true' if the extension is enabled, and a default state for the extension: {{{disabled}}} or {{{enabled}}}.  See the existing extensions' {{{configure.m4}}} for examples.
+
+== Makefile.am ==
+An extension's {{{Makefile.am}}} controls where files will be installed, which in turn affects how 'dev' will interact with the extension.
+
+A makefile should start with the following boilerplate:
+{{{
+include $(top_srcdir)/extensions/extension.am
+
+EXTENSION=your-extension-name-here
+}}}
+
+It can then assign the names of any new subcommands to {{{subcommand_SCRIPTS}}}.  Likewise, new loaders are listed in {{{loader_SCRIPTS}}}.
+
+Any additional scripts or library files can be placed in {{{extlibdir}}} via {{{extlibdir_SCRIPTS}}} or {{{extlibdir_DATA}}}.  These files will be available from shell scripts in {{{$extbasedir/extname}}}.  Two filenames have special meaning.  A file named {{{defaults.sh}}} will be sourced early in the setup process, and can set default values for any configuration variables.  
+
+A file named {{{require.sh}}} can be loaded by subcommands via a line such as
+{{{
+require your-extension-name-here
+}}}
+usually this file provides helpful functions and variables for use in subcommands.

@@ -1,14 +1,25 @@
 ﻿#summary Alphabetical list of variables, with brief descriptions and links
 #labels Featured
+
+= Configuration Variables =
+
+These variables can be set in configuation files to influence the behavior of Dev and its extensions.
+
 || *Variable*                                           || *Description* ||
 ||[AutotoolsExtension      AUTOTOOLS_BUILD_DIR         ]|| Directory where builds will take place ||
 ||[AutotoolsExtension      AUTOTOOLS_CONFIGURE_COMMMAND]|| `configure` command ||
 ||[AutotoolsExtension      AUTOTOOLS_CONFIGURE_FLAGS   ]|| Additional options to pass to `configure` ||
 ||[AutotoolsExtension      AUTOTOOLS_PREFIX_DIR        ]|| Root installation directory ||
 ||[AutotoolsExtension      AUTOTOOLS_SETUP             ]|| Command that creates `configure` (e.g, `autogen`) ||
-||[DevFramework            DEV_PROJECT_DIR             ]|| the current ProjectDirectory (set by Dev) ||
 ||[DevFramework            DEV_SUBCOMMANDS_PATH        ]|| colon-separated list of directories containing Dev subcommands ||
-||[DevFramework            DEV_TASK                    ]|| the name of the current task (set by Dev) ||
-||[DevFramework            DEV_TASK_DIR                ]|| the current TaskDirectory (set by Dev) ||
-||[DevFramework            DEV_TASKS_DIR               ]|| directory in which TaskConfiguration files are stored ||
+||[DevFramework            DEV_TASKTYPES_DIR           ]|| directory in which TaskType files are stored (only effective in {{{.devrc}}}) ||
 ||[QuiltExtension          QUILT_PATCH_DIR             ]|| directory in which quilt patches are stored ||
+
+= Predefined Variables =
+
+These variables are set by Dev, and can be used in configuration files and subcommands.  They provide convenient base paths by which to locate other files.
+
+|| *Variable*                                           || *Description* ||
+||[DevFramework            DEV_PROJECT_DIR             ]|| the current ProjectDirectory ||
+||[DevFramework            DEV_TASK_DIR                ]|| the current TaskDirectory (not available in {{{.devrc}}}) ||
+||[DevFramework            DEV_TASKTYPE                ]|| the current TaskType (not available in {{{.devrc}}} ||

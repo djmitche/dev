@@ -1,0 +1,13 @@
+﻿A TaskType defines configuration for one or more tasks.  Most simple projects have only one task type, but as a project becomes more complex, TaskTypes can be defined for new branches or for tasks that require different configuration or build practices.
+
+TaskType configuration is, like all Dev configuration files, just a shell script.  For most uses, it will contain only variable assignments, adding to any configuration found in the ProjectDirectory.
+
+= Loading Source =
+A TaskType must minimally specify how to load the source code it contains.  This is accomplished through the "[Sources SOURCES]" variable.   See [Sources] for more detail on the syntax of this variable.
+
+= Configuration Variables =
+Configuration can be supplied in the form of variables.  Such variables can also be defined in the ProjectDirectory's configuration if they are global to the project.  For example:
+{{{
+QUILT_PATCH_DIR="$DEV_PROJECT_DIR/patches"
+DEV_SUBCOMMANDS_PATH="$DEV_SUBCOMMANDS_PATH:$DEV_TASK_DIR/subcommands"
+}}}

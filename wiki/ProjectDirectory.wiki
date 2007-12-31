@@ -6,4 +6,4 @@ The project directory is the top-level directory containing everything relating 
 Dev finds the project directory by searching outward from the current directory until it finds a directory containing {{{.devrc}}}.  The project directory is available to subcommands in {{{$DEV_PROJECT_DIR}}}.
 
 = Contents of the Project Directory =
-Besides containing {{{.devrc}}}, the layout of a project directory is up to the user.  Any active tasks must be subdirectories of the project directory, so it does not directly contain any source code.  By default, Dev stores TaskConfiguration and subcommands in the `dev/` subdirectory, but this can be changed by setting `$DEV_TASKS_DIR` and `$DEV_SUBCOMMANDS_PATH` in {{{.devrc}}}.
+Besides containing {{{.devrc}}}, the layout of a project directory is up to the user.  Any active tasks must be subdirectories of the project directory, so it does not directly contain any source code.  By default, Dev stores TaskType and subcommands in the `dev/` subdirectory, but this can be changed by setting `$DEV_TASKTYPES_DIR` and `$DEV_SUBCOMMANDS_PATH` in {{{.devrc}}}.

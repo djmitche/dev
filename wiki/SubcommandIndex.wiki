@@ -1,12 +1,12 @@
 ﻿#summary Alphabetical list of subcommands
 #labels Featured
 || *Command*                            || *Description* ||
-||[BaseExtension           clone       ]|| Clone an existing TaskConfiguration ||
+||[BaseExtension           clone       ]|| Clone an existing TaskType ||
 ||[AutotoolsExtension      configure   ]|| Set up a build directory and run `configure` ||
-||[BaseExtension           delete      ]|| Delete a TaskConfiguration ||
-||[BaseExtension           edit        ]|| Edit a TaskConfiguration ||
-||[BaseExtension           load        ]|| Load a TaskConfiguration into a new directory ||
+||[BaseExtension           delete      ]|| Delete a TaskType ||
+||[BaseExtension           edit        ]|| Edit a TaskType ||
+||[BaseExtension           load        ]|| Load a TaskType into a new directory ||
 ||[AutotoolsExtension      make        ]|| Run `make` in the build directory ||
-||[BaseExtension           new         ]|| Create a new TaskConfiguration ||
-||[BaseExtension           tasks       ]|| List all [TaskConfiguration]s ||
+||[BaseExtension           new         ]|| Create a new TaskType ||
+||[BaseExtension           tasks       ]|| List all [TaskType]s ||
 ||[BaseExtension           var         ]|| Display/query Dev variables ||

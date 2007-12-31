@@ -4,14 +4,14 @@
 = What Is It? =
 
 Dev helps you to:
-  * organize your development work, allowing you to juggle multiple tasks.
-  * automate your common development tasks, such as building, running tests, or submitting patches, using succinct commands and a convenient configuration mechanism
+  * organize your development work, allowing you to juggle multiple tasks across multiple projects; and
+  * automate common development tasks, such as building, running tests, or submitting patches, using succinct commands and a convenient configuration mechanism.
 
 So let's see how it works.
 
-= Installing Dev =
+= Install Dev =
 
-First, install Dev.  You can find the latest tarball on the "[http://code.google.com/p/dev/downloads/list Downloads]" tab.  Install should be as simple as
+You can find the latest tarball on the "[http://code.google.com/p/dev/downloads/list Downloads]" tab.  Install should be as simple as
 {{{
 $ ./configure
 $ make
@@ -19,41 +19,38 @@ $ make
 }}}
 The software is also easy to install in your home directory, if you aren't an admin: just add {{{--prefix=$HOME}}} to the {{{./configure}}} invocation, and make sure that {{{$HOME/bin}}} is in your {{{$PATH}}}.
 
-= Set Up a Project =
+= Set Up a ProjectDirectory =
 
-In this tour, we'll be working on [http://www.gnu.org/software/hello/ GNU hello], also known as "hello world on steroids".  This will be the _project_.  So start by making a directory for the project.  You can put this wherever you would like.
+In this tour, we'll be working on [http://www.gnu.org/software/hello/ GNU hello], also known as "hello world on steroids".  This will be the _project_.  So start by making a ProjectDirectory.  You can put this wherever you would like.  For purposes of the example, it's in {{{~/devel/projects}}}.
 {{{
-cd ~/devel/projects
-mkdir hello
-cd hello
-}}}
-Now tell Dev that this is a project directory:
-{{{
-touch .devrc
+$ cd ~/devel/projects
+$ dev project new hello
 }}}
 
-= Set Up a Task =
+= Set Up a TaskType =
 
-~~ The confusion of "task" and "task configuration" is horrendous.  Fix it. ~~
-
-Now we need to tell Dev how to set up a source directory.  We'll create a new task, named 'trunk', corresponding to the latest revision in CVS.
+Now we need to tell Dev how to set up a source directory.  We'll create a new task type, named 'trunk', which loads the latest revision of GNU hello from CVS.
 {{{
-$ dev new trunk
-$ dev edit trunk
+$ dev tasktype new trunk
 }}}
-`dev edit` will fire up your editor to edit this task configuration.  Make it look like this:
+this will fire up your editor to edit this task configuration.  Make it look like this:
 {{{
 SOURCES="cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello ."
 }}}
-This reads, roughly, as "using CVS, load module `hello` from repository `:pserver:...` in the current directory (`.`)".  Save your changes, and you're ready to load up a task with that configuration:
+This reads, roughly, as "using CVS, load module `hello` from repository `:pserver:...` in the current directory (`.`)".  
+
+= Set Up a TaskDirectory =
+
+Now you're ready to load up a task with that type:
 {{{
-$ dev load trunk add_cruelty
+$ dev task load trunk add_cruelty
  (lots of CVS messages)
 $ cd add_cruelty
 }}}
-You've now loaded a task, using the 'trunk' configuration.  Let's take it for a spin before changing anything.
+You've now loaded a task, using the 'trunk' TaskType.  Let's take it for a spin before changing anything.
 
 = Build =
+
 Since this is a GNU project, it naturally uses GNU autotools and make.  Dev supports those without any additional configuration.
 {{{
 $ dev configure
@@ -64,9 +61,9 @@ Next, let's build the application:
 {{{
 $ dev make
 }}}
-This runs `make` in the directory that was just configured.  Note that there's no need t `cd` into that directory or otherwise break your stride.
+This runs `make` in the directory that was just configured.  Note that there's no need to `cd` into that directory or otherwise lose your place in the source.  You could even map an editor keystroke to run `dev make`.
 
-And finally, let's install it:
+Finally, install hello:
 {{{
 $ dev make install
 }}}
@@ -75,9 +72,7 @@ You will see messages about files installed into `tmp/prefix`.  To run the built
 $ ../tmp/prefix/bin/hello
 Hello, world!
 }}}
-Hmm, that's a bit annoying to type -- we'll fix it in a bit.  
-
-Before we do that, let's make some modifications.  Edit {{{src/hello.c}}} to reflect cruel reality, by changing the output string.  Note that it occurs in two places.  When you're done,
+Hmm, that's a bit annoying to type -- we'll fix it in a bit.  Before we do that, let's make some modifications.  Edit {{{src/hello.c}}} to reflect cruel reality, by changing the output string.  Note that it occurs in two places.  When you're done,
 {{{
 $ dev make install
   (messages about rebuilding as required)
@@ -91,16 +86,16 @@ $ cvs diff
 }}}
 surprisingly, some of the translation files were changed by the build process.  Technically, this is a bug in GNU hello.  A gold star to the reader who fixes it!
 
-Try running {{{dev make check}}}, and note that one of the unit tests is broken.
+Try running {{{dev make check}}}, and note that one of the unit tests is broken.  Fixing the test is left as an exercise to the reader.
 
 = Juggling =
 
-Imagine that you've sent your patch (with a fix to the unit tests, of course) to the GNU hello authors, and want to begin work on a new Jabber module that can offer greetings over IM.  If the authors ask you to make further changes, you'll want to still have the working copy around.  But you don't want to being your Jabber work in this working copy -- the patches would get mixed up!
+Imagine that you've sent your patch (with the fix to the unit tests, of course) to the GNU hello authors, and want to begin work on a new Jabber module that can offer friendly greetings over IM.  If the authors ask you to make further changes to your cruelty patch, you'll want to still have the working copy around.  But you don't want to begin your Jabber work in this working copy -- the patches would get mixed up!
 
 Dev makes juggling these tasks easy:
 {{{
 $ cd ~/devel/projects/hello
-$ dev load trunk jabber-greeter
+$ dev task load trunk jabber-greeter
 $ cd jabber-greeter
 }}}
 and start hacking away.  If the patch gets accepted, just delete the {{{add_cruelty}}} directory.
@@ -111,48 +106,55 @@ Almost everything in Dev is configurable via environment variables.  These varia
 
 == Project-level Configuration ==
 
-Imagine, if you will, that your home directory is NFS-mounted, and you'd like to do your builds in {{{/var/tmp}}}. The AutotoolsExtension wiki page documents a number of variables, among them `$AUTOTOOLS_BUILD_DIR` and `$AUTOTOOLS_PREFIX_DIR`.  The default to `${DEV_PROJECT_DIR}/tmp/{build,prefix}`, as described above.
+If your home directory is NFS-mounted, you would probably like to do your builds locally, say in {{{/var/tmp}}}. The AutotoolsExtension wiki page documents a number of relevant variables, among them `$AUTOTOOLS_BUILD_DIR` and `$AUTOTOOLS_PREFIX_DIR`.  The default to `${DEV_PROJECT_DIR}/tmp/{build,prefix}`, as described above.
 
 Since we'll want to build in {{{/var/tmp}}} for all of our tasks, let's add these to the project configuration.
 {{{
 $ cd ~/devel/projects/hello
-$ echo 'AUTOTOOLS_BUILD_DIR=/var/tmp/hello/build' >> .devrc
-$ echo 'AUTOTOOLS_PREFIX_DIR=/var/tmp/hello/prefix' >> .devrc
-$ cd add_cruelty
-$ dev configure && dev make
-}}}
-
-== Task-level configuration ==
-
-Let's further imagine that you are adding an automatic-update feature to GNU hello.  This will, of course, be compile-time selectable via the `--enable-automatic-updates` configure option.  `dev configure` can accept options for configure on its command line:
-{{{
-$ dev configure --enable-automatic-updates
-}}}
-but that's a lot of wasted keystrokes!
-
-Another look at AutotoolsExtension reveals `$AUTOTOOLS_CONFIGURE_FLAGS`.  Let's create a new task, including this variable.
-
-{{{
-$ cd ~/devel/projects/hello
-$ dev clone trunk auto_up
-$ dev edit auto_up
+$ dev project edit
 }}}
 add:
 {{{
+AUTOTOOLS_BUILD_DIR=/var/tmp/hello/build
+AUTOTOOLS_PREFIX_DIR=/var/tmp/hello/prefix
+}}}
+
+Re-run `dev configure && dev make install` and note that the paths have changed.
+
+== Task-level configuration ==
+
+Let's further imagine that you are adding an automatic-update feature to GNU hello.  You would begin, of course, by loading a new task of type `trunk`:
+{{{
+$ dev task new trunk autoupdate
+$ cd autoupdate
+}}}
+The new functionality will, of course, be compile-time selectable via the `--enable-automatic-updates` configure option.  `dev configure` can accept options for configure on its command line:
+{{{
+$ dev configure --enable-automatic-updates
+}}}
+but that's a lot of wasted keystrokes!  Another look at AutotoolsExtension reveals `$AUTOTOOLS_CONFIGURE_FLAGS`.  Let's add this variable to the task configuration:
+{{{
+$ dev task edit
+}}}
+Add:
+{{{
 AUTOTOOLS_CONFIGURE_FLAGS="--enable-automatic-updates"
 }}}
-and load it:
+
+== TaskType configuration ==
+
+Once the automatic updates patch is accepted, the bug reports start to flood in.  For each bug report, you need a TaskDirectory.  It quickly gets tiresome to add the `$AUTOTOOLS_CONFIGURE_FLAGS` option for each new task.  The solution is a new TaskType:
 {{{
-$ dev load auto_up au
-$ cd au
-$ dev configure && dev make
+$ dev tasktype clone trunk autoupdate
+  # adding:
+  AUTOTOOLS_CONFIGURE_FLAGS="--enable-automatic-updates"
+$ dev task load autoupdate bug1299
+$ cd bug1299
 }}}
 
-= Adding a new command =
+= Scripting =
 
-It's a bit arduous to type the path to the `hello` binary to test the application -- well, as arduous as "Hello, world!" can get.  Let's write a new Dev subcommand to run the application for us.  
-
-~~ TODO: this seems incrementally harder than all the preceding stuff .. is there a way to make it easier? ~~
+It's a bit arduous to type the path to the `hello` binary to test the application -- well, as arduous as "Hello, world!" can get.  Let's write a new Dev subcommand to run the application for us.  This process is a little more complex than anything above, but with your l33t skripting skillz, you can handle it.
 
 Head back out to your project directory and look around:
 {{{
@@ -176,4 +178,4 @@ $ dev run
 Hello, cruel world!
 }}}
 
-Neat.
+Neat!

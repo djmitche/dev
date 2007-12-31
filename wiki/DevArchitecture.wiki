@@ -1,24 +1,34 @@
 ﻿#summary General architecture of Dev
-#labels Featured
 
-= Projects and Tasks =
+= Directories =
 
-Dev operates on two levels: project and task.  A project corresponds to a particular application or product under development, while a task represents some smaller unit of work on a project.  For example, say you are working on a patch to SWIG to add support for Erlang.  Then SWIG is the project, and the erlang patch is the task.  You may be working concurrently on other aspects of SWIG, and may also be working on other projects.
+When Dev starts, its first job is to find the ProjectDirectory and the TaskDirectory.  It begins by searching upward (from the current directory to the root) for a file named {{{.devrc}}}.  The directory containing this file is designated the ProjectDirectory, and its full path is recorded in `$DEV_PROJECT_DIR`.  For all but the `project` subcommand, Dev stops processing immediately if it cannot find a project directory.  To find the task directory, Dev searches upward for a file named {{{.task}}}.  The directory containing this file, if one is found, is designated the TaskDirectory, and its full path is recorded in `$DEV_TASK_DIR`.  Failure to find a task directory is not fatal.
 
-A project will usually have the following associated with it:
-  * some scripts for compiling, running, testing, and so on
-  * shell and text editor configuration specific to the project
+= Configuration =
 
-== Project Directory ==
-Dev assumes that you have a single parent directory for each project, containing various subdirectories.  The default settings assume that a subdirectory named {{{dev}}} is available for Dev-related files, but this can be overridden if necessary by configuration in {{{.devrc}}}.  See ProjectDirectory for more details.
+Dev next loads the configuration for the task.  First, it sources {{{.devrc}}} to load the configuration for the ProjectDirectory.  Then, it sources {{{.task}}} to load the [TaskDirectory]'s configuration.  This file should begin with a line of the form
+{{{
+tasktype TTYP
+}}}
+which invokes a shell function that searches for {{{{TTYP.dev}}} in `$DEV_TASKTYPES_DIR`, and sources it.
 
-== Tasks ==
-A task is a subdirectory of the project directory, containing source code and any other required supporting files.  A task is described by a configuration file.  Multiple task directories can have the same file.  The term 'task' is overloaded to refer both to the task subdirectories and to the task configuration.  The usage should be clear from context.  See TaskConfiguration and TaskDirectory for more details.
+The end result is that the configuration is read in this order:
+  * ProjectDirectory configuration
+  * TaskType configuration
+  * TaskDirectory configuration
 
-= Extensions =
+= Subcommands =
 
-By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
- * new 'dev' subcommands
- * new [Loaders] (for loading source code into a TaskDirectory)
- * new utility functions (for use in subcommands)
- * new configuration variables
+Dev Next examines its first argument to determine the name of the subcommand to run.  It searches for a file by that name in its own subcommands directory, followed by each directory in the colon-separated `$DEV_SUBCOMMANDS_PATH`.  By default, this path contains the `dev/subcommands` subdirectory of `$DEV_PROJECT_DIR`, but it can be overridden in any of the configuration files.
+
+= Requirements =
+
+If the subcommand script requires functionality provided by a specific extension, it declares so with a line of the form
+{{{
+require EXTNAME
+}}}
+which loads the extension's {{{require.sh}}}, defining some useful functions, variables, etc.
+
+= Loading Sources =
+
+The BaseExtension actually takes care of loading sources, but it is a critical part of the operation of Dev.  TaskTypes specify one or more [Loaders] via `$[Sources SOURCES]`.  Follow the links for additional information.
