@@ -10,6 +10,7 @@ if ! rm -rf "$AUTOTOOLS_BUILD_DIR" 2>/dev/null; then
     chmod -R u+w "$AUTOTOOLS_BUILD_DIR" || exit 1
     rm -rf "$AUTOTOOLS_BUILD_DIR"  || exit 1
 fi
+rm -rf "$AUTOTOOLS_PREFIX_DIR" || exit 1
 $MKDIR -p "$AUTOTOOLS_BUILD_DIR" || exit 1
 
 # tag the build dir with this task dir; 'dev make' checks this.
