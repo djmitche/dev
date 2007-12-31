@@ -15,7 +15,7 @@ Dev provides a single executable with many subcommands, similar to `svn` or `cvs
 
 = Loaders =
 
-Dev's job is to organize and simplify your development work, and a big part of that job is to organize source code.  Dev ships with a number of [Loaders] for loading source code into a TaskDirectory from all sorts of places -- version control systems, tarballs, websites, etc.
+Dev's job is to organize and simplify your development work, and a big part of that job is to organize source code.  Dev ships with a number of [Loader Loaders] for loading source code into a TaskDirectory from all sorts of places -- version control systems, tarballs, websites, etc.
 
 = Configuration =
 
@@ -23,9 +23,9 @@ All of the work that Dev does is configurable, at the project, task type, and ta
 
 = Extensions =
 
-By itself, Dev is just a framework (see DevFramework).  DevExtensions are what make it powerful.  Extensions can provide:
+By itself, Dev is just a framework.  DevExtensions are what make it powerful.  Extensions can provide:
  * new subcommands
- * new [Loaders] (for loading source code into a TaskDirectory)
+ * new [Loader Loaders] (for loading source code into a TaskDirectory)
  * new utility functions (for use in subcommands)
  * new configuration variables
 

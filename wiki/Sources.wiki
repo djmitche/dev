@@ -1,4 +1,5 @@
-﻿The most critical configuration variable in a TaskType is `SOURCES` -- it defines the structure of as TaskDirectory of that type, and where to get the relevant sources.  
+﻿#summary The syntax of the SOURCES configuration variable.
+The most critical configuration variable in a TaskType is `SOURCES` -- it defines the structure of as TaskDirectory of that type, and where to get the relevant sources.  
 
 This is a multi-line variable, where each line specifies a [Loader] (in the first word) and its arguments (any remaining words).  A simple task might consist of
 {{{

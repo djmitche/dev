@@ -1,4 +1,5 @@
-﻿The __base__ extension implements the basic functionality of managing projects and tasks.
+﻿#summary Built-in extension implementing basic Dev functionality
+The __base__ extension implements the basic functionality of managing projects and tasks.
 
 This extension blurs the abstraction between extensions and the DevFramework a little bit, since it manages the internals of tasks.
 

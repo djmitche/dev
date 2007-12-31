@@ -1,4 +1,5 @@
-﻿Loaders implement various means of getting source code into a task directory.  These means are provided by extensions, so see DevExtensions for information on the specific loaders that are available.
+﻿#summary Technical description of loaders
+Loaders implement various means of getting source code into a task directory.  These means are provided by extensions, so see DevExtensions for information on the specific loaders that are available.
 
 == Invocation ==
 Loaders are invoked through a special syntax in the {{{SOURCES}}} variable in a TaskType.  See [Sources] for details.

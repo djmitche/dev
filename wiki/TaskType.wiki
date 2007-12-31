@@ -1,4 +1,5 @@
-﻿A TaskType defines configuration for one or more tasks.  Most simple projects have only one task type, but as a project becomes more complex, TaskTypes can be defined for new branches or for tasks that require different configuration or build practices.
+﻿#summary Description of task types
+A TaskType defines configuration for one or more tasks.  Most simple projects have only one task type, but as a project becomes more complex, TaskTypes can be defined for new branches or for tasks that require different configuration or build practices.
 
 TaskType configuration is, like all Dev configuration files, just a shell script.  For most uses, it will contain only variable assignments, adding to any configuration found in the ProjectDirectory.
 

@@ -14,6 +14,7 @@ These variables can be set in configuation files to influence the behavior of De
 ||[DevFramework            DEV_SUBCOMMANDS_PATH        ]|| colon-separated list of directories containing Dev subcommands ||
 ||[DevFramework            DEV_TASKTYPES_DIR           ]|| directory in which TaskType files are stored (only effective in {{{.devrc}}}) ||
 ||[QuiltExtension          QUILT_PATCH_DIR             ]|| directory in which quilt patches are stored ||
+||[SOURCSE                 SOURCES                     ]|| instructions for loading source code ||
 
 = Predefined Variables =
 
