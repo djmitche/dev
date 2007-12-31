@@ -1,0 +1,20 @@
+# do a Darcs checkout.  Syntax:
+#
+# SOURCES=".. darcs REPOSITORY DIRNAME .."
+#
+# where REPOSITORY can be "-" to just create a new, blank repository
+#
+load_darcs() {
+    local repo dirname parentdir
+    repo="$1"
+    dirname="$3"
+    dirname=`join_paths "$DEV_TASK_DIR" $dirname`
+
+    # 'darcs get' doesn't like working in already-existing directories, so we
+    # use 'initialize' followed, optionally, by 'pull'.
+    $DARCS initialize --repodir="$dirname" || exit 1
+    if test "$repo" != "-"; then
+        echo "Pulling from '$repo'.."
+        $DARCS pull -a "$repo" --repodir="$dirname" || exit 1
+    fi
+}

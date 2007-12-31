@@ -32,6 +32,8 @@ case "$subsubcommand" in
         tasktype="$1"
         taskdir="$2"
 
+        taskdir=`join_paths $DEV_ORIGINAL_CWD $taskdir`
+
         test -e "$taskdir" && die "'$taskdir' already exists"
         $MKDIR -p "$taskdir" || die "Could not create '$taskdir'"
         test x"$tasktype" = x"" && die "No new tasktype specified"
