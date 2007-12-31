@@ -1,0 +1,20 @@
+﻿#summary Darcs Source Management Extension
+The *darcs* extension provides a loader to handle [http://darcs.net darcs] repositories.
+
+= Loader =
+The darcs loader either creates a new, empty repository, or runs `darcs get` to duplicate an existing repository.
+
+Its syntax is
+{{{
+# create a new repository in the root of the task
+darcs
+# create a new repository in a subdirectory of the task
+darcs - SUB/DIR
+# load an existing repository
+darcs REPOSITORY [SUB/DIR]
+}}}
+
+Most commonly, this will look something like
+{{{
+SOURCES="darcs http://dev.conio.net/repos/prototype"
+}}}
