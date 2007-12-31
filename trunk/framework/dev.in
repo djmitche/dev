@@ -2,6 +2,7 @@
 
 frameworklibdir=@frameworklibdir@
 export DEV_VERSION=@PACKAGE_VERSION@
+DEV_ORIGINAL_PWD=`pwd`
 
 ## Initialization
 
@@ -14,8 +15,15 @@ source $frameworklibdir/config.sh
 
 ## Project, task setup
 
+# find the project, failing if not found, unless this is 'dev project' (a special
+# case so that 'dev project' can create new projects..)
 set_project_dir || exit 1
-set_task_dir || exit 1
+if test "$1" != "project" && test -z "$DEV_PROJECT_DIR"; then
+    die "Could not find a dev project (a directory containing .devrc)!"
+fi
+
+# and find the task, although a failure is not fatal
+set_task_dir
 
 # get the defaults for the framework and all modules
 # (do this now, after the project and task dirs are set up)

@@ -1,0 +1,122 @@
+#! /bin/bash
+
+require base
+
+usage() {
+    cat <<EOF
+Query and manipulate task types
+
+dev tasktype -- display the current task's tasktype
+dev tasktype -- list all tasktypes for this project
+dev tasktype -h -- this message
+dev tasktype list [-1] -- list all tasktypes for this project
+            -1: list tasktypes in a single column
+dev tasktype new <tasktype> -- create and edit a new tasktype
+dev tasktype clone <oldttyp> <newttyp> -- copy an existing tasktype and edit the result
+dev tasktype edit [<tasktype>] -- edit the given tasktype, or the current tasks's tasktype
+dev tasktype delete <tasktype> -- delete the given tasktype
+EOF
+    exit 1
+}
+
+enumerate_tasktypes() {
+    for pathname in $DEV_TASKTYPES_DIR/*.dev; do
+        test -e "$pathname" && $BASENAME $pathname | sed -e 's/\.dev$//'
+    done
+}
+
+# display the current task directory if no arugments were given
+if test "$#" = 0; then
+    if test -n "$DEV_TASKTYPE"; then
+        echo "$DEV_TASKTYPE"
+        exit 0
+    else
+        exit 1
+    fi
+fi
+
+subsubcommand="$1"
+shift
+case "$subsubcommand" in
+    list)
+        if test x"$2" = x"-1"; then
+            enumerate_tasktypes
+        else
+            if test x"$2" = x""; then
+                enumerate_tasktypes | $SORT | $COLUMN | $COLUMN -t | $SED -e $'s/^/\t/'
+            else
+                usage
+            fi
+        fi
+        ;;
+
+    new)
+        test $# = 1 || usage
+        tasktype="$1"
+
+        test x"$tasktype" = x"" && die "No tasktype specified"
+        tasktype_exists "$tasktype" && die "Task '$tasktype' already exists"
+
+        # make the DEV_TASKTYPES_DIR, if necessary
+        if test ! -d $DEV_TASKTYPES_DIR; then
+            $MKDIR -p "$DEV_TASKTYPES_DIR" || die "Cannot create $DEV_TASKTYPES_DIR"
+        fi
+
+        # everything looks good; let's set it up
+        tasktype_file="$DEV_TASKTYPES_DIR/$tasktype.dev"
+        cat > "$tasktype_file" <<EOF
+# Add your SOURCES here.  See http://code.google.com/p/dev/wiki/Sources for help.
+SOURCES=""
+EOF
+
+        # and edit it
+        edit_file "$tasktype_file"
+        ;;
+
+    edit)
+        test $# -le 1 || usage
+        if test $# = 1; then
+            tasktype="$1"
+        else
+            have_task || die "No tasktype specified, and no current task"
+            tasktype="$DEV_TASKTYPE"
+        fi
+
+        test x"$tasktype" = x"" && die "No tasktype specified"
+        tasktype_exists "$tasktype" || die "Task '$tasktype' does not exist"
+
+        tasktype_file="$DEV_TASKTYPES_DIR/$tasktype.dev"
+        edit_file "$tasktype_file"
+        ;;
+
+    delete)
+        test $# = 1 || usage
+        tasktype="$1"
+
+        test x"$tasktype" = x"" && die "No tasktype specified"
+        tasktype_exists "$tasktype" || die "Task '$tasktype' does not exist"
+
+        tasktype_file="$DEV_TASKTYPES_DIR/$tasktype.dev"
+        rm "$tasktype_file"
+        ;;
+
+    clone)
+        test $# = 2 || usage
+        src_tasktype="$1"
+        test x"$src_tasktype" = x"" && die "No existing tasktype specified"
+        tasktype_exists "$src_tasktype" || die "Task '$src_tasktype' does not exist"
+
+        dest_tasktype="$2"
+        test x"$dest_tasktype" = x"" && die "No new tasktype specified"
+        tasktype_exists "$dest_tasktype" && die "Task '$dest_tasktype' already exists"
+
+        src_tasktype_file="$DEV_TASKTYPES_DIR/$src_tasktype.dev"
+        dest_tasktype_file="$DEV_TASKTYPES_DIR/$dest_tasktype.dev"
+
+        cp "$src_tasktype_file" "$dest_tasktype_file"
+        edit_file "$dest_tasktype_file"
+        ;;
+
+    -h) usage ;;
+    *) usage ;;
+esac
