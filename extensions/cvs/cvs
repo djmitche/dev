@@ -3,7 +3,7 @@
 # SOURCES=".. cvs REPOSITORY MODULE DIRNAME .."
 #
 load_cvs() {
-    local repo module dirname parentdir
+    local repo module codir parentdir
     parentdir="$DEV_TASK_DIR"
     repo="$1"
     module="$2"
