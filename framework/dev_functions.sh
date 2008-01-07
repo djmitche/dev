@@ -153,7 +153,7 @@ source_task_configuration() {
     # upgrade .task from dev-0.4 format to dev-0.5
     if test `wc -w <"$task_file"` = "1"; then
         # a single-word file is a tasktype
-        echo "Upgrading '$task_file' from dev-0.4 format"
+        echo "Upgrading '$task_file' from dev-0.4 format" >&2
         tasktype=`<"$task_file"`
         echo "tasktype $tasktype" > "$task_file" \
             || die "Upgrade failed"
