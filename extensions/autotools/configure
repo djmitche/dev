@@ -1,6 +1,8 @@
 #! /bin/bash
 
-test -z "$DEV_TASK" && die "No task loaded"
+require base
+
+have_task || die "No task loaded"
 TASKDIR_FILE="$AUTOTOOLS_BUILD_DIR/.taskdir"
 
 echo '== clean up'
