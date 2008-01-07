@@ -1,6 +1,9 @@
 #! /bin/bash
 
-test -z "$DEV_TASK" && die "No task loaded"
+require base
+
+have_task || die "No task loaded"
+
 TASKDIR_FILE="$AUTOTOOLS_BUILD_DIR/.taskdir"
 
 if ! test -f "$TASKDIR_FILE" || test "$DEV_TASK_DIR" != `<"$TASKDIR_FILE"`; then
