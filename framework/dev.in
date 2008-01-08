@@ -19,7 +19,8 @@ source $frameworklibdir/config.sh
 # case so that 'dev project' can create new projects..)
 set_project_dir || exit 1
 if test "$1" != "project" && test -z "$DEV_PROJECT_DIR"; then
-    die "Could not find a dev project (a directory containing .devrc)!"
+    echo "Could not find a dev project (a directory containing .devrc)!" >&2
+    exit 1
 fi
 
 # and find the task, although a failure is not fatal
