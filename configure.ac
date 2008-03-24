@@ -64,6 +64,7 @@ AC_CONFIG_FILES([
     framework/Makefile
     compat/Makefile
     extensions/Makefile
+    test/Makefile
 ])
 
 AC_OUTPUT

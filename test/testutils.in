@@ -1,0 +1,15 @@
+# directories from autoconf
+prefix="@prefix@"
+exec_prefix="@exec_prefix@"
+bindir="@bindir@"
+
+# Set up a new project and cd into it.  This should
+# be called once at the top level of a test; it creates
+# a 'TESTPROJ' subdirectory of the current directory,
+# adds a .devrc file to it, and cd's into it.
+setup_project() {
+    test -d TESTPROJ && { rm -rf TESTPROJ || exit 1; }
+    mkdir TESTPROJ || exit 1
+    cd TESTPROJ || exit 1
+    touch .devrc || exit 1
+}

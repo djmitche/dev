@@ -1,15 +1,22 @@
-Dev is structurally based on quilt; as such, much of the
-structual code comes directly from that application.  See
-the credits, below, for the quilt authors.
-
 Dev
 ===
 
 Dustin Mitchell <dustin@cs.uchicago.edu>
     Adapt quilt structure and create dev system
 
+shUnit2
+=======
+
+The unit testing framework used by 'dev' is shUnit2, by Kate Ward
+<sfsetse@users.sourceforge.net>.  It is available at:
+  http://sourceforge.net/projects/shunit2
+The file test/shunit2 is copied directly from this distribution.
+
 Quilt
 =====
+
+Dev is structurally based on quilt; as such, much of the
+structual code comes directly from that application.
 
 Andreas Gruenbacher <agruen@suse.de>
     Clean up, reorganize, speedups, documentation.
