@@ -1,1 +1,1 @@
-SUBDIRS = framework compat extensions
+SUBDIRS = framework compat extensions test
