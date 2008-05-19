@@ -1,4 +1,4 @@
-# Require specific extensions.  For each extensions, source its
+# Require specific extensions.  For each extension, source its
 # 'require.sh'.
 #
 # Input:
