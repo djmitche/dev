@@ -8,5 +8,5 @@
 #  untar -xzf $DEV_PROJECT_DIR/downloads/app-1.2.3.tar.gz
 # ..."
 load_untar() {
-    tar "$@"
+    ${TAR} "$@"
 }
