@@ -1,3 +1,11 @@
+2008-05-19  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* framework/dev.in: add quotes
+
+2008-05-18  Dustin J. Mitchell <dustin@cs.uchicago.edu>
+	* search for tar, instead of assuming that it is in $PATH
+	* create DEV_PATH_PROGS to combine AC_PATH_PROGS and DEV_CONFIG_VAR
+	* Make the 'cvs' extension able to handle a 2-argument form like svn
+
 2007-12-24  Dustin J. Mitchell <dustin@cs.uchicago.edu>
 	* extensions/svn/svn: fix typo which caused svn checkouts
 	  without a cache directory to contain too many directory
