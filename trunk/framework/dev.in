@@ -7,11 +7,11 @@ DEV_ORIGINAL_PWD=`pwd`
 ## Initialization
 
 # source our utiity function libraries
-source $frameworklibdir/dev_functions.sh
-source $frameworklibdir/require.sh
+source "$frameworklibdir/dev_functions.sh"
+source "$frameworklibdir/require.sh"
 
 # get information derived from configure
-source $frameworklibdir/config.sh
+source "$frameworklibdir/config.sh"
 
 ## Project, task setup
 
@@ -28,7 +28,7 @@ set_task_dir
 
 # get the defaults for the framework and all modules
 # (do this now, after the project and task dirs are set up)
-source $frameworklibdir/defaults.sh
+source "$frameworklibdir/defaults.sh"
 
 source_project_configuration || exit 1
 source_task_configuration || exit 1
@@ -57,9 +57,9 @@ cmd_path="`find_subcommand $subcommand`"
 test "$cmd_path" = "" && usage 
 
 # source subcommands' utility functions
-source $frameworklibdir/subcommand_functions.sh
+source "$frameworklibdir/subcommand_functions.sh"
 
 # finally, execute the subcommand
-. $cmd_path
+. "$cmd_path"
 
 # vim:ft=sh
