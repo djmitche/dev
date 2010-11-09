@@ -102,11 +102,11 @@ and start hacking away.  If the patch gets accepted, just delete the {{{add_crue
 
 = Configuring =
 
-Almost everything in Dev is configurable via environment variables.  These variables are described throughout this wiki, and summarized in the VariableIndex.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev edit}}}.
+Almost everything in Dev is configurable via environment variables.  These variables are described throughout this wiki, and summarized in the VariableIndex.  Variables can be set for an entire project, by adding them to {{{.devrc}}}, or for a specific task, via {{{dev task edit}}}.
 
 == Project-level Configuration ==
 
-If your home directory is NFS-mounted, you would probably like to do your builds locally, say in {{{/var/tmp}}}. The AutotoolsExtension wiki page documents a number of relevant variables, among them `$AUTOTOOLS_BUILD_DIR` and `$AUTOTOOLS_PREFIX_DIR`.  The default to `${DEV_PROJECT_DIR}/tmp/{build,prefix}`, as described above.
+If your home directory is NFS-mounted, you would probably like to do your builds locally, say in {{{/var/tmp}}}. The AutotoolsExtension wiki page documents a number of relevant variables, among them `AUTOTOOLS_BUILD_DIR` and `AUTOTOOLS_PREFIX_DIR`.  They default to `${DEV_PROJECT_DIR}/tmp/{build,prefix}`, as described above.
 
 Since we'll want to build in {{{/var/tmp}}} for all of our tasks, let's add these to the project configuration.
 {{{
@@ -132,7 +132,7 @@ The new functionality will, of course, be compile-time selectable via the `--ena
 {{{
 $ dev configure --enable-automatic-updates
 }}}
-but that's a lot of wasted keystrokes!  Another look at AutotoolsExtension reveals `$AUTOTOOLS_CONFIGURE_FLAGS`.  Let's add this variable to the task configuration:
+but that's a lot of wasted keystrokes!  Another look at AutotoolsExtension reveals `AUTOTOOLS_CONFIGURE_FLAGS`.  Let's add this variable to the task configuration:
 {{{
 $ dev task edit
 }}}
@@ -143,7 +143,7 @@ AUTOTOOLS_CONFIGURE_FLAGS="--enable-automatic-updates"
 
 == TaskType configuration ==
 
-Once the automatic updates patch is accepted, the bug reports start to flood in.  For each bug report, you need a TaskDirectory.  It quickly gets tiresome to add the `$AUTOTOOLS_CONFIGURE_FLAGS` option for each new task.  The solution is a new TaskType:
+Once the automatic updates patch is accepted, the bug reports start to flood in.  For each bug report, you need a TaskDirectory.  It quickly gets tiresome to add the `AUTOTOOLS_CONFIGURE_FLAGS` option for each new task.  The solution is a new TaskType:
 {{{
 $ dev tasktype clone trunk autoupdate
   # adding:
