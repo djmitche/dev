@@ -17,3 +17,10 @@ SOURCES=" ...
 	svn https://dev.googlecode.com/svn/trunk/ sub/directory
 ... "
 }}}
+
+= Variables =
+
+You can optionally set `SVN_CACHE_DIR` to a directory in which cached checkouts
+will be stored.  When source is loaded, it is first checked out or (better)
+updated in this cache, and then copied quickly to the task directory, saving
+load on the server.

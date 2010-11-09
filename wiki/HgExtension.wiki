@@ -1,0 +1,28 @@
+﻿#summary Mercurial Source Management Extension
+
+The *hg* extension provides a loader to handle source cloned from Mercurial repositories.
+
+= Loader =
+
+Add a line like
+{{{
+SOURCES=" ...
+	hg http://hg.mozilla.org/build/buildbot
+... "
+}}}
+
+Or, to load the given URL at a subdirectory of the task directory,
+{{{
+SOURCES=" ...
+	hg http://hg.mozilla.org/build/buildbot sub/directory
+... "
+}}}
+
+= Variables =
+
+You can optionally set `HG_CACHE_DIR` to a directory in which cached
+repositories will be stored.  When source is loaded, it is first updated in the
+cache (cloning from the original if necessary), and then the cache is cloned to
+the task directory.  The result is a significant savings in load on the server
+and, if hg is doing its job right, a significant savings on on-disk storage, as
+the clone operation uses hard links.

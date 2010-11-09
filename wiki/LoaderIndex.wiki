@@ -4,5 +4,6 @@
 ||[CvsExtension            cvs         ]|| Perform a CVS checkout ||
 ||[BaseExtension           mkdir       ]|| Make a new, empty directory ||
 ||[SvnExtension            svn         ]|| Perform a Subversion checkout ||
+||[HgExtension             hg          ]|| Perform a Mercurial clone ||
 ||[BaseExtension           untar       ]|| Untar a tarball ||
 ||[QuiltExtension          quilt       ]|| Set up to handle a patch series ||
