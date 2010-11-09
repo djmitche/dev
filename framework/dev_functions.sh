@@ -182,6 +182,7 @@ source_task_configuration() {
             : # all good
         else
             echo "Tasktype configuration failed" >&2
+            echo "Edit '$tasktype_file' manually to fix its syntax and try again" >&2
             return 1
         fi
 
@@ -194,6 +195,7 @@ source_task_configuration() {
         : # all good
     else
         echo "Task configuration failed" >&2
+        echo "Edit '$task_file' manually to fix its syntax and try again" >&2
         return 1
     fi
 
