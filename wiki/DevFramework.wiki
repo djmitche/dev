@@ -1,0 +1,3 @@
+﻿#summary The Dev Framework
+
+The Dev framework is a light layer of shell scripts that ties all of the various DevExtensions, which do the real work, together.
