@@ -6,6 +6,7 @@ Extensions provide actual functionality within the DevFramework.  The BaseExtens
   * AutotoolsExtension
   * BaseExtension
   * CvsExtension
-  * SvnExtension
+  * GitExtension
   * HgExtension
+  * SvnExtension
   * QuiltExtension

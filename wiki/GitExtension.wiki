@@ -1,0 +1,33 @@
+﻿#summary Git Source Management Extension
+
+The *git* extension provides a loader to handle git repositories, including initial clones.
+
+Note that, unlike with Subversion or Mercurial, in most cases several tasks can
+be accomplished in the same working copy, making Dev's task loader less useful.
+In many cases, it's enough to set
+
+{{{
+SOURCES="git"
+}}}
+
+which will initialize a fresh working copy for the task.  Then add any required
+remotes and start hacking!
+
+= Loader =
+
+Add a line like
+{{{
+SOURCES=" ...
+	git git://github.com/buildbot/buildbot.git
+... "
+}}}
+optionally appending a subdirectory of the task dir that you would like to clone into.
+
+If you do not want to clone an external repository, use
+{{{
+SOURCES=" ...
+	git
+	git - sub/directory
+... "
+}}}
+Both initialize an empty git repository; the second does so in `sub/directory`.
