@@ -6,11 +6,13 @@ The *cvs* extension provides a loader to handle source checked out of CVS reposi
 The syntax of the loader is
 {{{
 cvs REPOSITORY MODULE DIRECTORY
+# directory defaults to the task directory:
+cvs REPOSITORY MODULE 
 }}}
 
 For a simple checkout, add a line to `SOURCES` like
 {{{
 SOURCES=" ...
-	cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello .
+	cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello
 ... "
 }}}
