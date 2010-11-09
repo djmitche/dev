@@ -1,0 +1,51 @@
+# Load a mercurial working copy, optionally at a specific subdirectory.
+#
+# SYNTAX:
+#
+# SOURCES=".. hg http://path/to/repo .."
+# SOURCES=".. hg http://path/to/repo sub/dir .."
+load_hg() {
+  local url="${1}"
+  local dir="${2-.}"
+
+  dir=`join_paths $DEV_TASK_DIR $dir`
+  local parent=`echo "$dir" | sed 's|/.*/?||'`
+  if test ! -d "$parent"; then
+    $MKDIR -p "$parent"
+  fi
+
+  if test -z "${HG_CACHE_DIR}"; then
+    echo "cloning '$url' to '$dir'"
+    $HG clone "$url" "$dir" || die "Could not clone $url"
+  else
+    local url_safe=`echo $url|tr -c '[:alnum:]' '-'`
+    local cache_root="`join_paths ${DEV_PROJECT_DIR} ${HG_CACHE_DIR}`"
+    local cache_dir="$cache_root/$url_safe"
+
+    # make the cache root if it doesn't exist yet
+    if test ! -d "$cache_root"; then
+      $MKDIR -p "$cache_root" || exit 1
+    fi
+
+    (   # run in a subshell to trap any errors
+        trap "rm -rf \"$cache_dir\"; die \"Interrupted\"" INT QUIT
+
+        if test -d "$cache_dir"; then
+          # try updating it; if we see an error, blow it away and try a new checkout
+          if ! cd "$cache_dir" && $HG up "$cache_dir"; then
+            cd / || exit 1
+            rm -rf "$cache_dir" || exit 1
+          fi
+        fi
+
+        if test ! -d "$cache_dir"; then
+          echo "cloning '$url' in cache"
+          $HG clone "$url" "$cache_dir" || die "Could not clone $url"
+        fi
+    ) || exit 1
+
+    # hg apparently does some fast cloning
+    echo "cloning cached '$url' to '$dir'"
+    $HG clone "$cache_dir" "$dir" || die "Could not perform a local clone from the cache"
+  fi
+}
