@@ -13,8 +13,10 @@ These variables can be set in configuation files to influence the behavior of De
 ||[AutotoolsExtension      AUTOTOOLS_SETUP             ]|| Command that creates `configure` (e.g, `autogen`) ||
 ||[DevFramework            DEV_SUBCOMMANDS_PATH        ]|| colon-separated list of directories containing Dev subcommands ||
 ||[DevFramework            DEV_TASKTYPES_DIR           ]|| directory in which TaskType files are stored (only effective in {{{.devrc}}}) ||
+||[HgExtension             HG_CACHE_DIR                ]|| cache directory for Mercurial checkouts ||
 ||[QuiltExtension          QUILT_PATCH_DIR             ]|| directory in which quilt patches are stored ||
-||[SOURCSE                 SOURCES                     ]|| instructions for loading source code ||
+||[DevFramework            SOURCES                     ]|| instructions for loading source code ||
+||[SvnExtension            SVN_CACHE_DIR               ]|| cache directory for Subversion checkouts ||
 
 = Predefined Variables =
 
