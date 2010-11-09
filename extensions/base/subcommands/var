@@ -20,6 +20,7 @@ show_var() {
 interesting_variables="DEV_PROJECT_DIR"
 interesting_variables="$interesting_variables DEV_TASKTYPE DEV_TASK_DIR"
 interesting_variables="$interesting_variables DEV_TASKTYPES_DIR DEV_SUBCOMMANDS_PATH"
+interesting_variables="$interesting_variables $dev_interesting_extension_variables"
 
 if test $# -eq 0; then
     for var in $interesting_variables; do
