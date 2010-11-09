@@ -15,7 +15,7 @@ These variables can be set in configuation files to influence the behavior of De
 ||[DevFramework            DEV_TASKTYPES_DIR           ]|| directory in which TaskType files are stored (only effective in {{{.devrc}}}) ||
 ||[HgExtension             HG_CACHE_DIR                ]|| cache directory for Mercurial checkouts ||
 ||[QuiltExtension          QUILT_PATCH_DIR             ]|| directory in which quilt patches are stored ||
-||[DevFramework            SOURCES                     ]|| instructions for loading source code ||
+||[Sources                 SOURCES                     ]|| instructions for loading source code ||
 ||[SvnExtension            SVN_CACHE_DIR               ]|| cache directory for Subversion checkouts ||
 
 = Predefined Variables =
