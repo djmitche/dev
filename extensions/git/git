@@ -1,0 +1,37 @@
+# Load a git working copy, optionally at a specific subdirectory.
+#
+# SYNTAX:
+#
+# SOURCES=".. git" # just a 'git init'
+# SOURCES=".. git - sub/dir" # 'git init' in a subdir
+# SOURCES=".. git http://path/to/repo .."
+# SOURCES=".. git http://path/to/repo sub/dir .."
+load_git() {
+  local url="${1}"
+  local dir="${2-.}"
+
+  dir=`join_paths $DEV_TASK_DIR $dir`
+
+  if test -n "$url" && test "$url" != "-"; then
+    if test "$dir" != "$DEV_TASK_DIR"; then
+      $GIT clone "$url" "$dir" || die "Could not clone '$url' to '$dir'"
+    else
+      # for a clone in the task dir, we can't use 'git clone' - it won't clone
+      # into nonempty directories.  So init, add a remote, and fetch that instead
+      $GIT init "$dir" || exit 1
+      (
+        cd "$dir" || exit 1
+        $GIT remote add origin "$url" || exit 1
+        $GIT fetch origin || exit 1
+        $GIT reset --hard origin/master || exit 1
+      )
+    fi
+  else
+    $GIT init "$dir" || exit 1
+  fi
+
+  # ignore .task
+  if test -d "${DEV_TASK_DIR}/.git"; then
+    echo ".task" >> "$dir/.git/info/exclude"
+  fi
+}

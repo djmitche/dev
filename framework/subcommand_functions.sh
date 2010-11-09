@@ -45,5 +45,6 @@ join_paths() {
     if test x"${absolute_dir:0:1}" != x"/"; then
         absolute_dir="$1/$absolute_dir"
     fi
-    echo "$absolute_dir"
+    # strip a trailing '/.' if necessary
+    echo "$absolute_dir" | sed 's|/.$||'
 }
