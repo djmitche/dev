@@ -32,7 +32,7 @@ load_hg() {
 
         if test -d "$cache_dir"; then
           # try updating it; if we see an error, blow it away and try a new checkout
-          if ! cd "$cache_dir" && $HG up "$cache_dir"; then
+          if ! cd "$cache_dir" || ! $HG pull || ! $HG up ; then
             cd / || exit 1
             rm -rf "$cache_dir" || exit 1
           fi
