@@ -47,5 +47,10 @@ load_hg() {
     # hg apparently does some fast cloning
     echo "cloning cached '$url' to '$dir'"
     $HG clone "$cache_dir" "$dir" || die "Could not perform a local clone from the cache"
+
+    # set the default paths
+    # (NOTE: this assumes that hg clone doesn't copy anything interesting into .hg/hgrc)
+    echo "[paths]" > "$dir"/.hg/hgrc || exit 1
+    echo "default = $url" >> "$dir"/.hg/hgrc || exit 1
   fi
 }
