@@ -9,6 +9,8 @@ Dev helps you to:
 
 So let's see how it works.
 
+(Note that this example uses CVS, simply because GNU Hello is in CVS.  Dev supports a number of other version-control systems, and adding new support is easy)
+
 = Install Dev =
 
 You can find the latest tarball on the "[http://code.google.com/p/dev/downloads/list Downloads]" tab.  Install should be as simple as
