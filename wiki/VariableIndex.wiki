@@ -11,6 +11,7 @@ These variables can be set in configuation files to influence the behavior of De
 ||[AutotoolsExtension      AUTOTOOLS_CONFIGURE_FLAGS   ]|| Additional options to pass to `configure` ||
 ||[AutotoolsExtension      AUTOTOOLS_PREFIX_DIR        ]|| Root installation directory ||
 ||[AutotoolsExtension      AUTOTOOLS_SETUP             ]|| Command that creates `configure` (e.g, `autogen`) ||
+||[Loader                  DEV_LOADER_PATH             ]|| colon-separated list of directories containing loader scripts ||
 ||[DevFramework            DEV_SUBCOMMANDS_PATH        ]|| colon-separated list of directories containing Dev subcommands ||
 ||[DevFramework            DEV_TASKTYPES_DIR           ]|| directory in which TaskType files are stored (only effective in {{{.devrc}}}) ||
 ||[HgExtension             HG_CACHE_DIR                ]|| cache directory for Mercurial checkouts ||
