@@ -67,7 +67,7 @@ cmd_load() {
             . "$loader"
 
             # invoke it, passing along the extra args
-            load_$loader_name "${@}"
+            load_$loader_name "${@}" || exit 1
         }
 
         # NOTE: can define other load_task verbs here:
