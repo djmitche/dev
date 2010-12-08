@@ -15,6 +15,7 @@ These variables can be set in configuation files to influence the behavior of De
 ||[DevFramework            DEV_SUBCOMMANDS_PATH        ]|| colon-separated list of directories containing Dev subcommands ||
 ||[DevFramework            DEV_TASKTYPES_DIR           ]|| directory in which TaskType files are stored (only effective in {{{.devrc}}}) ||
 ||[HgExtension             HG_CACHE_DIR                ]|| cache directory for Mercurial checkouts ||
+||[PatchExtension          MKPATCH_PATCH_METHOD        ]|| patch method used by `dev mkpatch` ||
 ||[QuiltExtension          QUILT_PATCH_DIR             ]|| directory in which quilt patches are stored ||
 ||[SvnExtension            SVN_CACHE_DIR               ]|| cache directory for Subversion checkouts ||
 ||[VirtualenvExtension     VIRTUALENV_PACKAGE_CACHE    ]|| directory in which to cache downloaded package files ||

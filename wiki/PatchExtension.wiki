@@ -1,0 +1,20 @@
+﻿#summary Patch-management Extension
+
+The *patch* extension is a simple extension to add the `dev mkpatch` command, which will produce a patch for the current task.
+
+= Subcommand =
+
+The `mkpatch` subcommand creates a patch file.  It does so using one of the predefined mkpatch methods, or a method of your choosing.  The method is defined in `$MKPATCH_PATCH_METHOD`, and can be one of the following:
+ * `git_single` - Generate a patch from the current git `HEAD` revision.
+ * `svn_diff` - Use `svn diff` to generate a patch containing un-committed changes.
+ * `hg_diff` - Use `hg diff` to generate a patch containing un-committed changes.
+ * `hg_mq_qdiff` - Use `hg qdiff` to generate a patch containing all changes in the patch queue.
+
+== Custom Patch Function ==
+To define a custom patch function, select a name, and write a function with the `mkpatch_` prefix.  For example, to define a method `git_against_master`:
+{{{
+mkpatch_git_against_master() {
+	$GIT diff master..HEAD
+}
+MKPATCH_PATCH_METHOD='git_against_master'
+}}}

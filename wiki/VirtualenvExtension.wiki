@@ -1,0 +1,67 @@
+﻿#summary Python Virtualenv Management Extension
+
+Python uses a utility called *virtualenv* to create sandboxes in which a number of Python packages can be installed and isolated from other installations.  This extension helps to manage such sandboxes.
+
+In general, you will want to check out some source, create a sandbox, then install some packages and set up the source as an "editable package".  That will look something like:
+{{{
+load_task() {
+	load git git://github.com/boto/boto.git
+	load virtualenv sandbox
+	# install a utility package or two
+	load pip install pyflakes
+	# install boto; --editable means that source can be edited in-place
+	load pip install --editable=.
+}
+}}}
+
+You can find virtualenv at http://pypi.python.org/pypi/virtualenv
+
+= Loaders =
+
+== Virtualenv ==
+
+The *virtualenv* loader creates a new sandbox, and activates it for subsequent `load pip` invocations.
+
+The syntax of the loader is exactly that of *virtualenv* itself, but note that the `--distribute` flag is always passed (in order to make `pip` work correctly).  Examples:
+{{{
+	load virtualenv sandbox
+	load virtualenv --no-site-packages -p python2.4 sandbox-2.4
+}}}
+
+== Pip ==
+
+The *pip* loader invokes `pip` directly.  If the first word of the command is `install`, then it will try to inject the `--download-cache` option if a downlaod cache is configured (see below).  Exmaples:
+
+{{{
+	load pip install mock
+	load pip install --ignore-installed twisted==8.2.0
+	load pip install --editable=. # see above
+}}}
+
+If `$VIRTUALENV_PACKAGE_CACHE` is specified in the TaskType, TaskDirectory, or ProjectDirectory, then any packages which pip downloads will be cached in that directory.  The easiest way to use this is to add
+{{{
+VIRTUALENV_PACKAGE_CACHE=.pkg-cache
+}}}
+to `.devrc`.
+
+= Subcommands =
+
+The `virtualenv` subcommand makes it easy to activate a sandbox.  However, note that "activating" a sandbox involves changes to your local shell, so simply running a shell script cannot do the trick.  Instead, define a shell function that will do so for you.  For bash, that means:
+{{{
+activate() {
+	eval `dev virtualenv activate $1`
+}
+}}}
+after which you can activate a sandbox with a simple `activate` on the command line:
+{{{
+taskdir $ activate
+(sandbox)taskdir $
+}}}
+
+If you have multpile sandboxes in a task, you can specify the sandbox to activate (relative to the TaskDirectory) as an argument to `activate`:
+{{{
+taskdir $ activate sandbox-2.4
+(sandbox-2.4)taskdir $
+}}}
+
+The default sandbox is specified by `$VIRTUALENV_SANDBOX`, which defaults to `sandbox` but can be overriden in the TaskType, TaskDirectory, or ProjectDirectory.
