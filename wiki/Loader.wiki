@@ -7,7 +7,7 @@ Loaders are invoked through a special syntax in the TaskType file.  See TaskType
 == Implementation ==
 Loaders are implemented as shell scripts which define a single function, {{{load_FOO}}} where {{{FOO}}} is the name of the loader.  Arguments are parsed as for any other shell function. 
 
-Loaders that ship with Dev are stored in `$(loaderdir)`, but projects may add additional loaders, too.  By default, these are searched for in `$DEV_PROJECT_DIR/dev/loaders`, but this path can be adjusted in `.devrc` by setting `[$DEV_LOADER_PATH VariableIndex]`.
+Loaders that ship with Dev are stored in `$(loaderdir)`, but projects may add additional loaders, too.  By default, these are searched for in `$DEV_PROJECT_DIR/dev/loaders`, but this path can be adjusted in `.devrc` by setting `$DEV_LOADER_PATH`.
 
 For example, a hypothetical wikipedia loader would look like the following, stored in {{{$(loaderdir)/wikipedia}}}:
 {{{
