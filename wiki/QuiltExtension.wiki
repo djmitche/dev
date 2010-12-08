@@ -22,13 +22,13 @@ fi
 Add a line like
 {{{
 load_task() {
-	quilt
+	load quilt
 }
 }}}
 to set up the base of the task directory for use with quilt.  To set up a subdirectory, use
 {{{
 load_task() {
-	quilt sub/dir
+	load quilt sub/dir
 }
 }}}
 

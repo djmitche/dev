@@ -17,6 +17,6 @@ darcs REPOSITORY [SUB/DIR]
 Most commonly, this will look something like
 {{{
 load_task() {
-	darcs http://dev.conio.net/repos/prototype"
+	load darcs http://dev.conio.net/repos/prototype"
 }
 }}}

@@ -8,7 +8,7 @@ In many cases, it's enough to use
 
 {{{
 load_task() {
-	git
+	load git
 }
 }}}
 
@@ -20,7 +20,7 @@ remotes and start hacking!
 Add a line like
 {{{
 load_task() {
-	git git://github.com/buildbot/buildbot.git
+	load git git://github.com/buildbot/buildbot.git
 }
 }}}
 optionally appending a subdirectory of the task dir that you would like to clone into.
@@ -28,9 +28,9 @@ optionally appending a subdirectory of the task dir that you would like to clone
 If you do not want to clone an external repository, use
 {{{
 load_task() {
-	git
+	load git
 	# or
-	git - sub/directory
+	load git - sub/directory
 }
 }}}
 Both initialize an empty git repository; the second does so in `sub/directory`.

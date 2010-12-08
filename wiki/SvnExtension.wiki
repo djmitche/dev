@@ -7,14 +7,14 @@ The *svn* extension provides a loader to handle source checked out of Subversion
 Add a line like
 {{{
 load_task() {
-	svn https://dev.googlecode.com/svn/trunk/
+	load svn https://dev.googlecode.com/svn/trunk/
 }
 }}}
 
 Or, to load the given URL at a subdirectory of the task directory,
 {{{
 load_task() {
-	svn https://dev.googlecode.com/svn/trunk/ sub/directory
+	load svn https://dev.googlecode.com/svn/trunk/ sub/directory
 }
 }}}
 

@@ -13,6 +13,6 @@ cvs REPOSITORY MODULE
 For a simple checkout, add a line to `SOURCES` like
 {{{
 load_task() {
-	cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello
+	load cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello
 }
 }}}
