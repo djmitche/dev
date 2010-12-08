@@ -1,6 +1,7 @@
 # Default values for configuration variables
 
 export DEV_SUBCOMMANDS_PATH="${DEV_PROJECT_DIR}/dev/subcommands"
+export DEV_LOADER_PATH="${DEV_PROJECT_DIR}/dev/loaders"
 export DEV_TASKTYPES_DIR="${DEV_PROJECT_DIR}/dev/tasks"
 
 # gather up interesting variables

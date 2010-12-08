@@ -45,52 +45,82 @@ set_project_dir() {
     export DEV_PROJECT_DIR=`search_up_dir_tree .devrc`
 }
 
-# Enumerate the available subcommands
+# Enumerate files in a :-separated FOO_PATH variable, with a default
+#
+# Input:
+#  $1 = :-separated path
+#  $2 = default path
+# Output:
+#  newline-separated list of matching files on stdout
+enumerate_files() {
+    local old_IFS="$IFS"
+    local amended_path="$1:$2"
+    IFS=':'
+    for dir in $amended_path; do
+        test -z "$dir" && continue
+        for file in $dir/*; do
+            if test -f $file; then
+                echo ${file##$dir/}
+            fi
+        done
+    done
+    IFS="$old_IFS"
+}
+
+# Given a filename and a :-separated list of directories, find the
+# qualified path to the given file
+#
+# Input:
+#  $1: file name
+#  $2: :-separated list of directories
+#  $3: default path
+# Output:
+#  full path to file on stdout, or empty string if not found
+find_file() {
+    local target="$1"
+    local old_IFS="$IFS"
+    local amended_path="$2:$3"
+    IFS=':'
+    for dir in $amended_path; do
+        if test -f $dir/$target; then
+            echo $dir/$target
+            break
+        fi
+    done
+    IFS="$old_IFS"
+}
+
+# Enumerate available subcommands
 #
 # Input:
 #  $DEV_SUBCOMMANDS_PATH
 # Output:
-#  newline-separated list of commands on stdout
+#  newline-separated list of matching files on stdout
 enumerate_subcommands() {
-  echo 'help' # (internal command)
-
-  local old_IFS="$IFS"
-  local amended_path="$DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands"
-  IFS=':'
-  for dir in $amended_path
-  do
-    test -z "$dir" && continue
-    for cmd in $dir/*
-    do
-      if test -f $cmd
-      then
-        echo ${cmd##$dir/}
-      fi
-    done
-  done
-  IFS="$old_IFS"
+    echo 'help' # (internal command)
+    enumerate_files "$DEV_SUBCOMMANDS_PATH" "$libexecdir/dev/subcommands"
 }
 
 # Given a bare subcommand name, find the full path to its implementation.
 #
 # Input:
 #  $1: subcommand name
+#  $DEV_SUBCOMMANDS_PATH
 # Output:
 #  full path to subcommand on stdout, or empty string if not found
 find_subcommand() {
-  local subcommand=$1
-  local old_IFS="$IFS"
-  local amended_path="$DEV_SUBCOMMANDS_PATH:$libexecdir/dev/subcommands"
-  IFS=':'
-  for dir in $amended_path
-  do
-    if test -f $dir/$subcommand
-    then
-      echo $dir/$subcommand
-      break
-    fi
-  done
-  IFS="$old_IFS"
+    find_file "$1" "$DEV_SUBCOMMANDS_PATH" "$libexecdir/dev/subcommands"
+}
+
+# Find a loader implementation, given its name
+#
+# Input:
+#  $1: loader name
+#  $DEV_LOADERS_PATH
+# Output:
+#  full path to loader on stdout, or empty string if not found
+find_loader() {
+    find_file "$1" "$DEV_LOADER_PATH" "$loaderdir"
 }
 
 # Print usage message and exit with status 1

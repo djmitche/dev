@@ -43,22 +43,23 @@ cmd_load() {
 
         # default load_task to handle old SOURCES= format tasktypes
         load_task() {
+            local loader_name
+            local args
             echo "WARNING: no load_task defined; parsing old-style SOURCES= tasktype" >&2
 
             # parse SOURCES into new loader calls
-            echo "$SOURCES" | while read LOADER ARGS; do
-                test -z "$LOADER" && continue # allow blank lines
-                test -f "$loaderdir/$LOADER" || die "No such loader $LOADER"
+            echo "$SOURCES" | while read loader_name args; do
+                test -z "$loader_name" && continue # allow blank lines
 
                 # run 'load' directly
-                load $LOADER $ARGS || die "Failure in load $LOADER"
+                load $loader_name $args || die "Failure in load $loader_name"
             done
         }
 
         # invoke a loader; this is called from tasktypes' load_task
         load() {
             local loader_name="$1"
-            local loader=`base_find_loader "$loader_name"`
+            local loader=`find_loader "$loader_name"`
             test -z "$loader" && return 1
             shift
 
