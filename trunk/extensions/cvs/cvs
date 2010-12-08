@@ -1,8 +1,4 @@
-# do a CVS checkout.  Syntax:
-#
-# SOURCES=".. cvs REPOSITORY MODULE DIRNAME .."
-# SOURCES=".. cvs REPOSITORY MODULE .."
-#
+# do a CVS checkout.  See CvsExtension
 load_cvs() {
     local repo module codir parentdir
     parentdir="$DEV_TASK_DIR"

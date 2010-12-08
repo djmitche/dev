@@ -1,9 +1,4 @@
-# Load a mercurial working copy, optionally at a specific subdirectory.
-#
-# SYNTAX:
-#
-# SOURCES=".. hg http://path/to/repo .."
-# SOURCES=".. hg http://path/to/repo sub/dir .."
+# Load a mercurial working copy; see HgExtension
 load_hg() {
   local url="${1}"
   local dir="${2-.}"

@@ -1,11 +1,4 @@
-# Load a git working copy, optionally at a specific subdirectory.
-#
-# SYNTAX:
-#
-# SOURCES=".. git" # just a 'git init'
-# SOURCES=".. git - sub/dir" # 'git init' in a subdir
-# SOURCES=".. git http://path/to/repo .."
-# SOURCES=".. git http://path/to/repo sub/dir .."
+# Load a git working copy; see GitExtension
 load_git() {
   local url="${1}"
   local dir="${2-.}"

@@ -1,11 +1,4 @@
-# Load a subversion working copy, optionally at a specific subdirectory.
-#
-# SYNTAX:
-#
-# SOURCES=".. svn http://path/to/repo .."
-# SOURCES=".. svn http://path/to/repo sub/dir .."
-#
-# TODO: use --at for subdir
+# Load a subversion working copy; see SvnExtension
 load_svn() {
   local url="${1}"
   local dir="${2-.}"

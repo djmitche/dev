@@ -1,9 +1,4 @@
-# do a Darcs checkout.  Syntax:
-#
-# SOURCES=".. darcs REPOSITORY DIRNAME .."
-#
-# where REPOSITORY can be "-" to just create a new, blank repository
-#
+# do a Darcs checkout.  See DarcsExtension
 load_darcs() {
     local repo dirname parentdir
     repo="$1"
