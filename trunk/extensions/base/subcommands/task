@@ -60,7 +60,7 @@ cmd_load() {
         load() {
             local loader_name="$1"
             local loader=`find_loader "$loader_name"`
-            test -z "$loader" && return 1
+            test -z "$loader" && die "Could not find loader '$loader_name'"
             shift
 
             # source the loader script (perhaps redundantly)
