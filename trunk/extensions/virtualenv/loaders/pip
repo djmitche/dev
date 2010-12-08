@@ -1,0 +1,25 @@
+require virtualenv 
+
+# use pip to install a package in the currently active virtualenv
+load_pip() {
+    # if this doesn't begin with 'install', then just execute it straight
+    if test x"$1" != x"install"; then
+        pip "${@}" || exit 1
+        return 0
+    else
+        shift
+    fi
+
+    # note that the unqualified 'pip' here should find its roots in
+    # the existing sandbox.  TODO: add a --sandbox option to this loader
+    # to specify an alternate sandbox, if necessary
+
+    local pkgcache=`set_up_virtualenv_cache`
+    if test -n "${pkgcache}"; then
+        pip install --download-cache "${pkgcache}" "${@}" || exit 1
+    else
+        pip install "${@}"
+    fi
+}
+
+
