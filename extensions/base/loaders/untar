@@ -1,12 +1,4 @@
-# Untar a tarball.  This is useful for working on projects where you can't
-# access a source-code repository.  All arguments are passed directly to
-# 'tar', while running in the root of the task directory.
-#
-# SYNTAX
-#
-# SOURCES=" ...
-#  untar -xzf $DEV_PROJECT_DIR/downloads/app-1.2.3.tar.gz
-# ..."
+# Untar a tarball.  See BaseExtension
 load_untar() {
     ${TAR} "$@"
 }

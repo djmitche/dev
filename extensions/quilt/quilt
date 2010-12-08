@@ -1,11 +1,4 @@
-# Set up quilt on the designated subdirectory, or the task directory by default.  If
-# QUILT_PATCH_DIR is set, points patches/ to that directory.
-# 
-# SYNTAX:
-#
-# SOURCES=".. quilt .."
-# SOURCES=".. quilt sub/dir .."
-#
+# Set up quilt on the designated subdirectory; see QuiltExtension
 load_quilt() {
   local destdir="${1-.}"
 

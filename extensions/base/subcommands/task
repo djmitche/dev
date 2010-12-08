@@ -24,69 +24,101 @@ if test -z "$1"; then
     fi
 fi
 
-subsubcommand="$1"
-shift
-case "$subsubcommand" in
-    load)
-        test "$#" -eq 2 || usage
-        tasktype="$1"
-        taskdir="$2"
+cmd_load() {
+    test "$#" -eq 2 || usage
+    tasktype="$1"
+    taskdir="$2"
 
-        taskdir=`join_paths $DEV_ORIGINAL_PWD $taskdir`
+    taskdir=`join_paths $DEV_ORIGINAL_PWD $taskdir`
 
-        test -e "$taskdir" && die "'$taskdir' already exists"
-        $MKDIR -p "$taskdir" || die "Could not create '$taskdir'"
-        test x"$tasktype" = x"" && die "No new tasktype specified"
+    test -e "$taskdir" && die "'$taskdir' already exists"
+    $MKDIR -p "$taskdir" || die "Could not create '$taskdir'"
+    test x"$tasktype" = x"" && die "No new tasktype specified"
 
-        # run in a subshell to kill the new directory on any errors
-        (
-            # see if there's already a task there..
-            cd "$taskdir"
-            existing_taskdir=`search_up_dir_tree .task`
-            test -n "$existing_taskdir" \
-                && die "Already in a Dev task ($existing_taskdir)"
-            
-            # and double-check that the new dir is in the same project
-            cd "$taskdir"
-            existing_project=`search_up_dir_tree .devrc`
-            test "$existing_project" = "$DEV_PROJECT_DIR" \
-                || die "'$taskdir' is in a different project"
+    # run in a subshell to kill the new directory on any errors
+    (
+        #
+        # utility functions
+        #
 
-            # make up a new task configuration file
-            cd "$task_path"
-            echo "tasktype $tasktype" > ".task"
+        # default load_task to handle old SOURCES= format tasktypes
+        load_task() {
+            echo "WARNING: no load_task defined; parsing old-style SOURCES= tasktype" >&2
 
-            # ..and load it
-            set_task_dir || exit 1
-            source_task_configuration || exit 1
-
-            # now load SOURCES
+            # parse SOURCES into new loader calls
             echo "$SOURCES" | while read LOADER ARGS; do
                 test -z "$LOADER" && continue # allow blank lines
                 test -f "$loaderdir/$LOADER" || die "No such loader $LOADER"
 
-                # source the loader
-                . "$loaderdir/$LOADER"
-
-                # run the loader function
-                load_$LOADER $ARGS || die "Failure in load_$LOADER"
-            done || exit 1
-
-            # all set!
-            true
-        ) || {
-            # remove the taskdir if any error occurs
-            rm -rf "$taskdir"
-            exit 1
+                # run 'load' directly
+                load $LOADER $ARGS || die "Failure in load $LOADER"
+            done
         }
-        ;;
 
-    edit)
-        test "$#" -eq 0 || usage
-        have_task || die "No current task"
-        edit_file "$DEV_TASK_DIR/.task"
-        ;;
+        # invoke a loader; this is called from tasktypes' load_task
+        load() {
+            local loader_name="$1"
+            local loader=`base_find_loader "$loader_name"`
+            test -z "$loader" && return 1
+            shift
 
+            # source the loader script (perhaps redundantly)
+            . "$loader"
+
+            # invoke it, passing along the extra args
+            load_$loader_name "${@}"
+        }
+
+        # NOTE: can define other load_task verbs here:
+        #    setup --at sandbox virtualenv {virtualenv args}
+
+        #
+        # create the task and load it
+        #
+
+        # see if there's already a task there..
+        cd "$taskdir"
+        existing_taskdir=`search_up_dir_tree .task`
+        test -n "$existing_taskdir" \
+            && die "Already in a Dev task ($existing_taskdir)"
+        
+        # and double-check that the new dir is in the same project
+        cd "$taskdir"
+        existing_project=`search_up_dir_tree .devrc`
+        test "$existing_project" = "$DEV_PROJECT_DIR" \
+            || die "'$taskdir' is in a different project"
+
+        # make up a new task configuration file
+        cd "$task_path"
+        echo "tasktype $tasktype" > ".task"
+
+        # ..and load it
+        set_task_dir || exit 1
+        source_task_configuration || exit 1
+
+        # run the task loader function
+        load_task || exit 1
+
+        # all set!
+        true
+    ) || {
+        # remove the taskdir if any error occurs
+        rm -rf "$taskdir"
+        exit 1
+    }
+}
+
+cmd_edit() {
+    test "$#" -eq 0 || usage
+    have_task || die "No current task"
+    edit_file "$DEV_TASK_DIR/.task"
+}
+
+subsubcommand="$1"
+shift
+case "$subsubcommand" in
+    load) cmd_load "${@}" ;;
+    edit) cmd_edit "${@}" ;;
     -h) usage ;;
     *) usage ;;
 esac

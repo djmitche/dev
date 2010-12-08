@@ -1,10 +1,4 @@
-# Simply make an empty directory.
-#
-# SYNTAX:
-#
-# SOURCES=" ...
-#   mkdir foo/bar
-# ..."
+# Simply make an empty directory.  See BaseExtension.
 load_mkdir() {
     test -z "$1" && die "Must supply a directory name for 'mkdir'"
     local dir=`join_paths "$DEV_TASK_DIR" "$1"`
