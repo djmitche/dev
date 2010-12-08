@@ -1,0 +1,20 @@
+# Create a virtualenv sandbox at the specified location
+load_virtualenv() {
+    # just pass the arguments straight into virtualenv, although hard-code
+    # using distribute
+    $VIRTUALENV --distribute "${@}" || return 1
+
+    # try to find the sandbox name and activate it
+    while test $# -gt 0; do
+        case x"$1" in
+            x-*) ;; # skip options
+            *)
+                if test -f "$1/bin/activate"; then
+                    . "$1/bin/activate"
+                    break
+                fi
+                ;;
+        esac
+        shift
+    done
+}

@@ -1,0 +1,31 @@
+#! /bin/bash
+
+usage() {
+    cat <<'EOF'
+Manipulate virtualenvs
+
+dev virtualenv activate [SANDBOX] -- output commands to activate the sandbox,
+        defaulting to DEV_VIRTUALENV_SANDBOX (relative to the task directory)
+dev virtualenv -h -- this message
+EOF
+    exit 1
+}
+
+subsubcommand="$1"
+shift
+case "$subsubcommand" in
+    activate)
+        sandbox="${1-$DEV_VIRTUALENV_SANDBOX}"
+        sandbox=`join_paths "$DEV_TASK_DIR" "$sandbox"`
+        if ! test -f "${sandbox}/bin/activate"; then
+            die "no sandbox defined, or DEV_VIRTUALENV_SANDBOX not set correctly"
+        fi
+        echo "activating sandbox '${sandbox}'" >&2
+        # note: this line must come first; the eval concatenates everything into one line
+        echo "source \"${sandbox}/bin/activate\""
+        echo "# hint - add this to .bashrc:"
+        echo "#  activate() { eval \`dev virtualenv activate $1\`; }"
+        ;;
+    -h) usage ;;
+    *) usage ;;
+esac
