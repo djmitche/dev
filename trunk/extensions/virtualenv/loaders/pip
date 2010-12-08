@@ -16,7 +16,7 @@ load_pip() {
 
     local pkgcache=`set_up_virtualenv_cache`
     if test -n "${pkgcache}"; then
-        pip install --download-cache "${pkgcache}" "${@}" || exit 1
+        pip install --download-cache="${pkgcache}" "${@}" || exit 1
     else
         pip install "${@}"
     fi

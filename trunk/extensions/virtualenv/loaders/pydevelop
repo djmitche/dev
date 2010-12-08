@@ -4,30 +4,14 @@
 load_pydevelop() {
     local pydir="${1}"
 
-    # note that the unqualified 'python' here should find its roots in
+    # note that the unqualified 'pip' here should find its roots in
     # the existing sandbox.  TODO: add a --sandbox option to this loader
     # to specify an alternate sandbox, if necessary
-    (
-        cd "$pydir" || exit 1
-
-        # if using a package cache, this is a bit complicated
-        if test -n "${DEV_VIRTUALENV_PACKAGE_CACHE}"; then
-            local pkgcache=`join_paths "${DEV_PROJECT_DIR}" "${DEV_VIRTUALENV_PACKAGE_CACHE}"`
-            if ! test -d "${pkgcache}"; then
-                mkdir -p "${pkgcache}" || exit 1
-            fi
-
-            # first, run setup.py with the installdir pointed to the cache, and download
-            # all of the packages there.  If the packages are already present, then this
-            # will be quick.
-            python setup.py develop -zmaxd "${pkgcache}" || exit 1
-
-            # then run setup.py with -f pointing to that location and -H specifying no
-            # other hosts should be searched
-            python setup.py develop -f "${pkgcache}" -H None
-        else
-            python setup.py develop
-        fi
-    )
+    local pkgcache=`set_up_virtualenv_cache`
+    if test -n "${pkgcache}"; then
+        pip install --download-cache="${pkgcache}" --editable="$pydir" || exit 1
+    else
+        pip install --editable="$pydir" || exit 1
+    fi
 }
 
