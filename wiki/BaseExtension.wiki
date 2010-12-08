@@ -46,18 +46,18 @@ This extension provides several simple loaders:
 
 This loader simply creates the named directory:
 {{{
-SOURCES=" ...
+load_task() {
   mkdir new/dir
-..."
+}"
 }}}
 
 == untar ==
 
 Untar a tarball using GNU tar; all arguments are passed to GNU tar unchanged.
 {{{
-SOURCES=" ...
+load_task() {
   untar -C data -jxf /path/to/testdata.tar.bz2
-... "
+}
 }}}
 
 = Shell Functions =

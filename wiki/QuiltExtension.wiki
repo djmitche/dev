@@ -21,15 +21,15 @@ fi
 = Loader =
 Add a line like
 {{{
-SOURCES=" ...
-quilt
-..."
+load_task() {
+	quilt
+}
 }}}
 to set up the base of the task directory for use with quilt.  To set up a subdirectory, use
 {{{
-SOURCES=" ...
-quilt sub/dir
-..."
+load_task() {
+	quilt sub/dir
+}
 }}}
 
 Then use the 'quilt' command as usual.

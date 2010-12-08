@@ -6,16 +6,16 @@ The *hg* extension provides a loader to handle source cloned from Mercurial repo
 
 Add a line like
 {{{
-SOURCES=" ...
+load_task() {
 	hg http://hg.mozilla.org/build/buildbot
-... "
+}
 }}}
 
 Or, to load the given URL at a subdirectory of the task directory,
 {{{
-SOURCES=" ...
+load_task() {
 	hg http://hg.mozilla.org/build/buildbot sub/directory
-... "
+}
 }}}
 
 = Variables =

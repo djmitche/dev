@@ -31,4 +31,4 @@ which loads the extension's {{{require.sh}}}, defining some useful functions, va
 
 = Loading Sources =
 
-The BaseExtension actually takes care of loading sources, but it is a critical part of the operation of Dev.  TaskTypes specify one or more [Loaders] via `$[Sources SOURCES]`.  Follow the links for additional information.
+The BaseExtension actually takes care of loading sources, but it is a critical part of the operation of Dev.  TaskTypes specify one or more [Loaders].  Follow the links for additional information.

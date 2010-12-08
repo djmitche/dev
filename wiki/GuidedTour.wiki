@@ -37,7 +37,9 @@ $ dev tasktype new trunk
 }}}
 this will fire up your editor to edit this task configuration.  Make it look like this:
 {{{
-SOURCES="cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello ."
+load_task() {
+	cvs :pserver:anonymous@cvs.savannah.gnu.org:/sources/hello hello .
+}
 }}}
 This reads, roughly, as "using CVS, load module `hello` from repository `:pserver:...` in the current directory (`.`)".  
 

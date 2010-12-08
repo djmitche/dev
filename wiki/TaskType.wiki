@@ -4,7 +4,18 @@ A Task type defines configuration for one or more tasks.  Most simple projects h
 Task type configuration is, like all Dev configuration files, just a shell script.  For most uses, it will contain only variable assignments, adding to any configuration found in the ProjectDirectory.
 
 = Loading Source =
-A Task type must minimally specify how to load the source code it contains.  This is accomplished through the "[Sources SOURCES]" variable.   See [Sources] for more detail on the syntax of this variable.
+A Task type must minimally specify how to load the source code it contains.  This is accomplished through the `load_task` function.  It is defined like this
+{{{
+load_task() {
+	# loaders go here
+}
+}}}
+each of the loaders begins with the word `load`, followed by the loader type, and any arguments.  For example:
+{{{
+load_task() {
+	load hg http://hg.mozilla.org/mozilla-central mozilla
+}
+}}}
 
 = Configuration Variables =
 Configuration can be supplied in the form of variables.  Such variables can also be defined in the ProjectDirectory's configuration if they are global to the project.  For example:

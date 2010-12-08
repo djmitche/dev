@@ -2,9 +2,9 @@
 #labels Featured
 || *Command*                            || *Description* ||
 ||[CvsExtension            cvs         ]|| Perform a CVS checkout ||
-||[BaseExtension           mkdir       ]|| Make a new, empty directory ||
-||[SvnExtension            svn         ]|| Perform a Subversion checkout ||
 ||[GitExtension            git         ]|| Perform a Git clone or init ||
 ||[HgExtension             hg          ]|| Perform a Mercurial clone ||
-||[BaseExtension           untar       ]|| Untar a tarball ||
+||[BaseExtension           mkdir       ]|| Make a new, empty directory ||
 ||[QuiltExtension          quilt       ]|| Set up to handle a patch series ||
+||[SvnExtension            svn         ]|| Perform a Subversion checkout ||
+||[BaseExtension           untar       ]|| Untar a tarball ||
