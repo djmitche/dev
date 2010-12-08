@@ -10,3 +10,4 @@ Extensions provide actual functionality within the DevFramework.  The BaseExtens
   * HgExtension
   * SvnExtension
   * QuiltExtension
+  * VirtualenvExtension

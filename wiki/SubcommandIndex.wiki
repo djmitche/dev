@@ -10,3 +10,4 @@
 ||[BaseExtension           new         ]|| Create a new TaskType ||
 ||[BaseExtension           tasks       ]|| List all [TaskType]s ||
 ||[BaseExtension           var         ]|| Display/query Dev variables ||
+||[VirtualenvExtension     virtualenv  ]|| Activate a virtualenv sandbox ||

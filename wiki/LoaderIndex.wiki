@@ -5,6 +5,8 @@
 ||[GitExtension            git         ]|| Perform a Git clone or init ||
 ||[HgExtension             hg          ]|| Perform a Mercurial clone ||
 ||[BaseExtension           mkdir       ]|| Make a new, empty directory ||
+||[VirtualevnExtension     pip         ]|| Install a package into a virtualenv sandbox ||
 ||[QuiltExtension          quilt       ]|| Set up to handle a patch series ||
 ||[SvnExtension            svn         ]|| Perform a Subversion checkout ||
 ||[BaseExtension           untar       ]|| Untar a tarball ||
+||[VirtualevnExtension     virtualenv  ]|| Create a virtualenv sandbox  ||
