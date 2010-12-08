@@ -1,0 +1,12 @@
+#! /bin/bash
+
+require base
+require patch
+
+have_task || die "No task loaded"
+
+if test -z "$MKPATCH_PATCH_METHOD"; then
+    die "no patch method selected; set MKPATCH_PATCH_METHOD using 'dev tasktype edit' or 'dev project edit'"
+fi
+
+do_mkpatch

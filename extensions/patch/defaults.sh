@@ -1,0 +1,2 @@
+MKPATCH_PATCH_METHOD=''
+add_interesting_variable MKPATCH_PATCH_METHOD
