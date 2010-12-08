@@ -12,4 +12,4 @@ subcommand_SCRIPTS = \
 	subcommands/task \
 	subcommands/var
 
-extlib_SCRIPTS = require.sh defaults.sh
+extlib_SCRIPTS = require.sh
