@@ -65,8 +65,13 @@ case "$subsubcommand" in
         # everything looks good; let's set it up
         tasktype_file="$DEV_TASKTYPES_DIR/$tasktype.dev"
         cat > "$tasktype_file" <<EOF
-# Add your SOURCES here.  See http://code.google.com/p/dev/wiki/Sources for help.
-SOURCES=""
+# Define your task here
+load_task() {
+    # examples:
+    # load svn https://dev.googlecode.com/svn/trunk
+    # load mkdir patches
+    # load virtualenv sandbox
+}
 EOF
 
         # and edit it
