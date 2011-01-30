@@ -1,0 +1,20 @@
+﻿#summary Support for color output in subcommands
+The __color__ extension adds support for color output to subcommands
+
+= Color Variables =
+
+Adding
+{{{
+require color
+}}}
+to the top of a subcommand script imports the following variables:
+
+  * `BLACK`, `BLUE`, `GREEN`, `CYAN`, `RED`, `PURPLE`, `BROWN`, `LTGRAY`, `BLACK` -- plain colors
+  * `DKGRAY`, `LTBLUE`, `LTCYAN`, `LTRED`, `LTPRUPLE`, `YELLOW`, `WHITE` -- bold colors
+  * `BG_BLACK`, `BG_BLUE`, `BG_GREEN`, `BG_CYAN`, `BG_RED`, `BG_PURPLE`, `BG_BROWN`, `BG_LTGRAY`, `BG_BLACK` -- background colors
+  * `NORM` -- restores colors to normal, for use at the end of an output sequence
+
+These colors should be used in an echo statement, e.g.
+{{{
+echo "${BG_RED}${BLACK}ALERT! maximum core temperature exceeded!${NORM}"
+}}}

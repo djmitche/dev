@@ -5,6 +5,7 @@ Extensions provide actual functionality within the DevFramework.  The BaseExtens
 = Built-in Extensions =
   * AutotoolsExtension
   * BaseExtension
+  * ColorExtension
   * CvsExtension
   * GitExtension
   * HgExtension
