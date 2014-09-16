@@ -13,7 +13,7 @@
 search_up_dir_tree() {
     last_dir=`pwd`
     while true; do
-        if test -e "$1" ; then
+        if test -f "$1" ; then
             pwd
             break
         fi
