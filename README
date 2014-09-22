@@ -1,1 +1,17 @@
-See https://github.com/djmitche/dev/wiki.
+If you are a developer who works on multiple open-source applications, then Dev is your new best friend.
+
+# Purpose
+
+Dev handles all of the details of checking out source code for a project, managing patches, and running scripts to perform common tasks such as compiling and testing.
+
+## Documentation
+
+* https://github.com/djmitche/dev/wiki/GuidedTour
+* https://github.com/djmitche/dev/wiki/DevOverview
+* https://github.com/djmitche/dev/wiki/DevExtensions 
+
+## Reference
+
+* https://github.com/djmitche/dev/wiki/VariableIndex
+* https://github.com/djmitche/dev/wiki/SubcommandIndex
+* https://github.com/djmitche/dev/wiki/LoaderIndex 
